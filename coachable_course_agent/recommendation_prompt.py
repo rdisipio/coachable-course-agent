@@ -21,6 +21,18 @@ Recent feedback history (structured data):
 Available courses:
 {course_block}
 
-Pick the top 3 courses that best support the user's goal and preferences.
-For each, briefly explain *why* it fits—especially considering past feedback.
+Return exactly the best 3 course recommendations selected from the list that best support the user's goal and preferences.
+
+Respond in this JSON format:
+[
+  {
+    "title": "...",
+    "justification": "...",
+    "course_id": "..."
+  },
+  ...
+]
+
+For each recommendation, the field called 'justification' briefly explains *why* it fits—especially considering past feedback.
+
 """

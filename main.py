@@ -1,8 +1,10 @@
-from coachable_course_agent.recommender_agent import get_recommendations
+import json
+
 from coachable_course_agent.load_data import load_courses, load_esco_skills
 from coachable_course_agent.memory_store import load_user_profile, update_user_profile
 from coachable_course_agent.feedback_processor import process_feedback
 from coachable_course_agent.vector_store import initialize_chroma, add_courses_to_chroma, query_similar_courses
+from coachable_course_agent.agent_runner import create_course_agent
 
 # Load course catalog and ESCO skills
 courses = load_courses("data/course_catalog_esco.json")
@@ -16,18 +18,24 @@ add_courses_to_chroma(chroma_collection, courses)
 user_id = "julia"
 user_profile = load_user_profile(user_id)
 
-# Query top-N similar courses based on user's missing skills and preferences
-similar_courses = query_similar_courses(chroma_collection, user_profile, top_n=10)
+# Create the LangChain agent
+agent = create_course_agent()
 
-# Get refined recommendations from the agent
-recommended_courses = get_recommendations(user_profile, similar_courses, esco_skills)
+# Run the agent to get recommendation response
+response = agent.run({
+    "chroma": chroma_collection,
+    "profile": user_profile
+})
 
-# Show recommendations and get feedback (stub)
-for course in recommended_courses:
-    print(f"Suggested: {course['title']} ({course['provider']})")
-    print("Why: ", course["justification"])
+# Parse response (assume it's valid JSON for now)
+recommendations = json.loads(response)
+
+# Collect feedback on each course
+for rec in recommendations:
+    print(f"\nSuggested: {rec['title']}")
+    print("Why: ", rec["justification"])
     feedback = input("Feedback? (approve / adjust / reject / suggest): ")
     reason = input("Reason (optional): ")
-    process_feedback(user_id, course["id"], feedback, reason)
+    process_feedback(user_id, rec["course_id"], feedback, reason)
 
 print("\nThanks for helping improve the recommendations!")
