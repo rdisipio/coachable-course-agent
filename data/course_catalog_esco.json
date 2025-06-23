@@ -1,0 +1,592 @@
+[
+  {
+    "id": "course001",
+    "title": "Conflict Resolution Fundamentals",
+    "provider": "edX",
+    "duration_hours": 10,
+    "level": "Advanced",
+    "format": "Video",
+    "url": "https://example.com/course001",
+    "skills": [
+      {
+        "name": "conflict resolution",
+        "uri": "http://data.europa.eu/esco/skill/aa8c84c0-142f-4b1a-91ec-38e2fcf1aa89"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      }
+    ]
+  },
+  {
+    "id": "course002",
+    "title": "Emotional Intelligence Fundamentals",
+    "provider": "LinkedIn Learning",
+    "duration_hours": 10,
+    "level": "Advanced",
+    "format": "Mixed",
+    "url": "https://example.com/course002",
+    "skills": [
+      {
+        "name": "emotional intelligence",
+        "uri": "http://data.europa.eu/esco/skill/9f560b9c-32b3-4a76-b7f6-5eb04a5ec3d4"
+      },
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      },
+      {
+        "name": "organizational development",
+        "uri": "http://data.europa.eu/esco/skill/fadf1b0a-fc52-4b5d-a556-25b77d6cf6a4"
+      }
+    ]
+  },
+  {
+    "id": "course003",
+    "title": "Diversity And Inclusion Fundamentals",
+    "provider": "edX",
+    "duration_hours": 2,
+    "level": "Beginner",
+    "format": "Text",
+    "url": "https://example.com/course003",
+    "skills": [
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      },
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      }
+    ]
+  },
+  {
+    "id": "course004",
+    "title": "Talent Acquisition Fundamentals",
+    "provider": "LinkedIn Learning",
+    "duration_hours": 4,
+    "level": "Intermediate",
+    "format": "Video",
+    "url": "https://example.com/course004",
+    "skills": [
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      },
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      },
+      {
+        "name": "performance management",
+        "uri": "http://data.europa.eu/esco/skill/f365c9b6-3b15-41b0-b2aa-9fd57f2b5286"
+      }
+    ]
+  },
+  {
+    "id": "course005",
+    "title": "People Analytics Fundamentals",
+    "provider": "Udemy",
+    "duration_hours": 4,
+    "level": "Advanced",
+    "format": "Mixed",
+    "url": "https://example.com/course005",
+    "skills": [
+      {
+        "name": "people analytics",
+        "uri": "http://data.europa.eu/esco/skill/2b204d9d-0ee8-490f-8bbf-8e8c8934b3e1"
+      }
+    ]
+  },
+  {
+    "id": "course006",
+    "title": "Organizational Development Fundamentals",
+    "provider": "Udemy",
+    "duration_hours": 6,
+    "level": "Advanced",
+    "format": "Video",
+    "url": "https://example.com/course006",
+    "skills": [
+      {
+        "name": "organizational development",
+        "uri": "http://data.europa.eu/esco/skill/fadf1b0a-fc52-4b5d-a556-25b77d6cf6a4"
+      }
+    ]
+  },
+  {
+    "id": "course007",
+    "title": "Diversity And Inclusion Fundamentals",
+    "provider": "edX",
+    "duration_hours": 2,
+    "level": "Beginner",
+    "format": "Video",
+    "url": "https://example.com/course007",
+    "skills": [
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      },
+      {
+        "name": "people analytics",
+        "uri": "http://data.europa.eu/esco/skill/2b204d9d-0ee8-490f-8bbf-8e8c8934b3e1"
+      }
+    ]
+  },
+  {
+    "id": "course008",
+    "title": "Performance Management Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 8,
+    "level": "Beginner",
+    "format": "Mixed",
+    "url": "https://example.com/course008",
+    "skills": [
+      {
+        "name": "performance management",
+        "uri": "http://data.europa.eu/esco/skill/f365c9b6-3b15-41b0-b2aa-9fd57f2b5286"
+      }
+    ]
+  },
+  {
+    "id": "course009",
+    "title": "Diversity And Inclusion Fundamentals",
+    "provider": "edX",
+    "duration_hours": 10,
+    "level": "Beginner",
+    "format": "Text",
+    "url": "https://example.com/course009",
+    "skills": [
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      },
+      {
+        "name": "organizational development",
+        "uri": "http://data.europa.eu/esco/skill/fadf1b0a-fc52-4b5d-a556-25b77d6cf6a4"
+      }
+    ]
+  },
+  {
+    "id": "course010",
+    "title": "Talent Acquisition Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 4,
+    "level": "Advanced",
+    "format": "Interactive",
+    "url": "https://example.com/course010",
+    "skills": [
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      },
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      }
+    ]
+  },
+  {
+    "id": "course011",
+    "title": "Talent Acquisition Fundamentals",
+    "provider": "FutureLearn",
+    "duration_hours": 10,
+    "level": "Beginner",
+    "format": "Video",
+    "url": "https://example.com/course011",
+    "skills": [
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      },
+      {
+        "name": "emotional intelligence",
+        "uri": "http://data.europa.eu/esco/skill/9f560b9c-32b3-4a76-b7f6-5eb04a5ec3d4"
+      }
+    ]
+  },
+  {
+    "id": "course012",
+    "title": "Organizational Development Fundamentals",
+    "provider": "LinkedIn Learning",
+    "duration_hours": 10,
+    "level": "Intermediate",
+    "format": "Interactive",
+    "url": "https://example.com/course012",
+    "skills": [
+      {
+        "name": "organizational development",
+        "uri": "http://data.europa.eu/esco/skill/fadf1b0a-fc52-4b5d-a556-25b77d6cf6a4"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      },
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      }
+    ]
+  },
+  {
+    "id": "course013",
+    "title": "Leadership Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 10,
+    "level": "Intermediate",
+    "format": "Interactive",
+    "url": "https://example.com/course013",
+    "skills": [
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      },
+      {
+        "name": "people analytics",
+        "uri": "http://data.europa.eu/esco/skill/2b204d9d-0ee8-490f-8bbf-8e8c8934b3e1"
+      },
+      {
+        "name": "emotional intelligence",
+        "uri": "http://data.europa.eu/esco/skill/9f560b9c-32b3-4a76-b7f6-5eb04a5ec3d4"
+      }
+    ]
+  },
+  {
+    "id": "course014",
+    "title": "Talent Acquisition Fundamentals",
+    "provider": "FutureLearn",
+    "duration_hours": 2,
+    "level": "Intermediate",
+    "format": "Mixed",
+    "url": "https://example.com/course014",
+    "skills": [
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      },
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      },
+      {
+        "name": "performance management",
+        "uri": "http://data.europa.eu/esco/skill/f365c9b6-3b15-41b0-b2aa-9fd57f2b5286"
+      }
+    ]
+  },
+  {
+    "id": "course015",
+    "title": "Talent Acquisition Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 6,
+    "level": "Advanced",
+    "format": "Text",
+    "url": "https://example.com/course015",
+    "skills": [
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      }
+    ]
+  },
+  {
+    "id": "course016",
+    "title": "Employee Engagement Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 10,
+    "level": "Intermediate",
+    "format": "Video",
+    "url": "https://example.com/course016",
+    "skills": [
+      {
+        "name": "employee engagement",
+        "uri": "http://data.europa.eu/esco/skill/173685e7-2b53-4647-9029-5e9dffb35f7c"
+      },
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      }
+    ]
+  },
+  {
+    "id": "course017",
+    "title": "Employee Engagement Fundamentals",
+    "provider": "FutureLearn",
+    "duration_hours": 10,
+    "level": "Beginner",
+    "format": "Text",
+    "url": "https://example.com/course017",
+    "skills": [
+      {
+        "name": "employee engagement",
+        "uri": "http://data.europa.eu/esco/skill/173685e7-2b53-4647-9029-5e9dffb35f7c"
+      }
+    ]
+  },
+  {
+    "id": "course018",
+    "title": "Employee Engagement Fundamentals",
+    "provider": "LinkedIn Learning",
+    "duration_hours": 2,
+    "level": "Beginner",
+    "format": "Interactive",
+    "url": "https://example.com/course018",
+    "skills": [
+      {
+        "name": "employee engagement",
+        "uri": "http://data.europa.eu/esco/skill/173685e7-2b53-4647-9029-5e9dffb35f7c"
+      }
+    ]
+  },
+  {
+    "id": "course019",
+    "title": "Coaching Fundamentals",
+    "provider": "Udemy",
+    "duration_hours": 4,
+    "level": "Advanced",
+    "format": "Text",
+    "url": "https://example.com/course019",
+    "skills": [
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      }
+    ]
+  },
+  {
+    "id": "course020",
+    "title": "Emotional Intelligence Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 4,
+    "level": "Intermediate",
+    "format": "Video",
+    "url": "https://example.com/course020",
+    "skills": [
+      {
+        "name": "emotional intelligence",
+        "uri": "http://data.europa.eu/esco/skill/9f560b9c-32b3-4a76-b7f6-5eb04a5ec3d4"
+      },
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      }
+    ]
+  },
+  {
+    "id": "course021",
+    "title": "Organizational Development Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 4,
+    "level": "Advanced",
+    "format": "Text",
+    "url": "https://example.com/course021",
+    "skills": [
+      {
+        "name": "organizational development",
+        "uri": "http://data.europa.eu/esco/skill/fadf1b0a-fc52-4b5d-a556-25b77d6cf6a4"
+      },
+      {
+        "name": "performance management",
+        "uri": "http://data.europa.eu/esco/skill/f365c9b6-3b15-41b0-b2aa-9fd57f2b5286"
+      },
+      {
+        "name": "employee engagement",
+        "uri": "http://data.europa.eu/esco/skill/173685e7-2b53-4647-9029-5e9dffb35f7c"
+      }
+    ]
+  },
+  {
+    "id": "course022",
+    "title": "Coaching Fundamentals",
+    "provider": "Udemy",
+    "duration_hours": 8,
+    "level": "Beginner",
+    "format": "Mixed",
+    "url": "https://example.com/course022",
+    "skills": [
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      },
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      }
+    ]
+  },
+  {
+    "id": "course023",
+    "title": "Coaching Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 8,
+    "level": "Advanced",
+    "format": "Video",
+    "url": "https://example.com/course023",
+    "skills": [
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      },
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      }
+    ]
+  },
+  {
+    "id": "course024",
+    "title": "Emotional Intelligence Fundamentals",
+    "provider": "FutureLearn",
+    "duration_hours": 4,
+    "level": "Beginner",
+    "format": "Mixed",
+    "url": "https://example.com/course024",
+    "skills": [
+      {
+        "name": "emotional intelligence",
+        "uri": "http://data.europa.eu/esco/skill/9f560b9c-32b3-4a76-b7f6-5eb04a5ec3d4"
+      },
+      {
+        "name": "performance management",
+        "uri": "http://data.europa.eu/esco/skill/f365c9b6-3b15-41b0-b2aa-9fd57f2b5286"
+      }
+    ]
+  },
+  {
+    "id": "course025",
+    "title": "Conflict Resolution Fundamentals",
+    "provider": "FutureLearn",
+    "duration_hours": 6,
+    "level": "Advanced",
+    "format": "Mixed",
+    "url": "https://example.com/course025",
+    "skills": [
+      {
+        "name": "conflict resolution",
+        "uri": "http://data.europa.eu/esco/skill/aa8c84c0-142f-4b1a-91ec-38e2fcf1aa89"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      }
+    ]
+  },
+  {
+    "id": "course026",
+    "title": "Coaching Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 8,
+    "level": "Intermediate",
+    "format": "Video",
+    "url": "https://example.com/course026",
+    "skills": [
+      {
+        "name": "coaching",
+        "uri": "http://data.europa.eu/esco/skill/f29a55f7-fd4a-4b93-b9df-1bb25103e582"
+      },
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      },
+      {
+        "name": "performance management",
+        "uri": "http://data.europa.eu/esco/skill/f365c9b6-3b15-41b0-b2aa-9fd57f2b5286"
+      }
+    ]
+  },
+  {
+    "id": "course027",
+    "title": "People Analytics Fundamentals",
+    "provider": "Coursera",
+    "duration_hours": 10,
+    "level": "Advanced",
+    "format": "Interactive",
+    "url": "https://example.com/course027",
+    "skills": [
+      {
+        "name": "people analytics",
+        "uri": "http://data.europa.eu/esco/skill/2b204d9d-0ee8-490f-8bbf-8e8c8934b3e1"
+      },
+      {
+        "name": "leadership",
+        "uri": "http://data.europa.eu/esco/skill/2d9e5e1e-0eb6-4722-9d47-e1e5570e841d"
+      }
+    ]
+  },
+  {
+    "id": "course028",
+    "title": "Diversity And Inclusion Fundamentals",
+    "provider": "edX",
+    "duration_hours": 2,
+    "level": "Beginner",
+    "format": "Mixed",
+    "url": "https://example.com/course028",
+    "skills": [
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      }
+    ]
+  },
+  {
+    "id": "course029",
+    "title": "Conflict Resolution Fundamentals",
+    "provider": "Udemy",
+    "duration_hours": 4,
+    "level": "Advanced",
+    "format": "Text",
+    "url": "https://example.com/course029",
+    "skills": [
+      {
+        "name": "conflict resolution",
+        "uri": "http://data.europa.eu/esco/skill/aa8c84c0-142f-4b1a-91ec-38e2fcf1aa89"
+      },
+      {
+        "name": "people analytics",
+        "uri": "http://data.europa.eu/esco/skill/2b204d9d-0ee8-490f-8bbf-8e8c8934b3e1"
+      },
+      {
+        "name": "diversity and inclusion",
+        "uri": "http://data.europa.eu/esco/skill/35c57707-8b8c-4aa0-92de-988f560a08dc"
+      }
+    ]
+  },
+  {
+    "id": "course030",
+    "title": "Employee Engagement Fundamentals",
+    "provider": "LinkedIn Learning",
+    "duration_hours": 6,
+    "level": "Beginner",
+    "format": "Interactive",
+    "url": "https://example.com/course030",
+    "skills": [
+      {
+        "name": "employee engagement",
+        "uri": "http://data.europa.eu/esco/skill/173685e7-2b53-4647-9029-5e9dffb35f7c"
+      },
+      {
+        "name": "talent acquisition",
+        "uri": "http://data.europa.eu/esco/skill/4d42f674-b10a-4bd7-8f39-3b15a3050c1f"
+      }
+    ]
+  }
+]
