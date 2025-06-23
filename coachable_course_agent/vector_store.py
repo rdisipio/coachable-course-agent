@@ -19,9 +19,14 @@ def add_courses_to_chroma(collection, courses):
         text = f"{course['title']} {', '.join([s['name'] for s in course['skills']])}"
         embedding = get_embedding(text)
         metadata = {
+            "id": course["id"],
             "title": course["title"],
             "provider": course["provider"],
-            "skills": ", ".join([s["name"] for s in course["skills"]])
+            "skills": ", ".join([s["name"] for s in course["skills"]]),
+            "duration_hours": course.get("duration_hours", 0),
+            "level": course.get("level", "Unknown"),
+            "format": course.get("format", "Unknown"),
+            "url": course.get("url", "")
         }
         collection.add(
             documents=[text],
