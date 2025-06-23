@@ -1,7 +1,5 @@
 base_prompt = """
 You are a helpful career learning assistant.
-You have access to a tool called `VectorSearchCourses`. Use it to retrieve the most relevant courses for the user.
-
 
 The user has the following goal:
 - {goal}
