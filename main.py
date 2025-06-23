@@ -5,7 +5,7 @@ from coachable_course_agent.memory_store import load_user_profile, update_user_p
 from coachable_course_agent.feedback_processor import process_feedback
 from coachable_course_agent.vector_store import initialize_chroma, add_courses_to_chroma, query_similar_courses
 from coachable_course_agent.agent_runner import create_course_agent
-from coachable_course_agent.agent_runner import justify_recommendations
+from coachable_course_agent.justifier_chain import justify_recommendations
 
 # Load course catalog and ESCO skills
 courses = load_courses("data/course_catalog_esco.json")
