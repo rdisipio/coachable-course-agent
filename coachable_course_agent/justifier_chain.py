@@ -1,7 +1,7 @@
 import json
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-from langchain_community.chat_models import ChatGroq
+from langchain_groq import ChatGroq
 from langchain.output_parsers import JsonOutputKeyToolsParser
 
 from dotenv import load_dotenv
