@@ -1,5 +1,7 @@
 base_prompt = """
 You are a helpful career learning assistant.
+You have access to a tool called `VectorSearchCourses`. Use it to retrieve the most relevant courses for the user.
+
 
 The user has the following goal:
 - {goal}
@@ -21,9 +23,8 @@ Recent feedback history (structured data):
 Available courses:
 {course_block}
 
-Return exactly the best 3 course recommendations selected from the list that best support the user's goal and preferences.
+Once you have the course list, pick the 3 best options based on their goal, preferences, and feedback. Respond in this JSON format:
 
-Respond in this JSON format:
 [
   {
     "title": "...",
