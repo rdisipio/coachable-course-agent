@@ -18,9 +18,6 @@ Learning preferences:
 Recent feedback history (structured data):
 {feedback_log}
 
-Available courses:
-{course_block}
-
 Once you have the course list, pick the 3 best options based on their goal, preferences, and feedback. Respond in this JSON format:
 
 [
