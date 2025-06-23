@@ -44,7 +44,7 @@ input_payload = {
     "instruction": instructions,
 }
 
-response = agent.run(input_payload)
+response = agent.run({"input": input_payload})
 
 # Parse response (assume it's valid JSON for now)
 recommendations = json.loads(response)
