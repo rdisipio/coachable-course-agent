@@ -30,7 +30,4 @@ for course in recommended_courses:
     reason = input("Reason (optional): ")
     process_feedback(user_id, course["id"], feedback, reason)
 
-# Save updated profile
-update_user_profile(user_id, user_profile)
-
 print("\nThanks for helping improve the recommendations!")
