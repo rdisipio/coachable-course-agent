@@ -4,7 +4,12 @@ from langchain.chains import LLMChain
 import random
 import json
 
-from prompts.recommendation_prompt import base_prompt
+from coachable_course_agent.recommendation_prompt import base_prompt
+
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
 
 def get_recommendations(user_profile, courses, esco_skills, top_n=3):
     # Sample 5-7 courses to feed into the LLM (in a real version, use vector search)
@@ -26,7 +31,8 @@ def get_recommendations(user_profile, courses, esco_skills, top_n=3):
         course_block=course_block
     )
 
-    llm = Groq(model="mixtral-8x7b-32768", temperature=0.7)
+    # Use a LLaMA-based model hosted via Groq
+    llm = Groq(model="llama3-70b-8192", temperature=0.7)
     chain = LLMChain(prompt=PromptTemplate.from_template("{input}"), llm=llm)
 
     response = chain.run(input=prompt_input)
