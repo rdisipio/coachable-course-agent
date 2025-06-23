@@ -13,7 +13,7 @@ load_dotenv()
 
 def get_recommendations(user_profile, courses, esco_skills, top_n=3):
     # Sample 5-7 courses to feed into the LLM (in a real version, use vector search)
-    sampled_courses = random.sample(courses, k=min(7, len(courses)))
+    sampled_courses = courses#random.sample(courses, k=min(7, len(courses)))
 
     course_block = "\n".join([
         f"- {c['title']} ({c['provider']}) | {c['duration_hours']}h | Skills: {c['skills']}"
