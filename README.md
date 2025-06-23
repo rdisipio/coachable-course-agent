@@ -42,7 +42,7 @@ Unlike traditional recommenders that track clicks and ratings, this agent asks�
 
 ## 👤 Author
 
-Built by [Your Name], exploring how agents can collaborate—not just recommend.
+Built by Riccardo Di Sipio, exploring how agents can collaborate—not just recommend.
 
 ---
 
