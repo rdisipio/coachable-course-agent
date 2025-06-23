@@ -38,6 +38,7 @@ Unlike traditional recommenders that track clicks and ratings, this agent asks�
 - Resume/LinkedIn import for profile bootstrap  
 - Medium article on the design journey (Human-AI interaction focus)
 
+
 ---
 
 ## 👤 Author
@@ -49,3 +50,20 @@ Built by Riccardo Di Sipio, exploring how agents can collaborate—not just reco
 ## 📖 License
 
 MIT License
+
+
+### 📦 Setup & Data
+
+#### 🔹 ESCO Skill Dataset
+
+To enable skill normalization, this project uses the [ESCO](https://esco.ec.europa.eu/en/download) framework.
+
+**Steps to download:**
+1. Go to: [https://esco.ec.europa.eu/en/download](https://esco.ec.europa.eu/en/download)
+2. Download the latest CSV archive (ESCO v1.2 or newer).
+3. Extract the archive to `data/esco`. Make sure it contains a file called `skills_en.csv`.
+
+📁 A placeholder file with instructions is available at:
+```
+data/esco/readme.txt
+```

@@ -6,7 +6,7 @@ from utils.vector_store import initialize_chroma, add_courses_to_chroma, query_s
 
 # Load course catalog and ESCO skills
 courses = load_courses("data/course_catalog_esco.json")
-esco_skills = load_esco_skills("data/esco_skills.csv")
+esco_skills = load_esco_skills("data/esco/skills_en.csv")
 
 # Initialize ChromaDB and populate course embeddings
 chroma_collection = initialize_chroma()
