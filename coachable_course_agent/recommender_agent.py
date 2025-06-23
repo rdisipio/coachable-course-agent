@@ -16,7 +16,7 @@ def get_recommendations(user_profile, courses, esco_skills, top_n=3):
     sampled_courses = random.sample(courses, k=min(7, len(courses)))
 
     course_block = "\n".join([
-        f"- {c['title']} ({c['provider']}) | {c['duration_hours']}h | Skills: {', '.join([s['name'] for s in c['skills']])}"
+        f"- {c['title']} ({c['provider']}) | {c['duration_hours']}h | Skills: {c['skills']}"
         for c in sampled_courses
     ])
 

@@ -1,8 +1,10 @@
-import json
 import os
+import json
 from datetime import datetime, timezone
 
-PROFILE_DIR = "memory"
+PROFILE_DIR = "data/memory"
+
+os.makedirs(PROFILE_DIR, exist_ok=True)
 
 def _profile_path(user_id):
     return os.path.join(PROFILE_DIR, f"{user_id}.json")
@@ -14,6 +16,7 @@ def load_user_profile(user_id):
             return json.load(f)
     else:
         return {
+            "user_id": user_id,
             "goal": "",
             "known_skills": [],
             "missing_skills": [],
@@ -47,7 +50,6 @@ def update_preferences(user_id, new_prefs):
 
     for key, values in new_prefs.items():
         if key in prefs:
-            # Merge new values with old, avoiding duplicates
             current = set(prefs.get(key, []))
             updated = current.union(set(values))
             prefs[key] = list(updated)
