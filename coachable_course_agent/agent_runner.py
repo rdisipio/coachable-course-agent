@@ -1,8 +1,9 @@
 from langchain.agents import Tool
-from langchain.agents import initialize_agent, AgentType, AgentExecutor, AgentOutputParser, load_tools
+from langchain.agents import initialize_agent, AgentType, AgentExecutor, AgentOutputParser
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
-from langchain.agents.react.agent import create_react_prompt, create_react_agent
-
+from langchain.agents.react.agent import create_react_prompt
+from langchain.agents.agent_toolkits import create_react_agent
+from langchain_community.agent_toolkits.load_tools import load_tools
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
@@ -26,10 +27,10 @@ def vector_search_tool(input: dict):
     courses = query_similar_courses(chroma, profile, top_n=10)
 
     formatted = "\n".join([
-        f"- {c['title']} ({c['provider']}) | {c.get('level', 'N/A')} | {c.get('duration_hours', '?')}h | Skills: {', '.join(c['skills'])}"
+        f"- {c['title']} ({c['provider']}) | Level: {c.get('level', 'N/A')} | Duration: {c.get('duration_hours', '?')}h | Skills: {c.get('skills', '')} | ID: {c.get('id')}"
         for c in courses
     ])
-    return f"Here are the top courses:\n{formatted}"
+    return f"Here are the top courses based on the user's profile and preferences:\n{formatted}"
 
 
 # Add tools
@@ -43,15 +44,12 @@ tools = [
 
 # Create agent with custom prompt
 def create_course_agent():
-    agent_prompt = create_react_prompt(
-        tools=tools,
-        system_message=base_prompt,
-        input_variables=[
-            "goal", "known_skills", "missing_skills",
-            "format", "style", "avoid_styles", "feedback_log",
-            "chroma", "profile", "agent_scratchpad"
-        ]
-    )
+    prompt = ChatPromptTemplate.from_messages([
+        ("system", "Use the available tools to retrieve relevant courses."),
+        MessagesPlaceholder("agent_scratchpad")
+    ])
 
-    agent = create_react_agent(llm=llm, tools=tools, prompt=agent_prompt)
+    agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
+
     return AgentExecutor(agent=agent, tools=tools, verbose=True)
+    
