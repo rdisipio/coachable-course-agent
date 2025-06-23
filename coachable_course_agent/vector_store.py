@@ -18,11 +18,16 @@ def add_courses_to_chroma(collection, courses):
     for course in courses:
         text = f"{course['title']} {', '.join([s['name'] for s in course['skills']])}"
         embedding = get_embedding(text)
+        metadata = {
+            "title": course["title"],
+            "provider": course["provider"],
+            "skills": ", ".join([s["name"] for s in course["skills"]])
+        }
         collection.add(
             documents=[text],
             embeddings=[embedding],
             ids=[course["id"]],
-            metadatas=[course]
+            metadatas=[metadata]
         )
 
 def query_similar_courses(collection, user_profile, top_n=10):
