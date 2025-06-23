@@ -21,11 +21,11 @@ Recent feedback history (structured data):
 Once you have the course list, pick the 3 best options based on their goal, preferences, and feedback. Respond in this JSON format:
 
 [
-  {
+  {{
     "title": "...",
     "justification": "...",
     "course_id": "..."
-  },
+  }},
   ...
 ]
 
