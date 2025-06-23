@@ -1,4 +1,4 @@
-from utils.memory_store import load_user_profile, update_user_profile
+from .memory_store import load_user_profile, update_user_profile
 from datetime import datetime, timezone
 
 def process_feedback(user_id, course_id, feedback_type, reason):

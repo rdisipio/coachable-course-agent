@@ -1,6 +1,6 @@
 from langchain.prompts import PromptTemplate
-from langchain.llms import Groq
 from langchain.chains import LLMChain
+from langchain_groq import ChatGroq
 import random
 import json
 
@@ -32,7 +32,7 @@ def get_recommendations(user_profile, courses, esco_skills, top_n=3):
     )
 
     # Use a LLaMA-based model hosted via Groq
-    llm = Groq(model="llama3-70b-8192", temperature=0.7)
+    llm = ChatGroq(model_name="llama3-70b-8192", temperature=0.0)
     chain = LLMChain(prompt=PromptTemplate.from_template("{input}"), llm=llm)
 
     response = chain.run(input=prompt_input)
