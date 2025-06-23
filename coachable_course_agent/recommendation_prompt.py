@@ -18,6 +18,9 @@ Learning preferences:
 Recent feedback history (structured data):
 {feedback_log}
 
+Available courses:
+{course_block}
+
 Once you have the course list, pick the 3 best options based on their goal, preferences, and feedback. Respond in this JSON format:
 
 [
@@ -31,4 +34,5 @@ Once you have the course list, pick the 3 best options based on their goal, pref
 
 For each recommendation, the field called 'justification' briefly explains *why* it fits—especially considering past feedback.
 
+"Reply with *only* a valid JSON array and no additional explanation."
 """

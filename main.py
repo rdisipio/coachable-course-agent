@@ -19,15 +19,11 @@ add_courses_to_chroma(chroma_collection, courses)
 user_id = "julia"
 user_profile = load_user_profile(user_id)
 
-# Create the course agent
-agent = create_course_agent()
+# Step 1: Retrieve top N courses from vector store based on user profile
+retrieved_courses = query_similar_courses(chroma_collection, user_profile, top_n=10)
 
-top_courses = agent.run({
-    "chroma": chroma_collection,
-    "profile": user_profile
-})
-
-recommendations = justify_recommendations(user_profile, top_courses) # this returns a dict
+# Step 2: Use the LLM to justify and refine top 3 recommendations
+recommendations = justify_recommendations(user_profile, retrieved_courses)
 
 # Collect feedback on each course
 for rec in recommendations:
