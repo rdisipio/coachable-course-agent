@@ -5,6 +5,7 @@ from coachable_course_agent.memory_store import load_user_profile, update_user_p
 from coachable_course_agent.feedback_processor import process_feedback
 from coachable_course_agent.vector_store import initialize_chroma, add_courses_to_chroma, query_similar_courses
 from coachable_course_agent.agent_runner import create_course_agent
+from coachable_course_agent.agent_runner import justify_recommendations
 
 # Load course catalog and ESCO skills
 courses = load_courses("data/course_catalog_esco.json")
@@ -21,21 +22,12 @@ user_profile = load_user_profile(user_id)
 # Create the course agent
 agent = create_course_agent()
 
-# Run agent with expanded input matching prompt fields
-response = agent.run({
-    "goal": user_profile["goal"],
-    "known_skills": ", ".join(user_profile["known_skills"]),
-    "missing_skills": ", ".join(user_profile["missing_skills"]),
-    "format": ", ".join(user_profile["preferences"]["format"]),
-    "style": ", ".join(user_profile["preferences"]["style"]),
-    "avoid_styles": ", ".join(user_profile["preferences"].get("avoid_styles", [])),
-    "feedback_log": json.dumps(user_profile.get("feedback_log", [])[-3:], indent=2),
+top_courses = agent.run({
     "chroma": chroma_collection,
     "profile": user_profile
 })
 
-# Parse response (assume it's valid JSON for now)
-recommendations = json.loads(response)
+recommendations = justify_recommendations(user_profile, top_courses) # this returns a dict
 
 # Collect feedback on each course
 for rec in recommendations:
