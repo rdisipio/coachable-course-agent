@@ -6,6 +6,7 @@ from langchain_community.agent_toolkits.load_tools import load_tools
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
+import json
 
 from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.recommendation_prompt import base_prompt
@@ -20,7 +21,8 @@ llm = ChatGroq(
 )
 
 # Define tool: query vector store
-def vector_search_tool(input: dict):
+def vector_search_tool(input_str: str):
+    input = json.loads(input_str)
     chroma = input["chroma"]
     profile = input["profile"]
     courses = query_similar_courses(chroma, profile, top_n=10)
@@ -41,14 +43,11 @@ tools = [
     )
 ]
 
-# Create agent with custom prompt
 def create_course_agent():
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", "Use the available tools to retrieve relevant courses."),
-        MessagesPlaceholder("agent_scratchpad")
-    ])
-
-    agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
-
-    return AgentExecutor(agent=agent, tools=tools, verbose=True)
-    
+    return initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=True,
+        handle_parsing_errors=True
+    )

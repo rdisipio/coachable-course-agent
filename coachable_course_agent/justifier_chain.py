@@ -17,26 +17,37 @@ def create_justifier_chain():
     return LLMChain(prompt=prompt, llm=llm)
 
 def justify_recommendations(user_profile, courses):
-    justifier_chain = create_justifier_chain()
-
     course_block = "\n".join([
         f"- {c['title']} ({c['provider']}) | Level: {c.get('level', 'N/A')} | Format: {c.get('format', 'N/A')} | Skills: {', '.join(c['skills'])}"
         for c in courses
     ])
-
-    # Format prompt input
-    instructions = base_prompt.format(
-        goal=user_profile["goal"],
-        known_skills=", ".join(user_profile["known_skills"]),
-        missing_skills=", ".join(user_profile["missing_skills"]),
-        format=", ".join(user_profile["preferences"]["format"]),
-        style=", ".join(user_profile["preferences"]["style"]),
-        avoid_styles=", ".join(user_profile["preferences"].get("avoid_styles", [])),
-        feedback_log=json.dumps(user_profile.get("feedback_log", [])[-3:], indent=2),
-        course_block=course_block
-    )
-    response = justifier_chain.run(input=instructions)
     
+    # Use PromptTemplate with the expected variables
+    prompt = PromptTemplate(
+        input_variables=[
+            "goal", "known_skills", "missing_skills",
+            "format", "style", "avoid_styles",
+            "feedback_log", "course_block"
+        ],
+        template=base_prompt,
+    )
+    
+    chain = create_justifier_chain()
+    response = chain.run({
+        "goal": user_profile["goal"],
+        "known_skills": ", ".join(user_profile["known_skills"]),
+        "missing_skills": ", ".join(user_profile["missing_skills"]),
+        "format": ", ".join(user_profile["preferences"]["format"]),
+        "style": ", ".join(user_profile["preferences"]["style"]),
+        "avoid_styles": ", ".join(user_profile["preferences"].get("avoid_styles", [])),
+        "feedback_log": json.dumps(user_profile.get("feedback_log", [])[-3:], indent=2),
+        "course_block": course_block,
+    })
+    
+    print("=== RAW LLM OUTPUT ===")
+    print(response)
+    print("======================")
+
     # Attempt to parse as JSON
     try:
         recommendations = json.loads(response)
