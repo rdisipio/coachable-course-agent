@@ -32,7 +32,7 @@ def get_recommendations(user_profile, courses, esco_skills, top_n=3):
     )
 
     # Use a LLaMA-based model hosted via Groq
-    llm = ChatGroq(model_name="llama3-70b-8192", temperature=0.0)
+    llm = ChatGroq(model_name="llama3-70b-8192", temperature=0.2) # 0-> deterministic output, 1-> more creative
     chain = LLMChain(prompt=PromptTemplate.from_template("{input}"), llm=llm)
 
     response = chain.run(input=prompt_input)
