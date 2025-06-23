@@ -1,8 +1,8 @@
-from agents.recommender_agent import get_recommendations
-from utils.load_data import load_courses, load_esco_skills
-from utils.memory_store import load_user_profile, update_user_profile
-from utils.feedback_processor import process_feedback
-from utils.vector_store import initialize_chroma, add_courses_to_chroma, query_similar_courses
+from coachable_course_agent.recommender_agent import get_recommendations
+from coachable_course_agent.load_data import load_courses, load_esco_skills
+from coachable_course_agent.memory_store import load_user_profile, update_user_profile
+from coachable_course_agent.feedback_processor import process_feedback
+from coachable_course_agent.vector_store import initialize_chroma, add_courses_to_chroma, query_similar_courses
 
 # Load course catalog and ESCO skills
 courses = load_courses("data/course_catalog_esco.json")
