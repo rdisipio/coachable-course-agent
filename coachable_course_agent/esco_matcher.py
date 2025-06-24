@@ -13,17 +13,17 @@ def match_to_esco(skills: list[str], vectorstore, top_k=10):
         if results:
             top_result = results[0]
             matches.append({
-                "input_skill": skill,
-                "preferredLabel": top_result.metadata.get("label", "N/A"),
-                "conceptUri": top_result.metadata.get("uri", "N/A"),
-                "similarity_context": top_result.page_content
+                "raw_skill": skill,
+                "preferredLabel": top_result.get("preferredLabel", "N/A"),
+                "conceptUri": top_result.get("conceptUri", "N/A"),
+                "description": top_result.get('page_content', "N/A")
             })
         else:
             matches.append({
-                "input_skill": skill,
+                "raw_skill": skill,
                 "preferredLabel": None,
                 "conceptUri": None,
-                "similarity_context": None
+                "description": None
             })
 
     return matches
