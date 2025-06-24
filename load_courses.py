@@ -32,7 +32,7 @@ for course in tqdm(courses, desc="Processing courses"):
     course_docs.append(Document(page_content=content, metadata=metadata))
 
 # 4. Save to persistent ChromaDB
-persist_dir = "data/chroma/courses_index"
+persist_dir = "data/courses_chroma"
 vectorstore = Chroma.from_documents(
     documents=course_docs,
     embedding=embedding_model,
