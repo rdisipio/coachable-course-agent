@@ -19,10 +19,10 @@ embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2", show_prog
 # Convert skills to LangChain documents
 documents = [
     Document(
-        page_content=row["description"],
+        page_content=f"{row['conceptUri']}: {row['description']}",
         metadata={
-            "uri": row["conceptUri"],
-            "label": row["preferredLabel"]
+            "conceptUri": row["conceptUri"],
+            "preferredLabel": row["preferredLabel"]
         }
     )
     for _, row in skills_df.iterrows()
