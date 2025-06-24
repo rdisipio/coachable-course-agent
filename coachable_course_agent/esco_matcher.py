@@ -26,4 +26,7 @@ def match_to_esco(skills: list[str], vectorstore, top_k=10):
                 "description": None
             })
 
-    return matches
+    return [
+        match for match in formatted_results
+        if match["preferredLabel"] != "N/A"
+    ]
