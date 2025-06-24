@@ -46,7 +46,7 @@ def query_similar_courses(vectorstore, user_profile, top_n=10):
     user_preferences_str = ', '.join(user_profile['preferences']['style'])
     user_goal_str = user_profile.get("goal", "")
     query_text = f"{user_goal_str} {missing_skills_str} {user_preferences_str}"
-    query_embedding = get_embedding(query_text)
+
     # LangChain Chroma API: returns list of Documents
     results = vectorstore.similarity_search(query_text, k=top_n)
 
