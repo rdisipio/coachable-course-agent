@@ -2,7 +2,7 @@ from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
 from langchain.tools import Tool
-from coachable_course_agent.esco_matcher import match_to_esco_semantic
+from coachable_course_agent.esco_matcher import match_to_esco
 
 from dotenv import load_dotenv
 import os
@@ -49,13 +49,32 @@ profile_extract_tool = Tool.from_function(
 )
 
 
-def match_esco_wrapper(skills_text: str):
-    skills = [s.strip() for s in skills_text.split(",") if s.strip()]
-    matches = match_to_esco_semantic(skills)
-    return json.dumps(matches, indent=2)
+def match_esco_wrapper(input_str: str) -> str:
+    try:
+        input_dict = json.loads(input_str)
+        skills = input_dict.get("skills", [])
+        if not isinstance(skills, list):
+            return "Error: 'skills' must be a list of strings."
 
-match_skills_tool = Tool.from_function(
-    name="MatchSkillsToESCO",
-    func=match_esco_wrapper,
-    description="Matches a comma-separated list of skill names to ESCO concepts. Input format: 'skill1, skill2, ...'. Returns matched skills with ESCO URIs."
-)
+        top_matches = match_to_esco(skills, esco_vectorstore)
+
+        results = [
+            {
+                "label": doc.metadata["label"],
+                "uri": doc.metadata["uri"],
+                "description": doc.page_content
+            }
+            for doc in top_matches
+        ]
+        return json.dumps(results, indent=2)
+
+    except json.JSONDecodeError:
+        return "Error: Could not parse input JSON."
+
+
+def get_skill_tool(vectorstore):
+    return Tool(
+        name="MatchSkillsToESCO",
+        func=lambda q: match_esco_wrapper(q, vectorstore),
+        description="Matches a comma-separated list of skill names to ESCO concepts. Input format: 'skill1, skill2, ...'. Returns matched skills with ESCO URIs."
+    )

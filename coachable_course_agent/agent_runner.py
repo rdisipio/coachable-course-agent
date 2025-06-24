@@ -7,7 +7,7 @@ import json
 
 from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.recommendation_prompt import base_prompt
-from coachable_course_agent.linkedin_tools import profile_extract_tool, match_skills_tool
+from coachable_course_agent.linkedin_tools import profile_extract_tool, get_skill_tool
 
 load_dotenv()
 
@@ -49,11 +49,31 @@ def create_course_agent():
     )
 
 
-def create_linkedin_profile_agent():
+def create_linkedin_profile_agent(tools):
     return initialize_agent(
-        tools=[profile_extract_tool, match_skills_tool],
+        tools=tools,
         llm=llm,
         agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
+        handle_parsing_errors=True
+    )
+
+
+def create_profile_building_agent():
+    llm = ChatGroq(
+        model="llama3-70b-8192", 
+        temperature=0.7, 
+        api_key=os.getenv("GROQ_API_KEY")
+    )
+    tools = [extract_profile_tool, match_esco_tool, save_profile_tool]
+    
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+
+    return initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
+        verbose=True,
+        memory=memory,
         handle_parsing_errors=True
     )
