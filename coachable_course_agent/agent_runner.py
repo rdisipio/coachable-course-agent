@@ -1,13 +1,15 @@
 from langchain.agents import Tool
 from langchain.agents import initialize_agent, AgentType
 from langchain_groq import ChatGroq
+from langchain.memory.buffer import ConversationBufferMemory
 from dotenv import load_dotenv
 import os
 import json
 
 from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.recommendation_prompt import base_prompt
-from coachable_course_agent.linkedin_tools import profile_extract_tool, get_skill_tool
+from coachable_course_agent.linkedin_tools import profile_extract_tool, get_skill_tool, save_profile_tool
+from coachable_course_agent.memory_store import update_user_profile
 
 load_dotenv()
 
@@ -49,23 +51,13 @@ def create_course_agent():
     )
 
 
-def create_linkedin_profile_agent(tools):
-    return initialize_agent(
-        tools=tools,
-        llm=llm,
-        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
-        verbose=True,
-        handle_parsing_errors=True
-    )
-
-
-def create_profile_building_agent():
+def create_profile_building_agent(vectorstore):
     llm = ChatGroq(
         model="llama3-70b-8192", 
         temperature=0.7, 
         api_key=os.getenv("GROQ_API_KEY")
     )
-    tools = [extract_profile_tool, match_esco_tool, save_profile_tool]
+    tools = [profile_extract_tool, get_skill_tool(vectorstore), save_profile_tool]
     
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
