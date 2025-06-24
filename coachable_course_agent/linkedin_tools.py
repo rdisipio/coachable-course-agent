@@ -60,8 +60,12 @@ def extract_profile_info(profile_text: str) -> dict:
 profile_extract_tool = Tool.from_function(
     name="ExtractProfileFromText",
     func=extract_profile_info,
-    description="Given a free-form LinkedIn profile text, extracts a short career headline, a list of up to 10 professional skills, and an inferred learning or career goal. Input should be raw profile text."
-)
+    description=(
+        "Given a free-form LinkedIn profile text, extracts a short career headline, "
+         "a list of up to 10 professional skills, and an inferred learning or career goal. " 
+        "Input should be raw profile text."
+        "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
+    )
 
 
 def match_esco_wrapper(input_text: str, vectorstore) -> str:
