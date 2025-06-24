@@ -7,20 +7,21 @@ from coachable_course_agent.vector_store import initialize_chroma, add_courses_t
 from coachable_course_agent.agent_runner import create_course_agent
 from coachable_course_agent.justifier_chain import justify_recommendations
 
-# Load course catalog and ESCO skills
-courses = load_courses("data/course_catalog_esco.json")
-esco_skills = load_esco_skills("data/esco/skills_en.csv")
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
 
-# Initialize ChromaDB and populate course embeddings
-chroma_collection = initialize_chroma()
-add_courses_to_chroma(chroma_collection, courses)
+embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+vectorstore = Chroma(
+        persist_directory="data/courses_chroma",
+        embedding_function=embedding_model
+    )
 
 # Load or initialize user profile
 user_id = "julia"
 user_profile = load_user_profile(user_id)
 
 # Step 1: Retrieve top N courses from vector store based on user profile
-retrieved_courses = query_similar_courses(chroma_collection, user_profile, top_n=10)
+retrieved_courses = query_similar_courses(vectorstore, user_profile, top_n=10)
 
 # Step 2: Use the LLM to justify and refine top 3 recommendations
 recommendations = justify_recommendations(user_profile, retrieved_courses)
