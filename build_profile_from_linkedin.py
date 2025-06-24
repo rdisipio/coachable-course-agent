@@ -10,7 +10,7 @@ def main():
     # Step 0: Load ChromaDB skill vectorstore
     embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
     vectorstore = Chroma(
-        persist_directory="data/chroma",
+        persist_directory="data/esco_chroma",
         embedding_function=embedding_model
     )
 

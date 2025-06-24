@@ -5,6 +5,7 @@ from langchain.tools import Tool
 from langchain_core.tools import tool
 
 from coachable_course_agent.esco_matcher import match_to_esco
+from coachable_course_agent.feedback_processor import update_user_profile
 
 from dotenv import load_dotenv
 from functools import partial
@@ -76,9 +77,9 @@ def match_esco_wrapper(input_text: str, vectorstore) -> str:
 
     results = [
         {
-            "label": doc.metadata["preferredLabel"],
-            "uri": doc.metadata["conceptUri"],
-            "description": doc.page_content
+            "preferredLabel": doc["preferredLabel"],
+            "conceptUri": doc["conceptUri"],
+            "description": doc['description']
         }
         for doc in top_matches
     ]
@@ -102,7 +103,7 @@ def save_profile_tool(data: dict) -> str:
     user_id = data.get("user_id", "unknown")
     profile = {
         "goal": data["goal"],
-        "known_skills": [s["label"] for s in data["matched_skills"]],
+        "known_skills": [s["preferredLabel"] for s in data["matched_skills"]],
         "missing_skills": [],
         "preferences": {
             "format": [],
