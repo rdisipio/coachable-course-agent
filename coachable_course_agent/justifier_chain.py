@@ -16,38 +16,30 @@ def create_justifier_chain():
     prompt = PromptTemplate.from_template(base_prompt)
     return LLMChain(prompt=prompt, llm=llm)
 
+
 def justify_recommendations(user_profile, courses):
     course_block = "\n".join([
-        f"- {c['title']} ({c['provider']}) | Level: {c.get('level', 'N/A')} | Format: {c.get('format', 'N/A')} | Skills: {', '.join(c['skills'])}"
+        f"- {c['title']} ({c['provider']}) | Level: {c.get('level', 'N/A')} | Format: {c.get('format', 'N/A')} | Skills: {c['skills']} | Duration: {c.get('duration_hours', 'N/A')} hours."
         for c in courses
     ])
+
+    user_known_skills = user_profile.get("known_skills", []) # list of ESCO skills such as {"preferredLabel": "Python", "conceptUri": "http://example.com/skill/python"}
+    user_missing_skills = user_profile.get("missing_skills", []) # list of ESCO skills such as {"preferredLabel": "Data Analysis", "conceptUri": "http://example.com/skill/data-analysis"}
+    user_preferences = user_profile.get("preferences", {})
     
-    # Use PromptTemplate with the expected variables
-    prompt = PromptTemplate(
-        input_variables=[
-            "goal", "known_skills", "missing_skills",
-            "format", "style", "avoid_styles",
-            "feedback_log", "course_block"
-        ],
-        template=base_prompt,
-    )
     
     chain = create_justifier_chain()
     response = chain.run({
         "goal": user_profile["goal"],
-        "known_skills": ", ".join(user_profile["known_skills"]),
-        "missing_skills": ", ".join(user_profile["missing_skills"]),
-        "format": ", ".join(user_profile["preferences"]["format"]),
-        "style": ", ".join(user_profile["preferences"]["style"]),
-        "avoid_styles": ", ".join(user_profile["preferences"].get("avoid_styles", [])),
+        "known_skills": [skill["preferredLabel"] for skill in user_known_skills if skill.get("preferredLabel") != "N/A"],
+        "missing_skills": [user["preferredLabel"] for user in user_missing_skills if user.get("preferredLabel") != "N/A"],
+        "format": ", ".join(user_preferences["format"]),
+        "style": ", ".join(user_preferences["style"]),
+        "avoid_styles": ", ".join(user_preferences.get("avoid_styles", [])),
         "feedback_log": json.dumps(user_profile.get("feedback_log", [])[-3:], indent=2),
         "course_block": course_block,
     })
     
-    print("=== RAW LLM OUTPUT ===")
-    print(response)
-    print("======================")
-
     # Attempt to parse as JSON
     try:
         recommendations = json.loads(response)
