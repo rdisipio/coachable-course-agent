@@ -76,8 +76,8 @@ def match_esco_wrapper(input_text: str, vectorstore) -> str:
 
     results = [
         {
-            "label": doc.metadata["label"],
-            "uri": doc.metadata["uri"],
+            "label": doc.metadata["preferredLabel"],
+            "uri": doc.metadata["conceptUri"],
             "description": doc.page_content
         }
         for doc in top_matches
