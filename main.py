@@ -11,7 +11,7 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-vectorstore = Chroma(
+courses_collection = Chroma(
         persist_directory="data/courses_chroma",
         embedding_function=embedding_model
     )
@@ -21,7 +21,7 @@ user_id = input("🆔 What is your user ID? ").strip()
 user_profile = load_user_profile(user_id)
 
 # Step 1: Retrieve top N courses from vector store based on user profile
-retrieved_courses = query_similar_courses(vectorstore, user_profile, top_n=10)
+retrieved_courses = query_similar_courses(courses_collection, user_profile, top_n=10)
 
 # Step 2: Use the LLM to justify and refine top 3 recommendations
 recommendations = justify_recommendations(user_profile, retrieved_courses)
