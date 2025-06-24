@@ -26,7 +26,7 @@ def main():
     prompt = f"My user ID is {user_id}. Here is my bio: {blurb}"
 
     # Step 4: Create and run the agent
-    agent = create_profile_building_agent(vectorstore)
+    agent = create_profile_building_agent(vectorstore, user_id)
     agent.invoke({"input": prompt})
 
 

@@ -97,15 +97,30 @@ def get_skill_tool(vectorstore):
     )
 
 
-def save_profile_from_str(json_str: str):
+def save_profile_from_str(json_str: str, user_id: str ):
     try:
         data = json.loads(json_str)
-        return save_profile(data)
+        user_id, {
+            "goal": data.get("goal", ""),
+            "known_skills": data.get("skills", []),
+            "missing_skills": [],  # Start empty; could be inferred later
+            "preferences": {
+                "format": [],
+                "style": [],
+                "avoid_styles": []
+            },
+            "feedback_log": [],
+            "user_id": user_id
+        })
+        return f"User profile for '{user_id}' saved successfully."
     except json.JSONDecodeError:
         return "Invalid JSON format. Please return a valid JSON object."
 
-save_profile_tool = Tool.from_function(
-    name="SaveUserProfile",
-    func=save_profile_from_str,
-    description="Saves the extracted user profile. Input must be a JSON object string with 'headline', 'goal', and 'skills'."
-)
+def get_save_profile_too(user_id):
+    return Tool.from_function(
+        name="SaveUserProfile",
+        func=partial(get_save_profile_tool, user_id=user_id),
+        description="Saves the extracted user profile. Input must be a JSON string with 'headline', 'goal', and 'skills'."
+    )
+
+
