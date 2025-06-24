@@ -7,6 +7,7 @@ store using HuggingFace's sentence-transformers for embedding.
 
 import pandas as pd
 import chromadb
+from chromadb.config import Settings
 from transformers import pipeline
 from tqdm import tqdm
 
@@ -27,7 +28,9 @@ def get_embedding(text):
     return [float(x) for x in output[0][0]]  # Use mean-pooled first token for simplicity
 
 # Initialize ChromaDB
-client = chromadb.Client()
+client = chromadb.Client(Settings(
+    persist_directory="data/chroma"  # <-- will persist here
+))
 collection = client.get_or_create_collection(name="esco_skills")
 
 # Add ESCO skills to the vector store
@@ -44,4 +47,6 @@ for _, row in tqdm(skills_df.iterrows(), total=len(skills_df), desc="Embedding E
         metadatas=[{"name": skill_name, "uri": concept_uri}]
     )
 
+print(f"Persisting ESCO skills to ChromaDB at {client.persist_directory}")
+client.persist()
 print("ESCO skills successfully added to ChromaDB.")
