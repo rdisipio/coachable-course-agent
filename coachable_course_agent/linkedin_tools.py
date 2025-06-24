@@ -5,7 +5,7 @@ from langchain.tools import Tool
 from langchain_core.tools import tool
 
 from coachable_course_agent.esco_matcher import match_to_esco
-from coachable_course_agent.feedback_processor import update_user_profile
+from coachable_course_agent.memory_store import load_user_profile, update_user_profile
 
 from dotenv import load_dotenv
 from functools import partial
@@ -65,8 +65,6 @@ profile_extract_tool = Tool.from_function(
 
 
 def match_esco_wrapper(input_text: str, vectorstore) -> str:
-    print("\n[DEBUG] Raw input received by match_esco_wrapper:", repr(input_text))
-
     try:
         # Parse the string into a list of skills
         skills = [s.strip() for s in input_text.split(",") if s.strip()]
@@ -100,10 +98,16 @@ def get_skill_tool(vectorstore):
 def save_profile_from_str(json_str: str, user_id: str ):
     try:
         data = json.loads(json_str)
+        user_profile = load_user_profile(user_id)
+
+        # Add or update missing_skills
+        if "missing_skills" in data:
+            user_profile["missing_skills"] = data["missing_skills"]
+        
         update_user_profile(user_id, {
             "goal": data.get("goal", ""),
             "known_skills": data.get("skills", []),
-            "missing_skills": [],  # Start empty; could be inferred later
+            "missing_skills": data.get("missing_skills", []),
             "preferences": {
                 "format": [],
                 "style": [],
@@ -156,5 +160,9 @@ def get_infer_skills_tool(vectorstore):
     return Tool(
         name="InferMissingSkillsFromProfile",
         func=infer_skills_from_json,
-        description="Infers relevant missing ESCO skills from a user profile. Input: a JSON string containing 'headline', 'skills', and 'goal'."
+        description=(
+        "Given a career headline and goal, infer additional ESCO skills "
+        "the user might have or need. Use when skills may be incomplete or missing."
+        "Input: a JSON string containing 'headline', 'skills', and 'goal'."
+        )
     )
