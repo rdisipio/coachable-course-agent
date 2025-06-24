@@ -17,7 +17,7 @@ vectorstore = Chroma(
     )
 
 # Load or initialize user profile
-user_id = "julia"
+user_id = input("🆔 What is your user ID? ").strip()
 user_profile = load_user_profile(user_id)
 
 # Step 1: Retrieve top N courses from vector store based on user profile
