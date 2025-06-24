@@ -97,7 +97,21 @@ def get_skill_tool(vectorstore):
         description=(
             "Matches a comma-separated list of skill names to ESCO concepts. "
             "Input format: 'skill1, skill2, ...'. Returns matched ESCO skills."
-            "For each skill, returns a JSON object with 'preferredLabel', 'conceptUri', and 'description'. "
+            "For each skill, returns a JSON object with 'preferredLabel', 'conceptUri', and 'description' (if available). "
+            "Make sure not to have any duplicates in the output list."
+            "An example input is: 'Python'. "
+            "An example output is: "
+            "["
+            "   {{"
+            "       'preferredLabel': 'Python (programming language)', "
+            "       'conceptUri': 'https://uri.esco.ec.europa.eu/concept/123456', "
+            "       'description': 'A high-level programming language used for general-purpose programming.'"
+            "   }}"
+            "]"
+            "If no skills are matched, return an empty list."
+            "If the input is empty, return an empty list."
+            "If the skill preferredLabel is N/A, remove it from the output list."
+            "If the input is not a valid comma-separated list, return an error message."
         )
     )
 
@@ -136,8 +150,9 @@ def get_save_profile_tool(user_id):
 
 
 def infer_missing_skills(profile: dict, vectorstore, top_k=5):
+    skills = profile.get("skills", [])
     query_parts = [profile.get("headline", "")]
-    query_parts += profile.get("skills", [])
+    query_parts += [s["preferredLabel"] for s in skills]
     query_parts += [profile.get("goal", "")]
     query_text = " ".join(query_parts).strip()
 
@@ -170,6 +185,7 @@ def get_infer_skills_tool(vectorstore):
         description=(
             "Given a career headline, known skills, and a goal, infer additional ESCO skills "
             "the user might be missing. Use this when the skill list is incomplete or sparse. "
+            "Do not include skills already in the profile. "
             "Input: a JSON string containing 'headline', 'skills' (ESCO-matched), and 'goal'."
             "Output: a JSON array of inferred ESCO skills, each with 'preferredLabel', 'conceptUri', and 'description'. "
             "The output will be appended to the user profile under 'missing_skills'."
