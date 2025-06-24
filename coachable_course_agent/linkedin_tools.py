@@ -6,6 +6,7 @@ from langchain_core.tools import tool
 
 from coachable_course_agent.esco_matcher import match_to_esco
 from coachable_course_agent.memory_store import load_user_profile, update_user_profile
+from coachable_course_agent.utils import extract_json_block
 
 from dotenv import load_dotenv
 from functools import partial
@@ -65,6 +66,7 @@ profile_extract_tool = Tool.from_function(
          "a list of up to 10 professional skills, and an inferred learning or career goal. " 
         "Input should be raw profile text."
         "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
+        )
     )
 
 
@@ -94,7 +96,8 @@ def get_skill_tool(vectorstore):
         func=lambda q: match_esco_wrapper(q, vectorstore),
         description=(
             "Matches a comma-separated list of skill names to ESCO concepts. "
-            "Input format: 'skill1, skill2, ...'. Returns matched skills with ESCO URIs."
+            "Input format: 'skill1, skill2, ...'. Returns matched ESCO skills."
+            "For each skill, returns a JSON object with 'preferredLabel', 'conceptUri', and 'description'. "
         )
     )
 
@@ -155,7 +158,7 @@ def infer_missing_skills(profile: dict, vectorstore, top_k=5):
 def get_infer_skills_tool(vectorstore):
     def infer_skills_from_json(json_str: str):
         try:
-            profile = json.loads(json_str)
+            profile = extract_json_block(json_str)
             results = infer_missing_skills(profile, vectorstore)
             return json.dumps(results, indent=2)
         except Exception as e:
@@ -165,8 +168,10 @@ def get_infer_skills_tool(vectorstore):
         name="InferMissingSkillsFromProfile",
         func=infer_skills_from_json,
         description=(
-        "Given a career headline and goal, infer additional ESCO skills "
-        "the user might have or need. Use when skills may be incomplete or missing."
-        "Input: a JSON string containing 'headline', 'skills', and 'goal'."
+            "Given a career headline and goal, infer additional ESCO skills "
+            "the user might have or need. Use when skills may be incomplete or missing."
+            "Input: a JSON string containing 'headline', 'skills', and 'goal'."
+            "Output: a JSON array of inferred skills with 'preferredLabel', 'conceptUri', and 'description'."
+            "The output will be appended to the user profile under 'missing_skills'."
         )
     )
