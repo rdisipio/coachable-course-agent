@@ -14,15 +14,15 @@ def match_to_esco(skills: list[str], vectorstore, top_k=10):
             top_result = results[0]
             matches.append({
                 "input_skill": skill,
-                "matched_label": top_result.metadata.get("label", "N/A"),
-                "uri": top_result.metadata.get("uri", "N/A"),
+                "preferredLabel": top_result.metadata.get("label", "N/A"),
+                "conceptUri": top_result.metadata.get("uri", "N/A"),
                 "similarity_context": top_result.page_content
             })
         else:
             matches.append({
                 "input_skill": skill,
-                "matched_label": None,
-                "uri": None,
+                "preferredLabel": None,
+                "conceptUri": None,
                 "similarity_context": None
             })
 
