@@ -35,11 +35,20 @@ def add_courses_to_chroma(collection, courses):
             metadatas=[metadata]
         )
 
-def query_similar_courses(collection, user_profile, top_n=10):
-    query_text = f"{user_profile['goal']} {', '.join(user_profile['missing_skills'])} {', '.join(user_profile['preferences']['style'])}"
+def query_similar_courses(vectorstore, user_profile, top_n=10):
+    """
+    Query the vector store for courses similar to the user's profile.
+    Uses the user's goal, missing skills, and preferences to create a query embedding.
+    Missing skills is a list of dictionary items with 'preferredLabel' and 'conceptUri'.
+    """
+    missing_skills = user_profile.get("missing_skills", [])
+    missing_skills_str = [skill["preferredLabel"] for skill in missing_skills if skill.get("preferredLabel") != "N/A"]
+    user_preferences_str = ', '.join(user_profile['preferences']['style'])
+    user_goal_str = user_profile.get("goal", "")
+    query_text = f"{user_goal_str} {missing_skills_str} {user_preferences_str}"
     query_embedding = get_embedding(query_text)
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=top_n
-    )
-    return [hit for hit in results["metadatas"][0]]
+    # LangChain Chroma API: returns list of Documents
+    results = vectorstore.similarity_search(query_text, k=top_n)
+
+    # Extract metadata from Documents
+    return [doc.metadata for doc in results]
