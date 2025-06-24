@@ -6,47 +6,35 @@ store using HuggingFace's sentence-transformers for embedding.
 """
 
 import pandas as pd
-import chromadb
-from chromadb.config import Settings
-from transformers import pipeline
-from tqdm import tqdm
+from langchain.schema import Document
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
 
+# Load ESCO skill CSV
+skills_df = pd.read_csv("data/esco/skills_en.csv")
 
-# Load the ESCO CSV file (e.g., data/esco/skills_en.csv)
-esco_path = "data/esco/skills_en.csv"
-skills_df = pd.read_csv(esco_path)
+# Initialize embedding model
+embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2", show_progress=True)
 
-# Set up HuggingFace embedding pipeline
-embedding_pipeline = pipeline(
-    "feature-extraction",
-    model="sentence-transformers/all-MiniLM-L6-v2",
-    tokenizer="sentence-transformers/all-MiniLM-L6-v2"
+# Convert skills to LangChain documents
+documents = [
+    Document(
+        page_content=row["description"],
+        metadata={
+            "uri": row["conceptUri"],
+            "label": row["preferredLabel"]
+        }
+    )
+    for _, row in skills_df.iterrows()
+]
+
+# Create and persist vector store
+persist_dir = "data/esco_chroma"
+vectorstore = Chroma.from_documents(
+    documents=documents,
+    embedding=embedding_model,
+    persist_directory=persist_dir
 )
 
-def get_embedding(text):
-    output = embedding_pipeline(text, truncation=True, padding=True, return_tensors="pt")
-    return [float(x) for x in output[0][0]]  # Use mean-pooled first token for simplicity
-
-# Initialize ChromaDB
-client = chromadb.Client(Settings(
-    persist_directory="data/chroma"  # <-- will persist here
-))
-collection = client.get_or_create_collection(name="esco_skills")
-
-# Add ESCO skills to the vector store
-for _, row in tqdm(skills_df.iterrows(), total=len(skills_df), desc="Embedding ESCO skills"):
-    skill_name = row["preferredLabel"]
-    concept_uri = row["conceptUri"]
-
-    embedding = get_embedding(skill_name)
-
-    collection.add(
-        documents=[skill_name],
-        embeddings=[embedding],
-        ids=[concept_uri],
-        metadatas=[{"name": skill_name, "uri": concept_uri}]
-    )
-
-print(f"Persisting ESCO skills to ChromaDB at {client.persist_directory}")
-client.persist()
-print("ESCO skills successfully added to ChromaDB.")
+vectorstore.persist()
+print(f"ESCO skill vectors saved to {persist_dir}")
