@@ -100,7 +100,7 @@ def get_skill_tool(vectorstore):
 def save_profile_from_str(json_str: str, user_id: str ):
     try:
         data = json.loads(json_str)
-        user_id, {
+        update_user_profile(user_id, {
             "goal": data.get("goal", ""),
             "known_skills": data.get("skills", []),
             "missing_skills": [],  # Start empty; could be inferred later
