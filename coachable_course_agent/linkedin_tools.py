@@ -124,3 +124,37 @@ def get_save_profile_tool(user_id):
     )
 
 
+def infer_missing_skills(profile: dict, vectorstore, top_k=5):
+    query_parts = [profile.get("headline", "")]
+    query_parts += profile.get("skills", [])
+    query_parts += [profile.get("goal", "")]
+    query_text = " ".join(query_parts).strip()
+
+    if not query_text:
+        return []
+
+    results = vectorstore.similarity_search(query_text, k=top_k)
+    inferred = []
+    for doc in results:
+        inferred.append({
+            "preferredLabel": doc.metadata.get("preferredLabel", "N/A"),
+            "conceptUri": doc.metadata.get("conceptUri", "N/A"),
+            "description": doc.page_content
+        })
+    return inferred
+
+
+def get_infer_skills_tool(vectorstore):
+    def infer_skills_from_json(json_str: str):
+        try:
+            profile = json.loads(json_str)
+            results = infer_missing_skills(profile, vectorstore)
+            return json.dumps(results, indent=2)
+        except Exception as e:
+            return f"Error during skill inference: {e}"
+
+    return Tool(
+        name="InferMissingSkillsFromProfile",
+        func=infer_skills_from_json,
+        description="Infers relevant missing ESCO skills from a user profile. Input: a JSON string containing 'headline', 'skills', and 'goal'."
+    )
