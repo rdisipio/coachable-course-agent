@@ -116,10 +116,10 @@ def save_profile_from_str(json_str: str, user_id: str ):
     except json.JSONDecodeError:
         return "Invalid JSON format. Please return a valid JSON object."
 
-def get_save_profile_too(user_id):
+def get_save_profile_tool(user_id):
     return Tool.from_function(
         name="SaveUserProfile",
-        func=partial(get_save_profile_tool, user_id=user_id),
+        func=partial(save_profile_from_str, user_id=user_id),
         description="Saves the extracted user profile. Input must be a JSON string with 'headline', 'goal', and 'skills'."
     )
 
