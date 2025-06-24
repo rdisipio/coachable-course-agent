@@ -168,10 +168,10 @@ def get_infer_skills_tool(vectorstore):
         name="InferMissingSkillsFromProfile",
         func=infer_skills_from_json,
         description=(
-            "Given a career headline and goal, infer additional ESCO skills "
-            "the user might have or need. Use when skills may be incomplete or missing."
-            "Input: a JSON string containing 'headline', 'skills', and 'goal'."
-            "Output: a JSON array of inferred skills with 'preferredLabel', 'conceptUri', and 'description'."
+            "Given a career headline, known skills, and a goal, infer additional ESCO skills "
+            "the user might be missing. Use this when the skill list is incomplete or sparse. "
+            "Input: a JSON string containing 'headline', 'skills' (ESCO-matched), and 'goal'."
+            "Output: a JSON array of inferred ESCO skills, each with 'preferredLabel', 'conceptUri', and 'description'. "
             "The output will be appended to the user profile under 'missing_skills'."
         )
     )
