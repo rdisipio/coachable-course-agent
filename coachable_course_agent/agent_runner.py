@@ -1,8 +1,5 @@
 from langchain.agents import Tool
-from langchain.agents import initialize_agent, AgentType, AgentExecutor, AgentOutputParser
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder, PromptTemplate
-from langchain.agents import create_react_agent
-from langchain_community.agent_toolkits.load_tools import load_tools
+from langchain.agents import initialize_agent, AgentType
 from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
@@ -10,6 +7,7 @@ import json
 
 from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.recommendation_prompt import base_prompt
+from coachable_course_agent.linkedin_tools import profile_extract_tool, match_skills_tool
 
 load_dotenv()
 
@@ -34,18 +32,26 @@ def vector_search_tool(input_str: str):
     return f"Here are the top courses based on the user's profile and preferences:\n{formatted}"
 
 
-# Add tools
-tools = [
-    Tool(
-        name="VectorSearchCourses",
-        func=vector_search_tool,
-        description="Searches courses similar to user profile using vector embeddings"
-    )
-]
 
 def create_course_agent():
     return initialize_agent(
-        tools=tools,
+        tools=[
+            Tool(
+                name="VectorSearchCourses",
+                func=vector_search_tool,
+                description="Searches courses similar to user profile using vector embeddings"
+            )
+        ],
+        llm=llm,
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+        verbose=True,
+        handle_parsing_errors=True
+    )
+
+
+def create_linkedin_profile_agent():
+    return initialize_agent(
+        tools=[profile_extract_tool, match_skills_tool],
         llm=llm,
         agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
