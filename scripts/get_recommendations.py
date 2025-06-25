@@ -1,10 +1,10 @@
-import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from coachable_course_agent.load_data import load_courses, load_esco_skills
-from coachable_course_agent.memory_store import load_user_profile, update_user_profile
+from coachable_course_agent.memory_store import load_user_profile
 from coachable_course_agent.feedback_processor import process_feedback
-from coachable_course_agent.vector_store import initialize_chroma, add_courses_to_chroma, query_similar_courses
-from coachable_course_agent.agent_runner import create_course_agent
+from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.justifier_chain import justify_recommendations
 
 from langchain.vectorstores import Chroma
