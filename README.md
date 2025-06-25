@@ -1,6 +1,6 @@
 # 🧭 Coachable Course Agent
 
-An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. Inspired by the structure of Dante's Divine Comedy, this agent doesn't just rank courses — it walks alongside the user, learning from feedback and helping shape a career path.
+An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. This agent doesn't just rank courses — it walks alongside the user, learning from feedback and helping shape a career path.
 
 ## ✨ Key Features
 
