@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+This script builds a user profile based on a LinkedIn-style bio.
+It prompts the user for their ID and a short bio, then uses an agent to extract skills
+and create a learning profile.
+"""
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from coachable_course_agent.agent_runner import create_profile_building_agent
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
