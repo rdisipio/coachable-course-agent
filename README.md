@@ -1,43 +1,59 @@
-# Coachable Course Agent
+# 🧭 Coachable Course Agent
 
-*A human-AI course recommendation agent that listens, learns, and adapts.*
+An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. Inspired by the structure of Dante's Divine Comedy, this agent doesn't just rank courses — it walks alongside the user, learning from feedback and helping shape a career path.
 
----
+## ✨ Key Features
 
-## 🧠 What It Is
+- **Profile Builder Agent**: Extracts skills, goals, and intent from a LinkedIn-style blurb using LLMs and ESCO skill matching.
+- **Course Recommender Agent**: Suggests courses tailored to missing skills, learning preferences, and inferred goals.
+- **Structured Feedback Loop**: Supports "approve", "adjust", "reject", or open-ended suggestions — and updates the profile accordingly.
+- **Semantic Skill Matching**: Uses a ChromaDB vector store populated with ESCO skill embeddings for robust skill inference.
+- **Extensible Architecture**: Built with LangChain agents and Groq-hosted LLaMA models.
 
-**Coachable Course Agent** is an interactive learning assistant built with [LangChain](https://www.langchain.com/) and powered by [Groq](https://groq.com/), designed to recommend upskilling courses based on structured feedback, memory, and ESCO skill taxonomy.
+## 🧱 Tech Stack
 
-Unlike traditional recommenders that track clicks and ratings, this agent asks—and remembers—*why* a course did or didn’t work for you.
+- 🦜 LangChain (`AgentType.CONVERSATIONAL_REACT_DESCRIPTION`)
+- 🧠 LLM: `llama3-70b-8192` via Groq API
+- 🧬 ESCO Skill Data (v1.2)
+- 🔎 ChromaDB (for skill and course vector similarity)
+- 📚 HuggingFace Sentence Transformers (`all-MiniLM-L6-v2`)
 
----
+## 🚀 Quickstart
 
-## 🎯 Features
+1. **Clone the repo**  
+   ```bash
+   git clone https://github.com/rdisipio/coachable-course-agent.git
+   cd coachable-course-agent
+   ```
 
-- 🔍 **Semantic course search** using ChromaDB and vectorized ESCO skills  
-- 🧠 **Personalized memory** that adapts to user feedback over time  
-- 💬 **Conversational interaction** with an LLM-powered agent  
-- ✅ **Structured feedback** loop: not just what you liked, but why  
-- 🌐 **ESCO-aligned**: all courses linked to official European skill concepts
+2.   Install dependencies
+```
+pipenv install
+pipenv shell
+```
 
----
+3. Prepare Data
+Load ESCO skills and course catalog:
 
-## 📦 Technologies
+```
+python scripts/load_skills.py
+python scripts/load_courses.py
+```
 
-- 🧱 **LangChain** – Agent architecture
-- ⚡ **Groq** – Fast LLM inference backend
-- 🧭 **ESCO** – European Skills, Competences and Occupations framework
-- 🧠 **ChromaDB** – Vector database for semantic search
+4. Run Agent
+Start the interactive profile builder and course recommender:
 
----
+```
+python scripts/build_profile_from_linkedin.py
+python scripts/get_recommendations.py
+```
 
-## 🚀 Coming Soon
+🧠 Future Directions
+Incorporate org charts and role progression paths
 
-- Feedback UI with 4 intuitive categories  
-- Editable memory panel  
-- Resume/LinkedIn import for profile bootstrap  
-- Medium article on the design journey (Human-AI interaction focus)
+Add pacing preferences (e.g. 3 months vs 12 months)
 
+Web interface with feedback memory and visualization
 
 ---
 
