@@ -65,7 +65,7 @@ def create_profile_building_agent(vectorstore, user_id):
         tools=tools,
         llm=llm,
         agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
-        verbose=True,
+        verbose=False,
         memory=memory,
         handle_parsing_errors=True
     )
