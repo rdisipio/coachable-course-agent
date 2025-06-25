@@ -51,4 +51,6 @@ def query_similar_courses(vectorstore, user_profile, top_n=10):
     results = vectorstore.similarity_search(query_text, k=top_n)
 
     # Extract metadata from Documents
+    courses = [doc.metadata for doc in results]
+    
     return [doc.metadata for doc in results]
