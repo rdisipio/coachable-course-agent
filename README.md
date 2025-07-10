@@ -18,6 +18,9 @@ An AI-powered, feedback-aware course recommendation system designed for human-AI
 - 🔎 ChromaDB (for skill and course vector similarity)
 - 📚 HuggingFace Sentence Transformers (`all-MiniLM-L6-v2`)
 
+## Further Reading
+- Medium Story: [More Than Thumbs-Up: A Feedback-Aware Course Recommendations](https://medium.com/data-science-collective/more-than-thumbs-up-feedback-aware-course-recommendations-guided-by-feedback-not-just-clicks-bfba3fbb214c)
+
 ## 🚀 Quickstart
 
 1. **Clone the repo**  
