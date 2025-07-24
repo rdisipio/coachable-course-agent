@@ -6,6 +6,7 @@ It prompts the user for their ID and a short bio, then uses an agent to extract 
 and create a learning profile.
 """
 
+import json
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -39,8 +40,12 @@ def main():
 
     # Step 4: Create and run the agent
     agent = create_profile_building_agent(vectorstore, user_id)
-    agent.invoke({"input": prompt})
-
+    result = agent.invoke({"input": prompt})
+    result_text = result["output"]
+    print(f"Generated profile text: {result_text}")
+    with open(f"data/memory/{user_id}.json", "r") as f:
+        data = json.load(f)
+        print(json.dumps(data, indent=4, separators=(',', ': '), sort_keys=True))
 
 if __name__ == "__main__":
     main()
