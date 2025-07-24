@@ -1,3 +1,13 @@
+---
+title: Coachable Course Agent
+emoji: 📚
+colorFrom: yellow
+colorTo: orange
+sdk: gradio
+app_file: app.py
+pinned: false
+---
+
 # 🧭 Coachable Course Agent
 
 An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. This agent doesn't just rank courses — it walks alongside the user, learning from feedback and helping shape a career path.
