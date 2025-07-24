@@ -8,8 +8,8 @@ import json
 
 from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.recommendation_prompt import base_prompt
-from coachable_course_agent.linkedin_tools import profile_extract_tool, get_skill_tool, get_save_profile_tool, get_infer_skills_tool
 from coachable_course_agent.memory_store import update_user_profile
+from coachable_course_agent.tools_profile import profile_extract_tool, get_skill_tool, get_save_profile_tool, get_infer_skills_tool
 
 load_dotenv()
 
@@ -57,10 +57,8 @@ def create_profile_building_agent(vectorstore, user_id):
         temperature=0.7, 
         api_key=os.getenv("GROQ_API_KEY")
     )
-    tools = [profile_extract_tool, get_skill_tool(vectorstore), get_infer_skills_tool(vectorstore), get_save_profile_tool(user_id),]
-    
+    tools = [profile_extract_tool, get_skill_tool(vectorstore), get_infer_skills_tool(vectorstore), get_save_profile_tool(user_id)]
     memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
-
     return initialize_agent(
         tools=tools,
         llm=llm,
