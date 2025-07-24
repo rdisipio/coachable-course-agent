@@ -107,15 +107,14 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=False),  # Hide profile section
                 msg,
                 uid,
-                True,  # Show main section
-                gr.update(visible=True)  # Show main section
+                True  # Show main section (state)
             )
-        return None, msg, None, False, gr.update(visible=False)
+        return None, msg, None, False
 
     build_btn.click(
         on_profile_submit,
         inputs=[uid_input, blurb_input],
-        outputs=[profile_section, profile_status, user_id_state, main_section_visible, main_section]
+        outputs=[profile_section, profile_status, user_id_state, main_section_visible]
     )
 
 
@@ -146,9 +145,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     )
 
     def always_show_profile():
-        return gr.update(visible=True), None, False, gr.update(visible=False)
+        return gr.update(visible=True), None, False
 
-    demo.load(always_show_profile, outputs=[profile_section, user_id_state, main_section_visible, main_section])
+    demo.load(always_show_profile, outputs=[profile_section, user_id_state, main_section_visible])
 
 
 demo.launch()
