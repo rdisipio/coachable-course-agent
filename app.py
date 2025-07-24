@@ -78,35 +78,21 @@ def chat_response(message, history):
     history.append((message, response))
     return history, history
 
+
+# ----------------- UI: Step 1 - Profile Creation -----------------
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
-
-    with gr.Column(visible=True) as profile_section:
+    with gr.Column() as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
         uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
         blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb")
         build_btn = gr.Button("Build Profile and Continue")
         profile_status = gr.Markdown()
 
-    # Main UI: 2 columns (courses/chat) + footer, all hidden initially
-    with gr.Column(visible=False) as main_section:
-        with gr.Row():
-            with gr.Column(scale=2):
-                section_title = gr.Markdown("## 📚 Recommended Courses")
-                course_md = gr.Markdown()
-            with gr.Column(scale=1):
-                chatbot = gr.ChatInterface(fn=chat_response, chatbot=gr.Chatbot(), title="💬 Ask the Coach")
-        footer = gr.Markdown()
-
-    # Profile submit logic
     def on_profile_submit(uid, blurb):
         success, msg = build_profile(uid, blurb)
         if success:
-            return (
-                gr.update(visible=False),  # Hide profile section
-                msg,
-                uid
-            )
+            return gr.update(visible=False), msg, uid
         return None, msg, None
 
     build_btn.click(
@@ -115,37 +101,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         outputs=[profile_section, profile_status, user_id_state]
     )
 
-
-    def load_main_ui(uid, visible):
-        if uid is None or not os.path.exists(f"{MEMORY_DIR}/{uid}.json"):
-            # Hide all children and show warning in footer
-            return (
-                gr.update(value="", visible=False),  # section_title
-                gr.update(value="", visible=False),  # course_md
-                gr.update(visible=False),             # chatbot
-                gr.update(value="⚠️ No profile found. Please create one above.", visible=True)  # footer
-            )
-        memory = load_memory(uid)
-        courses = load_courses()
-        rendered_courses = "\n\n".join(render_course_card(c) for c in courses)
-        footer_content = f"### 🗭 Company Goal\n> {GOALS}\n\n" + format_memory(memory)
-        return (
-            gr.update(value="## 📚 Recommended Courses", visible=True),
-            gr.update(value=rendered_courses, visible=True),
-            gr.update(visible=True),
-            gr.update(value=footer_content, visible=True)
-        )
-
-    demo.load(
-        load_main_ui,
-        inputs=[user_id_state],
-        outputs=[section_title, course_md, chatbot, footer]
-    )
-
-    def always_show_profile():
-        return gr.update(visible=True), None
-
-    demo.load(always_show_profile, outputs=[profile_section, user_id_state])
-
+    # (Next steps: add main UI and logic to switch to it after profile creation)
 
 demo.launch()
+
+
