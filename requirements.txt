@@ -1,0 +1,11 @@
+langchain>=0.2.0
+langchain-openai>=0.2.0
+langchain-groq>=0.2.0
+langchain-chroma>=0.2.0
+langchain-community>=0.2.0
+chromadb>=0.4.0
+sentence-transformers>=2.2.2
+pandas>=1.5.3
+openai>=0.27.0
+tqdm>=4.64.1
+gradio>=4.18
