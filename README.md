@@ -2,7 +2,7 @@
 title: Coachable Course Agent
 emoji: 📚
 colorFrom: yellow
-colorTo: orange
+colorTo: indigo
 sdk: gradio
 app_file: app.py
 pinned: false
