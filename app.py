@@ -80,6 +80,7 @@ def chat_response(message, history):
 
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
+    main_section_visible = gr.State(value=False)
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
@@ -93,16 +94,16 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             if success:
                 return (
                     gr.update(visible=False),
-                    gr.update(visible=True),
                     msg,
-                    uid
+                    uid,
+                    True
                 )
-            return None, None, msg, None
+            return None, msg, None, False
 
         build_btn.click(
             on_profile_submit,
             inputs=[uid_input, blurb_input],
-            outputs=[profile_section, gr.Column(), profile_status, user_id_state]
+            outputs=[profile_section, profile_status, user_id_state, main_section_visible]
         )
 
     with gr.Column(visible=False) as main_section:
@@ -111,21 +112,21 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         chatbot = gr.ChatInterface(fn=chat_response, chatbot=gr.Chatbot(), title="💬 Ask the Coach")
         footer = gr.Markdown()
 
-        def load_main_ui(uid):
-            if uid is None or not os.path.exists(f"{MEMORY_DIR}/{uid}.json"):
-                return "", "⚠️ No profile found. Please create one above."
+        def load_main_ui(uid, visible):
+            if not visible or uid is None or not os.path.exists(f"{MEMORY_DIR}/{uid}.json"):
+                return "", "⚠️ No profile found. Please create one above.", gr.update(visible=False)
             memory = load_memory(uid)
             courses = load_courses()
             rendered_courses = "\n\n".join(render_course_card(c) for c in courses)
             footer_content = f"### 🗭 Company Goal\n> {GOALS}\n\n" + format_memory(memory)
-            return rendered_courses, footer_content
+            return rendered_courses, footer_content, gr.update(visible=True)
 
-        demo.load(load_main_ui, inputs=[user_id_state], outputs=[course_md, footer])
+        demo.load(load_main_ui, inputs=[user_id_state, main_section_visible], outputs=[course_md, footer, main_section])
 
         def always_show_profile():
-            return gr.update(visible=True), gr.update(visible=False), None
+            return gr.update(visible=True), None, False
 
-        demo.load(always_show_profile, outputs=[profile_section, main_section, user_id_state])
+        demo.load(always_show_profile, outputs=[profile_section, user_id_state, main_section_visible])
 
 
 demo.launch()
