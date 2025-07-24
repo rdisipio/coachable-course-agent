@@ -7,16 +7,13 @@ MEMORY_DIR = "data/memory"
 COURSES_PATH = "data/course_catalog_esco.json"
 GOALS = "Support cross-functional collaboration and accelerate internal mobility."
 
-
 # ---------- Environment Setup ----------
 subprocess.run(["python3", "./scripts/load_esco.py"])
 subprocess.run(["python3", "./scripts/load_courses.py"])
 
-
 # ---------- Helper Functions ----------
 def user_profile_exists(user_id):
     return os.path.exists(f"{MEMORY_DIR}/{user_id}.json")
-
 
 def build_profile(user_id, blurb):
     result = subprocess.run(
@@ -25,20 +22,17 @@ def build_profile(user_id, blurb):
         text=True
     )
     if result.returncode == 0:
-        return True, f"✅ Profile created for **{user_id}**."
+        return True, f"\u2705 Profile created for **{user_id}**."
     else:
         return False, f"❌ Error:\n```\n{result.stderr}\n```"
-
 
 def load_memory(user_id):
     with open(f"{MEMORY_DIR}/{user_id}.json", "r") as f:
         return json.load(f)
 
-
 def load_courses():
     with open(COURSES_PATH, "r") as f:
         return json.load(f)
-
 
 def render_course_card(course):
     skills = ", ".join(skill["name"] for skill in course["skills"])
@@ -49,12 +43,14 @@ def render_course_card(course):
 **Skills**: {skills}
 """
 
-
 def format_memory(mem):
     known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])
     missing = "\n".join(f"- {s['preferredLabel']}" for s in mem["missing_skills"])
-    feedback = "\n".join(f"- {f['course_id']}: {f['feedback_type']} — {f['reason']}" for f in mem["feedback_log"] if f['feedback_type'])
-    return f"""### 🎯 Goal
+    feedback = "\n".join(
+        f"- {f['course_id']}: {f['feedback_type']} — {f['reason']}"
+        for f in mem["feedback_log"] if f['feedback_type']
+    )
+    return f"""### 🌟 Goal
 {mem['goal']}
 
 ### ✅ Known Skills
@@ -67,22 +63,13 @@ def format_memory(mem):
 {feedback}
 """
 
-
 def chat_response(message, history):
     response = f"Echo: {message}"  # replace with actual logic
     history.append((message, response))
     return history, history
 
-
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
-    request = gr.Request()
-
-    def check_session(req: gr.Request):
-        uid = req.cookies.get("user_id")
-        if uid and user_profile_exists(uid):
-            return gr.update(visible=False), gr.update(visible=True), uid
-        return gr.update(visible=True), gr.update(visible=False), None
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
@@ -98,15 +85,14 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                     gr.update(visible=False),
                     gr.update(visible=True),
                     msg,
-                    uid,
-                    {"user_id": uid}
+                    uid
                 )
-            return None, None, msg, None, None
+            return None, None, msg, None
 
         build_btn.click(
             on_profile_submit,
             inputs=[uid_input, blurb_input],
-            outputs=[profile_section, gr.Column(), profile_status, user_id_state, gr.Cookie()]
+            outputs=[profile_section, gr.Column(), profile_status, user_id_state]
         )
 
     with gr.Column(visible=False) as main_section:
@@ -119,10 +105,15 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             memory = load_memory(uid)
             courses = load_courses()
             rendered_courses = "\n\n".join(render_course_card(c) for c in courses)
-            footer_content = f"### 🧭 Company Goal\n> {GOALS}\n\n" + format_memory(memory)
+            footer_content = f"### 🗭 Company Goal\n> {GOALS}\n\n" + format_memory(memory)
             return rendered_courses, footer_content
 
         demo.load(load_main_ui, inputs=[user_id_state], outputs=[course_md, footer])
-        demo.load(check_session, inputs=[request], outputs=[profile_section, main_section, user_id_state])
+
+        def always_show_profile():
+            return gr.update(visible=True), gr.update(visible=False), None
+
+        demo.load(always_show_profile, outputs=[profile_section, main_section, user_id_state])
+
 
 demo.launch()
