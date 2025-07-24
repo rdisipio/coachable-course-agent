@@ -112,6 +112,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         footer = gr.Markdown()
 
         def load_main_ui(uid):
+            if uid is None or not os.path.exists(f"{MEMORY_DIR}/{uid}.json"):
+                return "", "⚠️ No profile found. Please create one above."
             memory = load_memory(uid)
             courses = load_courses()
             rendered_courses = "\n\n".join(render_course_card(c) for c in courses)
