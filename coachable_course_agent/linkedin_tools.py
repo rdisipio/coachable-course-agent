@@ -8,7 +8,6 @@ from langchain.tools import Tool
 from langchain_core.tools import tool
 
 from coachable_course_agent.esco_matcher import match_to_esco
-from coachable_course_agent.memory_store import load_user_profile, update_user_profile
 from coachable_course_agent.utils import extract_json_block
 
 from dotenv import load_dotenv
@@ -149,6 +148,7 @@ def get_skill_tool(vectorstore):
 
 def save_profile_from_str(json_str: str, user_id: str ):
     try:
+        from coachable_course_agent.memory_store import load_user_profile, update_user_profile
         data = json.loads(json_str)
         user_profile = load_user_profile(user_id)
 
