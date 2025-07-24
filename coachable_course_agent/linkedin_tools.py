@@ -1,3 +1,6 @@
+from coachable_course_agent.agent_runner import create_profile_building_agent
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
@@ -44,6 +47,30 @@ LinkedIn profile:
 """)
 
 profile_chain = LLMChain(prompt=linkedin_prompt, llm=llm)
+
+
+def build_profile_from_bio(user_id, blurb):
+    """
+    Build a user profile from a LinkedIn-style bio and user ID.
+    Returns the generated profile text and the loaded profile data (dict).
+    """
+    # Step 0: Load ChromaDB skill vectorstore
+    embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    vectorstore = Chroma(
+        persist_directory="data/esco_chroma",
+        embedding_function=embedding_model
+    )
+    # Step 1: Format prompt
+    prompt = f"My user ID is {user_id}. Here is my bio: {blurb}"
+    # Step 2: Create and run the agent
+    agent = create_profile_building_agent(vectorstore, user_id)
+    result = agent.invoke({"input": prompt})
+    result_text = result["output"]
+    # Step 3: Load the generated profile data
+    with open(f"data/memory/{user_id}.json", "r") as f:
+        data = json.load(f)
+    return result_text, data
+
 
 def extract_profile_info(profile_text: str) -> dict:
     response = profile_chain.invoke({"profile_text": profile_text})

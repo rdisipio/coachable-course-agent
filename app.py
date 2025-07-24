@@ -80,6 +80,38 @@ def chat_response(message, history):
 
 
 # ----------------- UI: Step 1 - Profile Creation -----------------
+from coachable_course_agent.linkedin_tools import build_profile_from_bio
+
+with gr.Blocks(title="Coachable Course Agent") as demo:
+    user_id_state = gr.State()
+    with gr.Column() as profile_section:
+        gr.Markdown("## 🔐 Create Your Profile")
+        uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
+        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb")
+        build_btn = gr.Button("Build Profile and Continue")
+        profile_status = gr.Markdown()
+        profile_json = gr.JSON(visible=False)
+
+    def on_profile_submit(uid, blurb):
+        try:
+            result_text, data = build_profile_from_bio(uid, blurb)
+            msg = f"✅ Profile created for **{uid}**.\n\n**Summary:** {result_text}"
+            return gr.update(visible=False), msg, uid, gr.update(value=data, visible=True)
+        except Exception as e:
+            return None, f"❌ Error: {e}", None, gr.update(visible=False)
+
+    build_btn.click(
+        on_profile_submit,
+        inputs=[uid_input, blurb_input],
+        outputs=[profile_section, profile_status, user_id_state, profile_json]
+    )
+
+    # (Next steps: add main UI and logic to switch to it after profile creation)
+
+demo.launch()
+
+
+# ----------------- UI: Step 1 - Profile Creation -----------------
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
     with gr.Column() as profile_section:
