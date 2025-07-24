@@ -80,7 +80,6 @@ def chat_response(message, history):
 
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
-    main_section_visible = gr.State(value=False)
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
@@ -106,20 +105,19 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(visible=False),  # Hide profile section
                 msg,
-                uid,
-                True  # Show main section (state)
+                uid
             )
-        return None, msg, None, False
+        return None, msg, None
 
     build_btn.click(
         on_profile_submit,
         inputs=[uid_input, blurb_input],
-        outputs=[profile_section, profile_status, user_id_state, main_section_visible]
+        outputs=[profile_section, profile_status, user_id_state]
     )
 
 
     def load_main_ui(uid, visible):
-        if not visible or uid is None or not os.path.exists(f"{MEMORY_DIR}/{uid}.json"):
+        if uid is None or not os.path.exists(f"{MEMORY_DIR}/{uid}.json"):
             # Hide all children and show warning in footer
             return (
                 gr.update(value="", visible=False),  # section_title
@@ -140,14 +138,14 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     demo.load(
         load_main_ui,
-        inputs=[user_id_state, main_section_visible],
+        inputs=[user_id_state],
         outputs=[section_title, course_md, chatbot, footer]
     )
 
     def always_show_profile():
-        return gr.update(visible=True), None, False
+        return gr.update(visible=True), None
 
-    demo.load(always_show_profile, outputs=[profile_section, user_id_state, main_section_visible])
+    demo.load(always_show_profile, outputs=[profile_section, user_id_state])
 
 
 demo.launch()
