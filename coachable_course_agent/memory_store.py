@@ -17,6 +17,8 @@ def load_user_profile(user_id):
     else:
         return {
             "user_id": user_id,
+            "blurb": "",
+            "headline": "",
             "goal": "",
             "known_skills": [],
             "missing_skills": [],

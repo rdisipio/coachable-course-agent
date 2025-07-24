@@ -23,15 +23,18 @@ linkedin_prompt = PromptTemplate.from_template("""
 You are an assistant that extracts career information from LinkedIn profiles.
 
 Given the text below, return a JSON object with:
+
 - "headline": a short career summary
 - "skills": a list of professional skills (max 10)
 - "goal": an inferred learning or career goal if available
-
+- "blurb": a short personal blurb or summary (optional)
+                                               
 Return your answer as a JSON object like this:
 {{
   "headline": "...",
   "skills": ["...", "..."],
-  "goal": "..."
+  "goal": "...",
+  "blurb": "..."
 }}
 
 LinkedIn profile:
@@ -52,9 +55,10 @@ def extract_profile_info(profile_text: str) -> dict:
     except Exception as e:
         print("Error in profile extraction:", e)
         return {
-            "headline": "Unknown",
+            "headline": "",
             "skills": [],
-            "goal": "Unknown"
+            "goal": "",
+            "blurb": ""
         }
 
 
@@ -63,7 +67,7 @@ profile_extract_tool = Tool.from_function(
     func=extract_profile_info,
     description=(
         "Given a free-form LinkedIn profile text, extracts a short career headline, "
-         "a list of up to 10 professional skills, and an inferred learning or career goal. " 
+        "a list of up to 10 professional skills, and an inferred learning or career goal. " 
         "Input should be raw profile text."
         "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
         )
@@ -135,7 +139,9 @@ def save_profile_from_str(json_str: str, user_id: str ):
                 "avoid_styles": []
             },
             "feedback_log": [],
-            "user_id": user_id
+            "user_id": user_id,
+            "blurb": data.get("blurb", ""),
+            "headline": data.get("headline", "")
         })
         return f"User profile for '{user_id}' saved successfully."
     except json.JSONDecodeError:
