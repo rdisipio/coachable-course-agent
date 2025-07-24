@@ -1,15 +1,24 @@
 import os
 import json
 import subprocess
+import tarfile
 import gradio as gr
+from huggingface_hub import hf_hub_download
 
 MEMORY_DIR = "data/memory"
 COURSES_PATH = "data/course_catalog_esco.json"
 GOALS = "Support cross-functional collaboration and accelerate internal mobility."
 
-# ---------- Environment Setup ----------
-subprocess.run(["python3", "./scripts/load_esco.py"])
-subprocess.run(["python3", "./scripts/load_courses.py"])
+# ---------- Download and Extract Prebuilt ChromaDB ----------
+def fetch_and_extract(repo_id, filename, target_dir):
+    if not os.path.exists(target_dir):
+        print(f"Fetching {filename} from {repo_id}...")
+        path = hf_hub_download(repo_id=repo_id, filename=filename)
+        with tarfile.open(path, "r:gz") as tar:
+            tar.extractall(path="data/")
+
+fetch_and_extract("rdisipio/esco-skills", "esco_chroma.tar.gz", "data/esco_chroma")
+fetch_and_extract("rdisipio/esco-skills", "courses_chroma.tar.gz", "data/courses_chroma")
 
 # ---------- Helper Functions ----------
 def user_profile_exists(user_id):
