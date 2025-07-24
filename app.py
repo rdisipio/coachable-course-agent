@@ -1,44 +1,61 @@
-import gradio as gr
+import os
 import json
+import subprocess
+import gradio as gr
 
-# Load course catalog
-with open("data/course_catalog_esco.json", "r") as f:
-    course_catalog = json.load(f)
-
-# Load agent memory
-with open("data/memory/rdisipio.json", "r") as f:
-    agent_memory = json.load(f)
-
-# Company goals (hardcoded)
-company_goals = "Support cross-functional collaboration and accelerate internal mobility."
+MEMORY_DIR = "data/memory"
+COURSES_PATH = "data/course_catalog_esco.json"
+GOALS = "Support cross-functional collaboration and accelerate internal mobility."
 
 
-# Format course display
+# ---------- Environment Setup ----------
+subprocess.run(["python3", "./scripts/load_esco.py"])
+subprocess.run(["python3", "./scripts/load_courses.py"])
+
+
+# ---------- Helper Functions ----------
+def user_profile_exists(user_id):
+    return os.path.exists(f"{MEMORY_DIR}/{user_id}.json")
+
+
+def build_profile(user_id, blurb):
+    result = subprocess.run(
+        ["python3", "./scripts/build_profile_from_linkedin.py", user_id, blurb],
+        capture_output=True,
+        text=True
+    )
+    if result.returncode == 0:
+        return True, f"✅ Profile created for **{user_id}**."
+    else:
+        return False, f"❌ Error:\n```\n{result.stderr}\n```"
+
+
+def load_memory(user_id):
+    with open(f"{MEMORY_DIR}/{user_id}.json", "r") as f:
+        return json.load(f)
+
+
+def load_courses():
+    with open(COURSES_PATH, "r") as f:
+        return json.load(f)
+
+
 def render_course_card(course):
     skills = ", ".join(skill["name"] for skill in course["skills"])
-    return f"""
-    ### [{course['title']}]({course['url']})
-    **Provider**: {course['provider']}  
-    **Duration**: {course['duration_hours']} hrs  
-    **Level**: {course['level']} | **Format**: {course['format']}  
-    **Skills**: {skills}
-    """
+    return f"""### [{course['title']}]({course['url']})
+**Provider**: {course['provider']}  
+**Duration**: {course['duration_hours']} hrs  
+**Level**: {course['level']} | **Format**: {course['format']}  
+**Skills**: {skills}
+"""
 
 
-# Dummy chatbot function
-def chat_response(user_input, history):
-    response = f"Echo: {user_input}"  # Replace with actual agent call
-    history = history + [[user_input, response]]
-    return history, history
-
-
-# Memory display formatting
-def format_memory(memory):
-    known = "\n".join(f"- {s['preferredLabel']}" for s in memory["known_skills"])
-    missing = "\n".join(f"- {s['preferredLabel']}" for s in memory["missing_skills"])
-    feedback = "\n".join(f"- {f['course_id']}: {f['feedback_type']} — {f['reason']}" for f in memory["feedback_log"] if f['feedback_type'])
+def format_memory(mem):
+    known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])
+    missing = "\n".join(f"- {s['preferredLabel']}" for s in mem["missing_skills"])
+    feedback = "\n".join(f"- {f['course_id']}: {f['feedback_type']} — {f['reason']}" for f in mem["feedback_log"] if f['feedback_type'])
     return f"""### 🎯 Goal
-{memory['goal']}
+{mem['goal']}
 
 ### ✅ Known Skills
 {known}
@@ -51,21 +68,61 @@ def format_memory(memory):
 """
 
 
+def chat_response(message, history):
+    response = f"Echo: {message}"  # replace with actual logic
+    history.append((message, response))
+    return history, history
+
+
 with gr.Blocks(title="Coachable Course Agent") as demo:
-    with gr.Row():
-        with gr.Column(scale=1):
-            gr.Markdown("## 📚 Recommended Courses")
-            for course in course_catalog:
-                gr.Markdown(render_course_card(course))
+    user_id_state = gr.State()
+    request = gr.Request()
 
-        with gr.Column(scale=1):
-            gr.ChatInterface(fn=chat_response)
+    def check_session(req: gr.Request):
+        uid = req.cookies.get("user_id")
+        if uid and user_profile_exists(uid):
+            return gr.update(visible=False), gr.update(visible=True), uid
+        return gr.update(visible=True), gr.update(visible=False), None
 
-    with gr.Row():
-        with gr.Column():
-            gr.Markdown(f"### 🧭 Company Goal\n> {company_goals}")
+    with gr.Column(visible=True) as profile_section:
+        gr.Markdown("## 🔐 Create Your Profile")
+        uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
+        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb")
+        build_btn = gr.Button("Build Profile and Continue")
+        profile_status = gr.Markdown()
 
-        with gr.Column():
-            gr.Markdown(format_memory(agent_memory))
+        def on_profile_submit(uid, blurb):
+            success, msg = build_profile(uid, blurb)
+            if success:
+                return (
+                    gr.update(visible=False),
+                    gr.update(visible=True),
+                    msg,
+                    uid,
+                    {"user_id": uid}
+                )
+            return None, None, msg, None, None
+
+        build_btn.click(
+            on_profile_submit,
+            inputs=[uid_input, blurb_input],
+            outputs=[profile_section, gr.Column(), profile_status, user_id_state, gr.Cookie()]
+        )
+
+    with gr.Column(visible=False) as main_section:
+        gr.Markdown("## 📚 Recommended Courses")
+        course_md = gr.Markdown()
+        chatbot = gr.ChatInterface(fn=chat_response, chatbot=gr.Chatbot(), title="💬 Ask the Coach")
+        footer = gr.Markdown()
+
+        def load_main_ui(uid):
+            memory = load_memory(uid)
+            courses = load_courses()
+            rendered_courses = "\n\n".join(render_course_card(c) for c in courses)
+            footer_content = f"### 🧭 Company Goal\n> {GOALS}\n\n" + format_memory(memory)
+            return rendered_courses, footer_content
+
+        demo.load(load_main_ui, inputs=[user_id_state], outputs=[course_md, footer])
+        demo.load(check_session, inputs=[request], outputs=[profile_section, main_section, user_id_state])
 
 demo.launch()
