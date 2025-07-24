@@ -13,12 +13,12 @@ GOALS = "Support cross-functional collaboration and accelerate internal mobility
 def fetch_and_extract(repo_id, filename, target_dir):
     if not os.path.exists(target_dir):
         print(f"Fetching {filename} from {repo_id}...")
-        path = hf_hub_download(repo_id=repo_id, filename=filename)
+        path = hf_hub_download(repo_id=repo_id, filename=filename, repo_type="dataset")
         with tarfile.open(path, "r:gz") as tar:
             tar.extractall(path="data/")
 
-fetch_and_extract("datasets/rdisipio/esco-skills", "esco_chroma.tar.gz", "data/esco_chroma")
-fetch_and_extract("datasets/rdisipio/esco-skills", "courses_chroma.tar.gz", "data/courses_chroma")
+fetch_and_extract("rdisipio/esco-skills", "esco_chroma.tar.gz", "data/esco_chroma")
+fetch_and_extract("rdisipio/esco-skills", "courses_chroma.tar.gz", "data/courses_chroma")
 
 
 # ---------- Helper Functions ----------
