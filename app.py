@@ -235,23 +235,6 @@ def on_see_recommendations_click(uid):
         gr.update(visible=False)   # see_recommendations_btn (hide it)
     )
 
-# Bind the 'See Recommendations' button to the handler
-see_recommendations_btn.click(
-    on_see_recommendations_click,
-    inputs=[user_id_state],
-    outputs=[
-        profile_section,      # hide
-        recommend_section,    # show
-        recommendations,      # update recommendations
-        agent_memory,         # update agent memory
-        profile_status,       # hide profile status
-        user_id_state,        # keep user id
-        profile_json,         # hide profile json
-        footer_status,        # update footer
-        app_mode,             # update app mode
-        see_recommendations_btn # hide see recommendations button
-    ]
-)
 
 demo.launch()
 
