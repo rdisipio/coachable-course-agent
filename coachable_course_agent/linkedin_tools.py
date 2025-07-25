@@ -1,4 +1,3 @@
-from coachable_course_agent.agent_runner import create_profile_building_agent
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.chains import LLMChain
@@ -61,8 +60,26 @@ def build_profile_from_bio(user_id, blurb):
     )
     # Step 1: Format prompt
     prompt = f"My user ID is {user_id}. Here is my bio: {blurb}"
-    # Step 2: Create and run the agent
-    agent = create_profile_building_agent(vectorstore, user_id)
+    # Step 2: Create and run the agent (define tools inline to avoid circular import)
+    from coachable_course_agent.tools_profile import profile_extract_tool, get_skill_tool, get_save_profile_tool, get_infer_skills_tool
+    from langchain.memory.buffer import ConversationBufferMemory
+    from langchain_groq import ChatGroq
+    from langchain.agents import initialize_agent, AgentType
+    llm = ChatGroq(
+        model="llama3-70b-8192",
+        temperature=0.7,
+        api_key=os.getenv("GROQ_API_KEY")
+    )
+    tools = [profile_extract_tool, get_skill_tool(vectorstore), get_infer_skills_tool(vectorstore), get_save_profile_tool(user_id)]
+    memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
+    agent = initialize_agent(
+        tools=tools,
+        llm=llm,
+        agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
+        verbose=False,
+        memory=memory,
+        handle_parsing_errors=True
+    )
     result = agent.invoke({"input": prompt})
     result_text = result["output"]
     # Step 3: Load the generated profile data
