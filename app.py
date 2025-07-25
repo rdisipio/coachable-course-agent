@@ -95,12 +95,11 @@ from coachable_course_agent.justifier_chain import justify_recommendations
 
 
 with gr.Blocks(title="Coachable Course Agent") as demo:
+
     user_id_state = gr.State()
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
 
     with gr.Column() as main_section:
-
-
         with gr.Column(visible=True) as profile_section:
             gr.Markdown("## 🔐 Create Your Profile")
             uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
@@ -124,6 +123,24 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
+
+    # Bind the 'See Recommendations' button to the handler (must be inside Blocks context)
+    see_recommendations_btn.click(
+        on_see_recommendations_click,
+        inputs=[user_id_state],
+        outputs=[
+            profile_section,      # hide
+            recommend_section,    # show
+            recommendations,      # update recommendations
+            agent_memory,         # update agent memory
+            profile_status,       # hide profile status
+            user_id_state,        # keep user id
+            profile_json,         # hide profile json
+            footer_status,        # update footer
+            app_mode,             # update app mode
+            see_recommendations_btn # hide see recommendations button
+        ]
+    )
 
 
     def on_profile_submit(uid, blurb):
@@ -175,8 +192,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             see_recommendations_btn # show/hide see recommendations button
         ]
     )
-
-# --- 2. Chat and Recommendations ---
 
 def on_see_recommendations_click(uid):
     # Load user profile and compute recommendations
