@@ -9,6 +9,14 @@ MEMORY_DIR = "data/memory"
 COURSES_PATH = "data/course_catalog_esco.json"
 GOALS = "Support cross-functional collaboration and accelerate internal mobility."
 
+from langchain.vectorstores import Chroma
+from langchain.embeddings import HuggingFaceEmbeddings
+embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+courses_collection = Chroma(
+    persist_directory="data/courses_chroma",
+    embedding_function=embedding_model
+)
+
 # ---------- Download and Extract Prebuilt ChromaDB ----------
 def fetch_and_extract(repo_id, filename, target_dir):
     if not os.path.exists(target_dir):
@@ -81,6 +89,9 @@ def chat_response(message, history):
 
 # ----------------- UI: Step 1 - Profile Creation -----------------
 from coachable_course_agent.linkedin_tools import build_profile_from_bio
+from coachable_course_agent.memory_store import load_user_profile
+from coachable_course_agent.vector_store import query_similar_courses
+from coachable_course_agent.justifier_chain import justify_recommendations
 
 
 with gr.Blocks(title="Coachable Course Agent") as demo:
@@ -165,23 +176,39 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         ]
     )
 
-    def on_see_recommendations_click():
-        # Switch to recommendations UI
+
+    def on_see_recommendations_click(uid):
+        # Load user profile and compute recommendations
+        user_profile = load_user_profile(uid)
+        # Load vector store for courses
+        
+        # Get top N courses
+        retrieved_courses = query_similar_courses(courses_collection, user_profile, top_n=5)
+        # Justify and refine recommendations
+        recommendations_list = justify_recommendations(user_profile, retrieved_courses)
+        # Render course cards
+        def render_course_card(course):
+            skills = ", ".join(skill["name"] if "name" in skill else skill.get("preferredLabel", "") for skill in course.get("skills", []))
+            return f"""### {course['title']}\n**Provider**: {course.get('provider','')}  \\n**Duration**: {course.get('duration_hours','?')} hrs  \\n**Level**: {course.get('level','')} | **Format**: {course.get('format','')}  \\n**Skills**: {skills}\n"""
+        cards_md = "\n---\n".join([render_course_card(c) for c in recommendations_list])
+        if not cards_md:
+            cards_md = "No recommendations found."
         return (
             gr.update(visible=False),  # profile_section
             gr.update(visible=True),   # recommend_section
-            "Here are your course recommendations! (placeholder)",  # recommendations
-            "",                      # agent_memory (placeholder)
-            "",                      # profile_status (hide)
-            "",                      # user_id_state (keep)
-            gr.update(visible=False), # profile_json (hide)
+            cards_md,                  # recommendations
+            "",                       # agent_memory (placeholder)
+            "",                       # profile_status (hide)
+            uid,                      # user_id_state (keep)
+            gr.update(visible=False),  # profile_json (hide)
             "You are now viewing recommendations.",  # footer_status
-            "recommend",             # app_mode
-            gr.update(visible=False)  # see_recommendations_btn (hide it)
+            "recommend",              # app_mode
+            gr.update(visible=False)   # see_recommendations_btn (hide it)
         )
 
     see_recommendations_btn.click(
         on_see_recommendations_click,
+        inputs=[user_id_state],
         outputs=[
             profile_section,      # hide
             recommend_section,    # show
