@@ -12,10 +12,7 @@ GOALS = "Support cross-functional collaboration and accelerate internal mobility
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-courses_collection = Chroma(
-    persist_directory="data/courses_chroma",
-    embedding_function=embedding_model
-)
+
 
 # ---------- Download and Extract Prebuilt ChromaDB ----------
 def fetch_and_extract(repo_id, filename, target_dir):
@@ -28,6 +25,10 @@ def fetch_and_extract(repo_id, filename, target_dir):
 fetch_and_extract("rdisipio/esco-skills", "esco_chroma.tar.gz", "data/esco_chroma")
 fetch_and_extract("rdisipio/esco-skills", "courses_chroma.tar.gz", "data/courses_chroma")
 
+courses_collection = Chroma(
+    persist_directory="data/courses_chroma",
+    embedding_function=embedding_model
+)
 
 # ---------- Helper Functions ----------
 def user_profile_exists(user_id):
