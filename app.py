@@ -93,7 +93,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         profile_json = gr.JSON(visible=False)
 
     def on_profile_submit(uid, blurb):
-        profile_status.update(value="⏳ Building profile, please wait...")
         try:
             result_text, data = build_profile_from_bio(uid, blurb)
             msg = f"✅ Profile created for **{uid}**.\n\n**Summary:** {result_text}"
