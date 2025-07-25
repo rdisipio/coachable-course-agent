@@ -53,13 +53,24 @@ def load_courses():
     with open(COURSES_PATH, "r") as f:
         return json.load(f)
 
+
 def render_course_card(course):
-    skills = ", ".join(skill["name"] for skill in course["skills"])
-    return f"""### [{course['title']}]({course['url']})
-**Provider**: {course['provider']}  
-**Duration**: {course['duration_hours']} hrs  
-**Level**: {course['level']} | **Format**: {course['format']}  
-**Skills**: {skills}
+    # Handle skills as string or list
+    skills = course.get("skills", "")
+    if isinstance(skills, str):
+        skills_str = skills
+    elif isinstance(skills, list):
+        if skills and isinstance(skills[0], dict):
+            skills_str = ", ".join(skill.get("name", "") for skill in skills)
+        else:
+            skills_str = ", ".join(str(skill) for skill in skills)
+    else:
+        skills_str = ""
+    return f"""### [{course.get('title', '')}]({course.get('url', '')})
+**Provider**: {course.get('provider', '')}  
+**Duration**: {course.get('duration_hours', '?')} hrs  
+**Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
+**Skills**: {skills_str}
 """
 
 def format_memory(mem):
