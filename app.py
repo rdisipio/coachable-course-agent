@@ -103,7 +103,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             agent_memory = gr.Markdown()
 
     with gr.Row() as footer:
-        footer_status = gr.Markdown()
+        footer_status = gr.Markdown("👋 Ready")
 
     def on_profile_submit(uid, blurb):
         try:
