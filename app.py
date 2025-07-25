@@ -124,12 +124,12 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=False),  # recommend_section
                 "",                       # recommendations (not used here)
                 "",                       # agent_memory (not used here)
-                msg + "\n\n---\n" + "<center>" + '<button id="recommend-btn" style="padding:10px 20px;font-size:1.1em;cursor:pointer;">Recommend courses</button>' + "</center>",  # profile_status with button
+                msg,                       # profile_status (just the summary)
                 uid,                       # user_id_state
                 gr.update(value=data, visible=True),  # profile_json
-                "Profile created. You can now get recommendations.",  # footer_status
+                "Profile created.",       # footer_status
                 "profile",                # app_mode
-                gr.update(visible=False)    # recommend_btn (hide native button)
+                gr.update(visible=False)   # recommend_btn (hide native button)
             )
         except Exception as e:
             return (
@@ -165,22 +165,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     )
 
 
-    # Add JS to handle the HTML button click and trigger the recommend_btn.click()
-    demo.load(
-        """
-        () => {
-            document.addEventListener('click', function(e) {
-                if (e.target && e.target.id === 'recommend-btn') {
-                    // Find the Gradio button and click it programmatically
-                    const gradioBtn = document.querySelector('button.svelte-1ipelgc');
-                    if (gradioBtn) gradioBtn.click();
-                }
-            });
-        }
-        """,
-        None,
-        None
-    )
+
 
 demo.launch()
 
