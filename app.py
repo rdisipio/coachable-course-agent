@@ -124,12 +124,12 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=False),  # recommend_section
                 "",                       # recommendations (not used here)
                 "",                       # agent_memory (not used here)
-                msg,                       # profile_status
+                msg + "\n\n---\n" + "<center>" + '<button id="recommend-btn" style="padding:10px 20px;font-size:1.1em;cursor:pointer;">Recommend courses</button>' + "</center>",  # profile_status with button
                 uid,                       # user_id_state
                 gr.update(value=data, visible=True),  # profile_json
                 "Profile created. You can now get recommendations.",  # footer_status
                 "profile",                # app_mode
-                gr.update(visible=True)    # recommend_btn (show it)
+                gr.update(visible=False)    # recommend_btn (hide native button)
             )
         except Exception as e:
             return (
@@ -155,48 +155,31 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recommend_section,    # show/hide
             recommendations,      # update recommendations
             agent_memory,         # update agent memory
-            profile_status,       # update profile status
+            profile_status,       # update profile status (now includes HTML button)
             user_id_state,        # update user id
             profile_json,         # update profile json
             footer_status,        # update footer
             app_mode,             # update app mode
-            recommend_btn         # show/hide recommend button
+            recommend_btn         # hide native button (now handled by HTML)
         ]
     )
 
-    def on_recommend_click():
-        # Switch to recommendations UI
-        return (
-            gr.update(visible=False),  # profile_section
-            gr.update(visible=True),   # recommend_section
-            "Here are your course recommendations! (placeholder)",  # recommendations
-            [],                        # chatbox (empty)
-            "",                      # chat_input
-            "",                      # agent_memory (placeholder)
-            "",                      # profile_status (hide)
-            "",                      # user_id_state
-            gr.update(visible=False),  # profile_json
-            "You are now viewing recommendations.",  # footer_status
-            "recommend",             # app_mode
-            gr.update(visible=False)  # recommend_btn (hide it)
-        )
 
-    recommend_btn.click(
-        on_recommend_click,
-        outputs=[
-            profile_section,      # hide
-            recommend_section,    # show
-            recommendations,      # update recommendations
-            chatbox,              # clear chat
-            chat_input,           # clear chat input
-            agent_memory,         # update agent memory
-            profile_status,       # hide profile status
-            user_id_state,        # keep user id
-            profile_json,         # hide profile json
-            footer_status,        # update footer
-            app_mode,             # update app mode
-            recommend_btn         # hide recommend button
-        ]
+    # Add JS to handle the HTML button click and trigger the recommend_btn.click()
+    demo.load(
+        """
+        () => {
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.id === 'recommend-btn') {
+                    // Find the Gradio button and click it programmatically
+                    const gradioBtn = document.querySelector('button.svelte-1ipelgc');
+                    if (gradioBtn) gradioBtn.click();
+                }
+            });
+        }
+        """,
+        None,
+        None
     )
 
 demo.launch()
