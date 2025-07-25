@@ -88,6 +88,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
 
     with gr.Column() as main_section:
+
         with gr.Column(visible=True) as profile_section:
             gr.Markdown("## 🔐 Create Your Profile")
             uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
@@ -95,44 +96,55 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             build_btn = gr.Button("Build Profile and Continue")
             profile_status = gr.Markdown()
             profile_json = gr.JSON(visible=False)
+            recommend_btn = gr.Button("Recommend courses", visible=False)
 
         with gr.Column(visible=False) as recommend_section:
-            gr.Markdown("## 🎯 Course Recommendations (Coming Soon)")
-            # Placeholder for main recommender UI
-            recommend_status = gr.Markdown()
-            agent_memory = gr.Markdown()
+            with gr.Row():
+                with gr.Column(scale=2):
+                    gr.Markdown("## 🎯 Course Recommendations")
+                    recommendations = gr.Markdown("(Recommendations will appear here)")
+                with gr.Column(scale=1):
+                    gr.Markdown("## 💬 Chat with the Agent")
+                    chatbox = gr.Chatbot()
+                    chat_input = gr.Textbox(label="Type your message")
+                    send_btn = gr.Button("Send")
+            agent_memory = gr.Markdown("(Agent memory will appear here)")
 
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
+
 
     def on_profile_submit(uid, blurb):
         try:
             result_text, data = build_profile_from_bio(uid, blurb)
             msg = f"✅ Profile created for **{uid}**.\n\n**Summary:** {result_text}"
-            # Switch to recommend mode, show agent memory in footer
+            # Show the recommend button after profile creation
             return (
-                gr.update(visible=False),  # profile_section
-                gr.update(visible=True),   # recommend_section
-                msg,                       # recommend_status
-                "",                        # agent_memory (placeholder)
-                "",                        # profile_status (hide)
+                gr.update(visible=True),   # profile_section
+                gr.update(visible=False),  # recommend_section
+                "",                       # recommendations (not used here)
+                "",                       # agent_memory (not used here)
+                msg,                       # profile_status
                 uid,                       # user_id_state
                 gr.update(value=data, visible=True),  # profile_json
-                "",                        # footer_status (hide status)
-                "recommend"                # app_mode
+                "Profile created. You can now get recommendations.",  # footer_status
+                "profile",                # app_mode
+                gr.update(visible=True)    # recommend_btn (show it)
             )
         except Exception as e:
             return (
                 gr.update(visible=True),   # profile_section
                 gr.update(visible=False),  # recommend_section
-                "",                       # recommend_status
+                "",                       # recommendations
                 "",                       # agent_memory
                 f"❌ Error: {e}",          # profile_status
                 None,                      # user_id_state
                 gr.update(visible=False),  # profile_json
                 f"❌ Error: {e}",          # footer_status
-                "profile"                  # app_mode
+                "profile",                # app_mode
+                gr.update(visible=False)   # recommend_btn (hide it)
             )
+
 
 
     build_btn.click(
@@ -141,13 +153,49 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         outputs=[
             profile_section,      # show/hide
             recommend_section,    # show/hide
-            recommend_status,     # update recommend status
+            recommendations,      # update recommendations
             agent_memory,         # update agent memory
             profile_status,       # update profile status
             user_id_state,        # update user id
             profile_json,         # update profile json
             footer_status,        # update footer
-            app_mode             # update app mode
+            app_mode,             # update app mode
+            recommend_btn         # show/hide recommend button
+        ]
+    )
+
+    def on_recommend_click():
+        # Switch to recommendations UI
+        return (
+            gr.update(visible=False),  # profile_section
+            gr.update(visible=True),   # recommend_section
+            "Here are your course recommendations! (placeholder)",  # recommendations
+            [],                        # chatbox (empty)
+            "",                      # chat_input
+            "",                      # agent_memory (placeholder)
+            "",                      # profile_status (hide)
+            "",                      # user_id_state
+            gr.update(visible=False),  # profile_json
+            "You are now viewing recommendations.",  # footer_status
+            "recommend",             # app_mode
+            gr.update(visible=False)  # recommend_btn (hide it)
+        )
+
+    recommend_btn.click(
+        on_recommend_click,
+        outputs=[
+            profile_section,      # hide
+            recommend_section,    # show
+            recommendations,      # update recommendations
+            chatbox,              # clear chat
+            chat_input,           # clear chat input
+            agent_memory,         # update agent memory
+            profile_status,       # hide profile status
+            user_id_state,        # keep user id
+            profile_json,         # hide profile json
+            footer_status,        # update footer
+            app_mode,             # update app mode
+            recommend_btn         # hide recommend button
         ]
     )
 
