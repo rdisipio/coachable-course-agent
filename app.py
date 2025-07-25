@@ -160,9 +160,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         print("recommendations_list:", recommendations_list)
 
         # Render course cards
-        def render_course_card(course):
-            skills = ", ".join(skill["name"] if "name" in skill else skill.get("preferredLabel", "") for skill in course.get("skills", []))
-            return f"""### {course['title']}\n**Provider**: {course.get('provider','')}  \\n**Duration**: {course.get('duration_hours','?')} hrs  \\n**Level**: {course.get('level','')} | **Format**: {course.get('format','')}  \\n**Skills**: {skills}\n"""
         cards_md = "\n---\n".join([render_course_card(c) for c in recommendations_list])
         if not cards_md:
             cards_md = "No recommendations found."
