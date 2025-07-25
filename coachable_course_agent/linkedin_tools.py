@@ -1,8 +1,5 @@
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-from langchain_groq import ChatGroq
 from langchain.tools import Tool
 from langchain_core.tools import tool
 
@@ -14,37 +11,8 @@ from functools import partial
 
 import os
 import json
-import re
 
 load_dotenv()
-
-llm = ChatGroq(model="llama3-70b-8192", temperature=0.3, api_key=os.getenv("GROQ_API_KEY"))
-
-linkedin_prompt = PromptTemplate.from_template("""
-You are an assistant that extracts career information from LinkedIn profiles.
-
-Given the text below, return a JSON object with:
-
-- "headline": a short career summary
-- "skills": a list of professional skills (max 10)
-- "goal": an inferred learning or career goal if available
-- "blurb": a short personal blurb or summary (optional)
-                                               
-Return your answer as a JSON object like this:
-{{
-  "headline": "...",
-  "skills": ["...", "..."],
-  "goal": "...",
-  "blurb": "..."
-}}
-
-LinkedIn profile:
-\"\"\"
-{profile_text}
-\"\"\"
-""")
-
-profile_chain = LLMChain(prompt=linkedin_prompt, llm=llm)
 
 
 def build_profile_from_bio(user_id, blurb):
@@ -87,34 +55,6 @@ def build_profile_from_bio(user_id, blurb):
         data = json.load(f)
     return result_text, data
 
-
-def extract_profile_info(profile_text: str) -> dict:
-    response = profile_chain.invoke({"profile_text": profile_text})
-    output = response["text"]
-    try:
-        json_str = re.search(r'\{[\s\S]*\}', output).group()
-        #print("LLM raw output:", response["text"])  # Debug
-        return json.loads(json_str)
-    except Exception as e:
-        print("Error in profile extraction:", e)
-        return {
-            "headline": "",
-            "skills": [],
-            "goal": "",
-            "blurb": ""
-        }
-
-
-profile_extract_tool = Tool.from_function(
-    name="ExtractProfileFromText",
-    func=extract_profile_info,
-    description=(
-        "Given a free-form LinkedIn profile text, extracts a short career headline, "
-        "a list of up to 10 professional skills, and an inferred learning or career goal. " 
-        "Input should be raw profile text."
-        "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
-        )
-    )
 
 
 def match_esco_wrapper(input_text: str, vectorstore) -> str:
