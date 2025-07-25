@@ -148,9 +148,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             profile_json,         # update profile json
             footer_status,        # update footer
             app_mode             # update app mode
-        ],
-        processing=[
-            None, None, None, None, None, None, None, gr.update(value="⏳ Generating your profile..."), None
         ]
     )
 
