@@ -124,6 +124,50 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
 
+    
+    def on_see_recommendations_click(uid):
+        # Load user profile and compute recommendations
+        user_profile = load_user_profile(uid)
+        # Print user profile skills
+        user_skills = user_profile.get("known_skills", [])
+        print("User profile skills:", [s.get("preferredLabel", s.get("name", "")) for s in user_skills])
+
+        # Print number of stored courses
+        try:
+            n_courses = courses_collection._collection.count()
+            print(f"Number of stored courses in Chroma: {n_courses}")
+        except Exception as e:
+            print(f"Could not count courses: {e}")
+
+        # Get top N courses
+        retrieved_courses = query_similar_courses(courses_collection, user_profile, top_n=5)
+        print("retrieved_courses:", retrieved_courses)
+
+        # Justify and refine recommendations
+        recommendations_list = justify_recommendations(user_profile, retrieved_courses)
+        print("recommendations_list:", recommendations_list)
+
+        # Render course cards
+        def render_course_card(course):
+            skills = ", ".join(skill["name"] if "name" in skill else skill.get("preferredLabel", "") for skill in course.get("skills", []))
+            return f"""### {course['title']}\n**Provider**: {course.get('provider','')}  \\n**Duration**: {course.get('duration_hours','?')} hrs  \\n**Level**: {course.get('level','')} | **Format**: {course.get('format','')}  \\n**Skills**: {skills}\n"""
+        cards_md = "\n---\n".join([render_course_card(c) for c in recommendations_list])
+        if not cards_md:
+            cards_md = "No recommendations found."
+        return (
+            gr.update(visible=False),  # profile_section
+            gr.update(visible=True),   # recommend_section
+            cards_md,                  # recommendations
+            "",                       # agent_memory (placeholder)
+            "",                       # profile_status (hide)
+            uid,                      # user_id_state (keep)
+            gr.update(visible=False),  # profile_json (hide)
+            "👀 You are now viewing recommendations.",  # footer_status
+            "recommend",              # app_mode
+            gr.update(visible=False)   # see_recommendations_btn (hide it)
+        )
+
+
     # Bind the 'See Recommendations' button to the handler (must be inside Blocks context)
     see_recommendations_btn.click(
         on_see_recommendations_click,
@@ -192,49 +236,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             see_recommendations_btn # show/hide see recommendations button
         ]
     )
-
-def on_see_recommendations_click(uid):
-    # Load user profile and compute recommendations
-    user_profile = load_user_profile(uid)
-    # Print user profile skills
-    user_skills = user_profile.get("known_skills", [])
-    print("User profile skills:", [s.get("preferredLabel", s.get("name", "")) for s in user_skills])
-
-    # Print number of stored courses
-    try:
-        n_courses = courses_collection._collection.count()
-        print(f"Number of stored courses in Chroma: {n_courses}")
-    except Exception as e:
-        print(f"Could not count courses: {e}")
-
-    # Get top N courses
-    retrieved_courses = query_similar_courses(courses_collection, user_profile, top_n=5)
-    print("retrieved_courses:", retrieved_courses)
-
-    # Justify and refine recommendations
-    recommendations_list = justify_recommendations(user_profile, retrieved_courses)
-    print("recommendations_list:", recommendations_list)
-
-    # Render course cards
-    def render_course_card(course):
-        skills = ", ".join(skill["name"] if "name" in skill else skill.get("preferredLabel", "") for skill in course.get("skills", []))
-        return f"""### {course['title']}\n**Provider**: {course.get('provider','')}  \\n**Duration**: {course.get('duration_hours','?')} hrs  \\n**Level**: {course.get('level','')} | **Format**: {course.get('format','')}  \\n**Skills**: {skills}\n"""
-    cards_md = "\n---\n".join([render_course_card(c) for c in recommendations_list])
-    if not cards_md:
-        cards_md = "No recommendations found."
-    return (
-        gr.update(visible=False),  # profile_section
-        gr.update(visible=True),   # recommend_section
-        cards_md,                  # recommendations
-        "",                       # agent_memory (placeholder)
-        "",                       # profile_status (hide)
-        uid,                      # user_id_state (keep)
-        gr.update(visible=False),  # profile_json (hide)
-        "👀 You are now viewing recommendations.",  # footer_status
-        "recommend",              # app_mode
-        gr.update(visible=False)   # see_recommendations_btn (hide it)
-    )
-
 
 demo.launch()
 
