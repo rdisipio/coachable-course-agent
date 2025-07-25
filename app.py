@@ -160,7 +160,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         print("recommendations_list:", recommendations_list)
 
         # Render course cards
-        cards_md = "\n---\n".join([render_course_card(c) for c in recommendations_list])
+        cards_md = "\n---\n".join([render_course_card(c) for c in retrieved_courses])
         if not cards_md:
             cards_md = "No recommendations found."
         return (
