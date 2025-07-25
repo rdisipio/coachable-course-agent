@@ -44,7 +44,7 @@ def extract_profile_info(profile_text: str) -> dict:
     output = response["text"]
     try:
         json_str = re.search(r'\{[\s\S]*\}', output).group()
-        #print("LLM raw output:", response["text"])  # Debug
+        print("LLM raw output:", response["text"])  # Debug
         return json.loads(json_str)
     except Exception as e:
         print("Error in profile extraction:", e)
@@ -60,8 +60,8 @@ profile_extract_tool = Tool.from_function(
     name="ExtractProfileFromText",
     func=extract_profile_info,
     description=(
-        "Given a free-form LinkedIn profile text (referred as blurb in the following), extract a short career headline, "
-        "a list of up to 10 professional skills, and an inferred learning or career goal. Also return the blurb if available. " 
+        "Given a free-form LinkedIn profile text, extract a short career headline, "
+        "a list of up to 10 professional skills, and an inferred learning or career goal and a blurb (max 100 words). "
         "Input should be raw profile text."
         "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
         )
