@@ -184,8 +184,12 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         # Get top N courses
         retrieved_courses = query_similar_courses(courses_collection, user_profile, top_n=5)
+        print("retrieved_courses:", retrieved_courses)
+
         # Justify and refine recommendations
         recommendations_list = justify_recommendations(user_profile, retrieved_courses)
+        print("recommendations_list:", recommendations_list)
+        
         # Render course cards
         def render_course_card(course):
             skills = ", ".join(skill["name"] if "name" in skill else skill.get("preferredLabel", "") for skill in course.get("skills", []))
@@ -201,7 +205,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             "",                       # profile_status (hide)
             uid,                      # user_id_state (keep)
             gr.update(visible=False),  # profile_json (hide)
-            "You are now viewing recommendations.",  # footer_status
+            "👀 You are now viewing recommendations.",  # footer_status
             "recommend",              # app_mode
             gr.update(visible=False)   # see_recommendations_btn (hide it)
         )
