@@ -89,6 +89,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     with gr.Column() as main_section:
 
+
         with gr.Column(visible=True) as profile_section:
             gr.Markdown("## 🔐 Create Your Profile")
             uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
@@ -96,6 +97,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             build_btn = gr.Button("Build Profile and Continue")
             profile_status = gr.Markdown()
             profile_json = gr.JSON(visible=False)
+            see_recommendations_btn = gr.Button("See Recommendations", visible=False)
 
         with gr.Column(visible=False) as recommend_section:
             with gr.Row():
@@ -117,7 +119,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         try:
             result_text, data = build_profile_from_bio(uid, blurb)
             msg = f"✅ Profile created for **{uid}**.\n\n**Summary:** {result_text}"
-            # Show the recommend button after profile creation
+            # Show the 'See Recommendations' button after profile creation
             return (
                 gr.update(visible=True),   # profile_section
                 gr.update(visible=False),  # recommend_section
@@ -126,8 +128,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 msg,                       # profile_status (just the summary)
                 uid,                       # user_id_state
                 gr.update(value=data, visible=True),  # profile_json
-                "Profile created.",       # footer_status
+                "✌️ Profile created.",       # footer_status
                 "profile",                # app_mode
+                gr.update(visible=True)    # see_recommendations_btn (show it)
             )
         except Exception as e:
             return (
@@ -140,6 +143,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=False),  # profile_json
                 f"❌ Error: {e}",          # footer_status
                 "profile",                # app_mode
+                gr.update(visible=False)   # see_recommendations_btn (hide it)
             )
 
 
@@ -152,11 +156,43 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recommend_section,    # show/hide
             recommendations,      # update recommendations
             agent_memory,         # update agent memory
-            profile_status,       # update profile status (now includes HTML button)
+            profile_status,       # update profile status
             user_id_state,        # update user id
             profile_json,         # update profile json
             footer_status,        # update footer
             app_mode,             # update app mode
+            see_recommendations_btn # show/hide see recommendations button
+        ]
+    )
+
+    def on_see_recommendations_click():
+        # Switch to recommendations UI
+        return (
+            gr.update(visible=False),  # profile_section
+            gr.update(visible=True),   # recommend_section
+            "Here are your course recommendations! (placeholder)",  # recommendations
+            "",                      # agent_memory (placeholder)
+            "",                      # profile_status (hide)
+            "",                      # user_id_state (keep)
+            gr.update(visible=False), # profile_json (hide)
+            "You are now viewing recommendations.",  # footer_status
+            "recommend",             # app_mode
+            gr.update(visible=False)  # see_recommendations_btn (hide it)
+        )
+
+    see_recommendations_btn.click(
+        on_see_recommendations_click,
+        outputs=[
+            profile_section,      # hide
+            recommend_section,    # show
+            recommendations,      # update recommendations
+            agent_memory,         # update agent memory
+            profile_status,       # hide profile status
+            user_id_state,        # keep user id
+            profile_json,         # hide profile json
+            footer_status,        # update footer
+            app_mode,             # update app mode
+            see_recommendations_btn # hide see recommendations button
         ]
     )
 
