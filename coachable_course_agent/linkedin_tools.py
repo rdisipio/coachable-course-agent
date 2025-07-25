@@ -135,7 +135,7 @@ def get_save_profile_tool(user_id):
     return Tool.from_function(
         name="SaveUserProfile",
         func=partial(save_profile_from_str, user_id=user_id),
-        description="Saves the extracted user profile. Input must be a JSON string with 'headline', 'goal', and 'skills'."
+        description="Saves the extracted user profile. Input must be a JSON string with 'headline', 'goal', and 'skills' and 'blurb'."
     )
 
 
