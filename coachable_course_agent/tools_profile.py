@@ -20,7 +20,7 @@ Given the text below, return a JSON object with:
 - "headline": a short career summary
 - "skills": a list of professional skills (max 10)
 - "goal": an inferred learning or career goal if available
-- "blurb": a short personal blurb or summary (optional)
+- "blurb": a short personal blurb or summary based on the profile text (max 100 words).
                                                
 Return your answer as a JSON object like this:
 {{
@@ -61,7 +61,7 @@ profile_extract_tool = Tool.from_function(
     func=extract_profile_info,
     description=(
         "Given a free-form LinkedIn profile text (referred as blurb in the following), extract a short career headline, "
-        "a list of up to 10 professional skills, and an inferred learning or career goal. " 
+        "a list of up to 10 professional skills, and an inferred learning or career goal. Also return the blurb if available. " 
         "Input should be raw profile text."
         "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
         )
