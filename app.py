@@ -96,7 +96,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             build_btn = gr.Button("Build Profile and Continue")
             profile_status = gr.Markdown()
             profile_json = gr.JSON(visible=False)
-            recommend_btn = gr.Button("Recommend courses", visible=False)
 
         with gr.Column(visible=False) as recommend_section:
             with gr.Row():
@@ -105,7 +104,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                     recommendations = gr.Markdown("(Recommendations will appear here)")
                 with gr.Column(scale=1):
                     gr.Markdown("## 💬 Chat with the Agent")
-                    chatbox = gr.Chatbot()
+                    chatbox = gr.Chatbot(type='messages')
                     chat_input = gr.Textbox(label="Type your message")
                     send_btn = gr.Button("Send")
             agent_memory = gr.Markdown("(Agent memory will appear here)")
@@ -129,7 +128,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(value=data, visible=True),  # profile_json
                 "Profile created.",       # footer_status
                 "profile",                # app_mode
-                gr.update(visible=False)   # recommend_btn (hide native button)
             )
         except Exception as e:
             return (
@@ -142,7 +140,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=False),  # profile_json
                 f"❌ Error: {e}",          # footer_status
                 "profile",                # app_mode
-                gr.update(visible=False)   # recommend_btn (hide it)
             )
 
 
@@ -160,7 +157,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             profile_json,         # update profile json
             footer_status,        # update footer
             app_mode,             # update app mode
-            recommend_btn         # hide native button (now handled by HTML)
         ]
     )
 
