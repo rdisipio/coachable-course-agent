@@ -249,7 +249,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             rec_index_state,      # store current index
             feedback_log_state,   # store feedback log
             approve_btn, adjust_btn, reject_btn, suggest_btn,
-            chatbox               # update chatbox
+            chatbox,              # update chatbox
+            new_recs_btn          # update new_recs_btn (pad for output count)
         ]
     )
 
