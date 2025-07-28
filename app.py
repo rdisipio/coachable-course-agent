@@ -144,6 +144,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             adjust_btn = gr.Button("Adjust", visible=False)
             reject_btn = gr.Button("Reject", visible=False)
             suggest_btn = gr.Button("Suggest", visible=False)
+            new_recs_btn = gr.Button("Get New Recommendations", visible=False)
 
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
@@ -261,7 +262,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
+                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                gr.update(visible=True)  # Show new_recs_btn
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -309,7 +311,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False)  # agent_memory added
+                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False),
+                gr.update(visible=False)  # Hide new_recs_btn
             )
         else:
             # Update agent memory after feedback loop is finished
@@ -318,7 +321,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
+                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                gr.update(visible=True)  # Show new_recs_btn
             )
 
     def reason_action(reason, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
@@ -329,7 +333,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory = format_memory(updated_profile) if updated_profile else ""
             return (
                 gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
+                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                gr.update(visible=True)  # Show new_recs_btn
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -361,7 +366,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False)  # agent_memory added
+                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False),
+                gr.update(visible=False)  # Hide new_recs_btn
             )
         else:
             # Update agent memory after feedback loop is finished
@@ -370,7 +376,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
+                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                gr.update(visible=True)  # Show new_recs_btn
             )
 
     for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
@@ -388,7 +395,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 chatbox,              # update chatbox
                 agent_memory,         # update agent_memory (left column)
                 chat_input,           # update chat_input (text box)
-                send_btn              # update send_btn
+                send_btn,             # update send_btn
+                new_recs_btn          # update new_recs_btn (show/hide)
             ]
         )
 
@@ -407,7 +415,34 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             chatbox,              # update chatbox
             agent_memory,         # update agent_memory (left column)
             chat_input,           # update chat_input (text box)
-            send_btn              # update send_btn
+            send_btn,             # update send_btn
+            new_recs_btn          # update new_recs_btn (show/hide)
+        ]
+    )
+    def on_new_recs_click(user_id_state):
+        # Reload user profile and get new recommendations
+        return on_see_recommendations_click(user_id_state)
+
+    new_recs_btn.click(
+        on_new_recs_click,
+        inputs=[user_id_state],
+        outputs=[
+            profile_section,      # hide
+            recommend_section,    # show
+            recommendations,      # update recommendations
+            agent_memory,         # update agent memory
+            profile_status,       # hide profile status
+            user_id_state,        # keep user id
+            profile_json,         # hide profile json
+            footer_status,        # update footer
+            app_mode,             # update app mode
+            see_recommendations_btn, # hide see recommendations button
+            recs_state,           # store recommendations
+            rec_index_state,      # store current index
+            feedback_log_state,   # store feedback log
+            approve_btn, adjust_btn, reject_btn, suggest_btn,
+            chatbox,
+            new_recs_btn
         ]
     )
 
