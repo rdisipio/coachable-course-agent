@@ -208,7 +208,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 "",                       # agent_memory (not used here)
                 msg,                       # profile_status (just the summary)
                 uid,                       # user_id_state
-                gr.update(value=data, visible=True),  # profile_json
+                gr.update(value=data, visible=False),  # profile_json (hide after creation)
                 "✌️ Profile created.",       # footer_status
                 "profile",                # app_mode
                 gr.update(visible=True)    # see_recommendations_btn (show it)
