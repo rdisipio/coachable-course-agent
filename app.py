@@ -418,14 +418,38 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         btn.click(
             feedback_action,
             inputs=[gr.State(ftype), recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
-            outputs=[recommendations, approve_btn, adjust_btn, reject_btn, suggest_btn, rec_index_state, feedback_log_state, chatbox, chat_input, send_btn]
+            outputs=[
+                recommendations,      # update recommendations
+                approve_btn,          # update approve_btn
+                adjust_btn,           # update adjust_btn
+                reject_btn,           # update reject_btn
+                suggest_btn,          # update suggest_btn
+                rec_index_state,      # update rec_index_state
+                feedback_log_state,   # update feedback_log_state
+                chatbox,              # update chatbox
+                agent_memory,         # update agent_memory (left column)
+                chat_input,           # update chat_input (text box)
+                send_btn              # update send_btn
+            ]
         )
 
     # Bind send_btn to reason_action for collecting reason
     send_btn.click(
         reason_action,
         inputs=[chat_input, recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
-        outputs=[recommendations, approve_btn, adjust_btn, reject_btn, suggest_btn, rec_index_state, feedback_log_state, chatbox, chat_input, send_btn]
+        outputs=[
+            recommendations,      # update recommendations
+            approve_btn,          # update approve_btn
+            adjust_btn,           # update adjust_btn
+            reject_btn,           # update reject_btn
+            suggest_btn,          # update suggest_btn
+            rec_index_state,      # update rec_index_state
+            feedback_log_state,   # update feedback_log_state
+            chatbox,              # update chatbox
+            agent_memory,         # update agent_memory (left column)
+            chat_input,           # update chat_input (text box)
+            send_btn              # update send_btn
+        ]
     )
 
 
