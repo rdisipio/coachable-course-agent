@@ -166,8 +166,21 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         print("retrieved_courses:", retrieved_courses)
 
         # Justify and refine recommendations
-        recommendations_list = justify_recommendations(user_profile, retrieved_courses)
-        print("recommendations_list:", recommendations_list)
+        explanations = justify_recommendations(user_profile, retrieved_courses)
+        print("recommendations_list:", explanations)
+
+        # Merge explanations into course dicts
+        recommendations_list = []
+        for i, course in enumerate(retrieved_courses):
+            course_copy = dict(course)  # shallow copy
+            if isinstance(explanations, list) and i < len(explanations):
+                # If explanation is a dict with 'explanation' key, use it; else use as string
+                exp = explanations[i]
+                if isinstance(exp, dict) and 'explanation' in exp:
+                    course_copy['explanation'] = exp['explanation']
+                else:
+                    course_copy['explanation'] = exp
+            recommendations_list.append(course_copy)
 
         # Start at the first course
         if not recommendations_list:
