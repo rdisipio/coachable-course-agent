@@ -183,7 +183,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             approve_vis = adjust_vis = reject_vis = suggest_vis = True
             # Compose agent's prompt for chat
             chat_msg = f"Suggested: {course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
-            chat_history = [["Agent", chat_msg]]
+            chat_history = [{"role": "assistant", "content": chat_msg}]
 
         return (
             gr.update(visible=False),  # profile_section
@@ -230,7 +230,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     def feedback_action(feedback_type, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
         # Get current course
         if idx >= len(recs):
-            chatbox = chatbox + [["Agent", "All feedback collected. Thank you!"]]
+            chatbox = chatbox + [{"role": "assistant", "content": "All feedback collected. Thank you!"}]
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
@@ -257,14 +257,17 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         # Prepare next course or finish
         next_idx = idx + 1
         user_feedback_msg = f"Feedback: {feedback_type} ({feedback_label})"
-        chatbox = chatbox + [["User", user_feedback_msg], ["Agent", f"Thanks for your feedback on '{title}' ({feedback_label})."]]
+        chatbox = chatbox + [
+            {"role": "user", "content": user_feedback_msg},
+            {"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}
+        ]
         if next_idx < len(recs):
             next_course = recs[next_idx]
             next_card = render_course_card(next_course)
             next_card += f"\n**Why:**  \n{next_course.get('explanation', '')}\n"
             # Agent prompt for next course
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{next_course.get('explanation','')}\nFeedback? (approve / adjust / reject / suggest)"
-            chatbox = chatbox + [["Agent", chat_msg]]
+            chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
