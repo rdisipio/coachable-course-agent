@@ -35,7 +35,7 @@ An AI-powered, feedback-aware course recommendation system designed for human-AI
 
 1. **Clone the repo**  
    ```bash
-   git clone https://github.com/rdisipio/coachable-course-agent.git
+   git clone https://huggingface.co/spaces/rdisipio/coachable-course-agent
    cd coachable-course-agent
    ```
 
