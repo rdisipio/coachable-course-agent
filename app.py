@@ -218,7 +218,10 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recommendations_list,      # recs_state
             0,                        # rec_index_state
             [],                       # feedback_log_state
-            approve_vis, adjust_vis, reject_vis, suggest_vis,
+            gr.update(visible=True),
+            gr.update(visible=True),
+            gr.update(visible=True),
+            gr.update(visible=True),
             chat_history              # chatbox
         )
 
