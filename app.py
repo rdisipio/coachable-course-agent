@@ -311,7 +311,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         # Get current course
         if idx >= len(recs):
             return (
-                gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
+                gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 idx, feedback_log, chatbox, "", False
             )
         course = recs[idx]
