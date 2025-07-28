@@ -80,8 +80,10 @@ def format_memory(mem):
         f"- {f.get('course_id','?')}: {f.get('feedback_type','?')} — {f.get('reason','')}"
         for f in mem.get("feedback_log", [])
     )
+    company_goal = mem.get('company_goal', '')
+    company_goal_md = f"\n\n### 📈 Company Goal\n{company_goal}" if company_goal else ""
     return f"""### 🌟 Goal
-{mem['goal']}
+{mem['goal']}{company_goal_md}
 
 ### ✅ Known Skills
 {known}
@@ -458,6 +460,13 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     def on_profile_submit(uid, blurb):
         try:
             result_text, data = build_profile_from_bio(uid, blurb)
+            # Add company goal to the user profile dict and persist it
+            company_goal = GOALS
+            if isinstance(data, dict):
+                data["company_goal"] = company_goal
+                # Save updated profile with company goal
+                with open(f"{MEMORY_DIR}/{uid}.json", "w") as f:
+                    json.dump(data, f, indent=2)
             msg = f"✅ Profile created for **{uid}**.\n\n**Summary:** {result_text}"
             # Show the 'See Recommendations' button after profile creation
             return (
