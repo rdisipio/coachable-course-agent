@@ -261,7 +261,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)  # agent_memory, chat_input, send_btn
+                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
             )
         course = recs[idx]
         course_id = course.get("id", "?")
