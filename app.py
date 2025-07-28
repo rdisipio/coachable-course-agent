@@ -253,13 +253,12 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox
+                idx, feedback_log, chatbox, "", False  # chat_input, send_btn
             )
         course = recs[idx]
         course_id = course.get("id", "?")
         title = course.get("title", "?")
         explanation = course.get("explanation", "")
-        # Compose feedback message
         feedback_map = {
             "approve": "great fit",
             "adjust": "close, but not quite",
@@ -267,47 +266,103 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             "suggest": "you propose a better match"
         }
         feedback_label = feedback_map.get(feedback_type, feedback_type)
+        user_feedback_msg = f"Feedback: {feedback_type} ({feedback_label})"
+        chatbox = chatbox + [
+            {"role": "user", "content": user_feedback_msg}
+        ]
+        # If feedback requires a reason, prompt for it
+        if feedback_type in ["adjust", "reject", "suggest"]:
+            chatbox = chatbox + [{"role": "assistant", "content": "Please provide a reason for your feedback."}]
+            return (
+                gr.update(),  # recommendations (no change)
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                idx, feedback_log, chatbox, "", True  # chat_input, send_btn enabled
+            )
+        # Otherwise, process feedback and move to next course
         feedback_entry = {
             "course_id": course_id,
             "feedback_type": feedback_type,
             "reason": feedback_label
         }
         feedback_log = feedback_log + [feedback_entry]
-        # Prepare next course or finish
         next_idx = idx + 1
-        user_feedback_msg = f"Feedback: {feedback_type} ({feedback_label})"
-        chatbox = chatbox + [
-            {"role": "user", "content": user_feedback_msg},
-            {"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}
-        ]
+        chatbox = chatbox + [{"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}]
         if next_idx < len(recs):
             next_course = recs[next_idx]
             next_card = render_course_card(next_course)
             explanation = next_course.get('explanation', '')
             if explanation:
                 next_card += f"\n**Why:**\n> {explanation}\n"
-            # Agent prompt for next course
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox
+                next_idx, feedback_log, chatbox, "", False
             )
         else:
-            # Hide all buttons when finished
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox
+                next_idx, feedback_log, chatbox, "", False
+            )
+
+    def reason_action(reason, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
+        # Get current course
+        if idx >= len(recs):
+            return (
+                gr.update(), gr.update(), gr.update(), gr.update(), gr.update(),
+                idx, feedback_log, chatbox, "", False
+            )
+        course = recs[idx]
+        course_id = course.get("id", "?")
+        title = course.get("title", "?")
+        feedback_type = feedback_log[-1]["feedback_type"] if feedback_log else ""
+        # Update last feedback entry with reason
+        feedback_entry = {
+            "course_id": course_id,
+            "feedback_type": feedback_type,
+            "reason": reason if reason else feedback_type
+        }
+        feedback_log = feedback_log[:-1] + [feedback_entry] if feedback_log else [feedback_entry]
+        chatbox = chatbox + [
+            {"role": "user", "content": reason},
+            {"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_type})."}
+        ]
+        next_idx = idx + 1
+        if next_idx < len(recs):
+            next_course = recs[next_idx]
+            next_card = render_course_card(next_course)
+            explanation = next_course.get('explanation', '')
+            if explanation:
+                next_card += f"\n**Why:**\n> {explanation}\n"
+            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
+            chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
+            return (
+                gr.update(value=next_card, visible=True),
+                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
+                next_idx, feedback_log, chatbox, "", False
+            )
+        else:
+            return (
+                gr.update(value="All feedback collected. Thank you!", visible=True),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                next_idx, feedback_log, chatbox, "", False
             )
 
     for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
         btn.click(
             feedback_action,
             inputs=[gr.State(ftype), recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
-            outputs=[recommendations, approve_btn, adjust_btn, reject_btn, suggest_btn, rec_index_state, feedback_log_state, chatbox]
+            outputs=[recommendations, approve_btn, adjust_btn, reject_btn, suggest_btn, rec_index_state, feedback_log_state, chatbox, chat_input, send_btn]
         )
+
+    # Bind send_btn to reason_action for collecting reason
+    send_btn.click(
+        reason_action,
+        inputs=[chat_input, recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
+        outputs=[recommendations, approve_btn, adjust_btn, reject_btn, suggest_btn, rec_index_state, feedback_log_state, chatbox, chat_input, send_btn]
+    )
 
 
     def on_profile_submit(uid, blurb):
