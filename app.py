@@ -174,12 +174,17 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         for i, course in enumerate(retrieved_courses):
             course_copy = dict(course)  # shallow copy
             if isinstance(explanations, list) and i < len(explanations):
-                # If explanation is a dict with 'explanation' key, use it; else use as string
                 exp = explanations[i]
-                if isinstance(exp, dict) and 'explanation' in exp:
-                    course_copy['explanation'] = exp['explanation']
+                # Prefer 'justification' if present, else 'explanation', else str(exp)
+                if isinstance(exp, dict):
+                    if 'justification' in exp:
+                        course_copy['explanation'] = exp['justification']
+                    elif 'explanation' in exp:
+                        course_copy['explanation'] = exp['explanation']
+                    else:
+                        course_copy['explanation'] = str(exp)
                 else:
-                    course_copy['explanation'] = exp
+                    course_copy['explanation'] = str(exp)
             recommendations_list.append(course_copy)
 
         # Start at the first course
@@ -191,7 +196,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             course = recommendations_list[0]
             explanation = course.get("explanation", "")
             card = render_course_card(course)
-            card += f"\n**Why:**  \n{explanation}\n"
+            if explanation:
+                card += f"\n**Why:**\n> {explanation}\n"
             cards_md = card
             approve_vis = adjust_vis = reject_vis = suggest_vis = True
             # Compose agent's prompt for chat
@@ -277,9 +283,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         if next_idx < len(recs):
             next_course = recs[next_idx]
             next_card = render_course_card(next_course)
-            next_card += f"\n**Why:**  \n{next_course.get('explanation', '')}\n"
+            explanation = next_course.get('explanation', '')
+            if explanation:
+                next_card += f"\n**Why:**\n> {explanation}\n"
             # Agent prompt for next course
-            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{next_course.get('explanation','')}\nFeedback? (approve / adjust / reject / suggest)"
+            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
