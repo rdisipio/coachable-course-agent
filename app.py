@@ -103,7 +103,9 @@ def chat_response(message, history):
 from coachable_course_agent.linkedin_tools import build_profile_from_bio
 from coachable_course_agent.memory_store import load_user_profile
 from coachable_course_agent.vector_store import query_similar_courses
+
 from coachable_course_agent.justifier_chain import justify_recommendations
+from coachable_course_agent.feedback_processor import process_feedback
 
 
 
@@ -291,6 +293,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             "reason": feedback_label
         }
         feedback_log = feedback_log + [feedback_entry]
+        # Persist feedback to disk
+        if user_id_state:
+            process_feedback(user_id_state, course_id, feedback_type, feedback_label)
         next_idx = idx + 1
         chatbox = chatbox + [{"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}]
         if next_idx < len(recs):
@@ -337,6 +342,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             "reason": reason if reason else feedback_type
         }
         feedback_log = feedback_log[:-1] + [feedback_entry] if feedback_log else [feedback_entry]
+        # Persist feedback to disk
+        if user_id_state:
+            process_feedback(user_id_state, course_id, feedback_type, reason if reason else feedback_type)
         chatbox = chatbox + [
             {"role": "user", "content": reason},
             {"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_type})."}
