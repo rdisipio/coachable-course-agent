@@ -10,13 +10,13 @@ pinned: false
 
 # 🧭 Coachable Course Agent
 
-An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. This agent doesn't just rank courses — it walks alongside the user, learning from feedback and helping shape a career path.
+An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. This agent doesn't just rank courses, it walks alongside the user, learning from feedback and helping shape a career path.
 
 ## ✨ Key Features
 
 - **Profile Builder Agent**: Extracts skills, goals, and intent from a LinkedIn-style blurb using LLMs and ESCO skill matching.
 - **Course Recommender Agent**: Suggests courses tailored to missing skills, learning preferences, and inferred goals.
-- **Structured Feedback Loop**: Supports "approve", "adjust", "reject", or open-ended suggestions — and updates the profile accordingly.
+- **Structured Feedback Loop**: Supports "approve", "adjust", "reject", or open-ended suggestions, and updates the profile accordingly.
 - **Semantic Skill Matching**: Uses a ChromaDB vector store populated with ESCO skill embeddings for robust skill inference.
 - **Extensible Architecture**: Built with LangChain agents and Groq-hosted LLaMA models.
 
@@ -66,13 +66,12 @@ Incorporate org charts and role progression paths
 
 Add pacing preferences (e.g. 3 months vs 12 months)
 
-Web interface with feedback memory and visualization
 
 ---
 
 ## 👤 Author
 
-Built by Riccardo Di Sipio, exploring how agents can collaborate—not just recommend.
+Built by Riccardo Di Sipio, exploring how agents can collaborate and not just recommend.
 
 ---
 
