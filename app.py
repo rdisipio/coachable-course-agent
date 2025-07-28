@@ -226,7 +226,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             gr.update(visible=True),
             gr.update(visible=True),
             chat_history,             # chatbox
-            gr.update()               # pad for new_recs_btn
+            gr.update(visible=False)  # hide new_recs_btn until feedback loop is finished
         )
 
 
