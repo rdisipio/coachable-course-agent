@@ -77,8 +77,8 @@ def format_memory(mem):
     known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])
     missing = "\n".join(f"- {s['preferredLabel']}" for s in mem["missing_skills"])
     feedback = "\n".join(
-        f"- {f['course_id']}: {f['feedback_type']} — {f['reason']}"
-        for f in mem["feedback_log"] if f['feedback_type']
+        f"- {f.get('course_id','?')}: {f.get('feedback_type','?')} — {f.get('reason','')}"
+        for f in mem.get("feedback_log", [])
     )
     return f"""### 🌟 Goal
 {mem['goal']}
@@ -343,8 +343,12 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         course = recs[idx]
         course_id = course.get("id", "?")
         title = course.get("title", "?")
-        feedback_type = feedback_log[-1]["feedback_type"] if feedback_log else ""
-        # Update last feedback entry with reason
+        # Find the last feedback entry for this course and update it with the reason and correct feedback_type
+        if feedback_log and feedback_log[-1]["course_id"] == course_id and feedback_log[-1]["feedback_type"]:
+            feedback_type = feedback_log[-1]["feedback_type"]
+        else:
+            # fallback: try to infer from previous state or default to 'adjust'
+            feedback_type = "adjust"
         feedback_entry = {
             "course_id": course_id,
             "feedback_type": feedback_type,
