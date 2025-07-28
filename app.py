@@ -82,7 +82,7 @@ def format_memory(mem):
     )
     company_goal = mem.get('company_goal', '')
     company_goal_md = f"\n\n### 📈 Company Goal\n{company_goal}" if company_goal else ""
-    return f"""### 🌟 Goal
+    return f"""### 🌟 User's Goal
 {mem['goal']}{company_goal_md}
 
 ### ✅ Known Skills
