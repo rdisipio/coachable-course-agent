@@ -309,7 +309,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, "", gr.update(visible=False)
+                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False)  # agent_memory added
             )
         else:
             # Update agent memory after feedback loop is finished
@@ -330,6 +330,47 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
+            )
+        course = recs[idx]
+        course_id = course.get("id", "?")
+        title = course.get("title", "?")
+        feedback_type = feedback_log[-1]["feedback_type"] if feedback_log else ""
+        # Update last feedback entry with reason
+        feedback_entry = {
+            "course_id": course_id,
+            "feedback_type": feedback_type,
+            "reason": reason if reason else feedback_type
+        }
+        feedback_log = feedback_log[:-1] + [feedback_entry] if feedback_log else [feedback_entry]
+        # Persist feedback to disk
+        if user_id_state:
+            process_feedback(user_id_state, course_id, feedback_type, reason if reason else feedback_type)
+        chatbox = chatbox + [
+            {"role": "user", "content": reason},
+            {"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_type})."}
+        ]
+        next_idx = idx + 1
+        if next_idx < len(recs):
+            next_course = recs[next_idx]
+            next_card = render_course_card(next_course)
+            explanation = next_course.get('explanation', '')
+            if explanation:
+                next_card += f"\n**Why:**\n> {explanation}\n"
+            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
+            chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
+            return (
+                gr.update(value=next_card, visible=True),
+                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
+                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False)  # agent_memory added
+            )
+        else:
+            # Update agent memory after feedback loop is finished
+            updated_profile = load_user_profile(user_id_state) if user_id_state else {}
+            updated_memory = format_memory(updated_profile) if updated_profile else ""
+            return (
+                gr.update(value="All feedback collected. Thank you!", visible=True),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
             )
         course = recs[idx]
         course_id = course.get("id", "?")
