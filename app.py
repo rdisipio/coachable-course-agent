@@ -173,6 +173,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         if not recommendations_list:
             cards_md = "No recommendations found."
             approve_vis = adjust_vis = reject_vis = suggest_vis = False
+            chat_history = []
         else:
             course = recommendations_list[0]
             explanation = course.get("explanation", "")
@@ -180,6 +181,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             card += f"\n**Why:**  \n{explanation}\n"
             cards_md = card
             approve_vis = adjust_vis = reject_vis = suggest_vis = True
+            # Compose agent's prompt for chat
+            chat_msg = f"Suggested: {course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
+            chat_history = [["Agent", chat_msg]]
 
         return (
             gr.update(visible=False),  # profile_section
@@ -195,7 +199,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recommendations_list,      # recs_state
             0,                        # rec_index_state
             [],                       # feedback_log_state
-            approve_vis, adjust_vis, reject_vis, suggest_vis
+            approve_vis, adjust_vis, reject_vis, suggest_vis,
+            chat_history              # chatbox
         )
 
 
@@ -217,17 +222,19 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recs_state,           # store recommendations
             rec_index_state,      # store current index
             feedback_log_state,   # store feedback log
-            approve_btn, adjust_btn, reject_btn, suggest_btn
+            approve_btn, adjust_btn, reject_btn, suggest_btn,
+            chatbox               # update chatbox
         ]
     )
 
     def feedback_action(feedback_type, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
         # Get current course
         if idx >= len(recs):
+            chatbox = chatbox + [["Agent", "All feedback collected. Thank you!"]]
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox + [["Agent", "All feedback collected. Thank you!"]]
+                idx, feedback_log, chatbox
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -249,18 +256,22 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         feedback_log = feedback_log + [feedback_entry]
         # Prepare next course or finish
         next_idx = idx + 1
+        user_feedback_msg = f"Feedback: {feedback_type} ({feedback_label})"
+        chatbox = chatbox + [["User", user_feedback_msg], ["Agent", f"Thanks for your feedback on '{title}' ({feedback_label})."]]
         if next_idx < len(recs):
             next_course = recs[next_idx]
             next_card = render_course_card(next_course)
             next_card += f"\n**Why:**  \n{next_course.get('explanation', '')}\n"
-            chatbox = chatbox + [["Agent", f"Thanks for your feedback on '{title}' ({feedback_label})."]]
+            # Agent prompt for next course
+            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{next_course.get('explanation','')}\nFeedback? (approve / adjust / reject / suggest)"
+            chatbox = chatbox + [["Agent", chat_msg]]
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
                 next_idx, feedback_log, chatbox
             )
         else:
-            chatbox = chatbox + [["Agent", f"Thanks for your feedback on '{title}' ({feedback_label})."]]
+            # Hide all buttons when finished
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
