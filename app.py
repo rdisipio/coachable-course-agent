@@ -123,20 +123,20 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
         with gr.Column(visible=False) as recommend_section:
             with gr.Row():
-                with gr.Column(scale=2):
-                    gr.Markdown("## 🎯 Course Recommendations")
-                    recommendations = gr.Markdown("(Recommendations will appear here)")
+                # Left: Agent memory
+                with gr.Column(scale=1):
+                    gr.Markdown("## 🧠 Agent Memory")
+                    agent_memory = gr.Markdown("(Agent memory will appear here)", elem_id="agent_memory")
+                # Middle: Chat
                 with gr.Column(scale=1):
                     gr.Markdown("## 💬 Chat with the Agent")
                     chatbox = gr.Chatbot(type='messages', elem_id="chatbox")
                     chat_input = gr.Textbox(label="Type your message")
                     send_btn = gr.Button("Send")
-            # Agent memory always visible below chat
-            with gr.Row():
-                with gr.Column(scale=2):
-                    pass  # left side empty
+                # Right: Recommendations
                 with gr.Column(scale=1):
-                    agent_memory = gr.Markdown("(Agent memory will appear here)", elem_id="agent_memory")
+                    gr.Markdown("## 🎯 Course Recommendations")
+                    recommendations = gr.Markdown("(Recommendations will appear here)")
 
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
