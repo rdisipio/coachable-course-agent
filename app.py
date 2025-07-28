@@ -111,32 +111,30 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
 
-    with gr.Column() as main_section:
-        with gr.Column(visible=True) as profile_section:
-            gr.Markdown("## 🔐 Create Your Profile")
-            uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
-            blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb")
-            build_btn = gr.Button("Build Profile and Continue")
-            profile_status = gr.Markdown()
-            profile_json = gr.JSON(visible=False)
-            see_recommendations_btn = gr.Button("See Recommendations", visible=False)
+    with gr.Column(visible=True) as profile_section:
+        gr.Markdown("## 🔐 Create Your Profile")
+        uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
+        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb")
+        build_btn = gr.Button("Build Profile and Continue")
+        profile_status = gr.Markdown()
+        profile_json = gr.JSON(visible=False)
+        see_recommendations_btn = gr.Button("See Recommendations", visible=False)
 
-        with gr.Column(visible=False) as recommend_section:
-            with gr.Row():
-                # Left: Agent memory
-                with gr.Column(scale=1):
-                    gr.Markdown("## 🧠 Agent Memory")
-                    agent_memory = gr.Markdown("(Agent memory will appear here)", elem_id="agent_memory")
-                # Middle: Chat
-                with gr.Column(scale=1):
-                    gr.Markdown("## 💬 Chat with the Agent")
-                    chatbox = gr.Chatbot(type='messages', elem_id="chatbox")
-                    chat_input = gr.Textbox(label="Type your message")
-                    send_btn = gr.Button("Send")
-                # Right: Recommendations
-                with gr.Column(scale=1):
-                    gr.Markdown("## 🎯 Course Recommendations")
-                    recommendations = gr.Markdown("(Recommendations will appear here)")
+    with gr.Row(visible=False) as recommend_section:
+        # Left: Agent memory
+        with gr.Column(scale=1):
+            gr.Markdown("## 🧠 Agent Memory")
+            agent_memory = gr.Markdown("(Agent memory will appear here)", elem_id="agent_memory")
+        # Middle: Chat
+        with gr.Column(scale=1):
+            gr.Markdown("## 💬 Chat with the Agent")
+            chatbox = gr.Chatbot(type='messages', elem_id="chatbox")
+            chat_input = gr.Textbox(label="Type your message")
+            send_btn = gr.Button("Send")
+        # Right: Recommendations
+        with gr.Column(scale=1):
+            gr.Markdown("## 🎯 Course Recommendations")
+            recommendations = gr.Markdown("(Recommendations will appear here)")
 
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
