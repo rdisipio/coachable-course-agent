@@ -138,6 +138,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         with gr.Column(scale=1):
             gr.Markdown("## 🎯 Course Recommendations")
             recommendations = gr.Markdown("(Recommendations will appear here)")
+        # Place feedback buttons directly under the recommendations card in the right column
+        with gr.Column(scale=1):
             approve_btn = gr.Button("Approve", visible=False)
             adjust_btn = gr.Button("Adjust", visible=False)
             reject_btn = gr.Button("Reject", visible=False)
