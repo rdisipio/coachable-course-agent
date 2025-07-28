@@ -261,7 +261,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, "", updated_memory, gr.update(visible=False)  # agent_memory, chat_input, send_btn
+                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)  # agent_memory, chat_input, send_btn
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -318,7 +318,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, "", updated_memory, gr.update(visible=False)
+                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
             )
 
     def reason_action(reason, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
@@ -329,7 +329,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory = format_memory(updated_profile) if updated_profile else ""
             return (
                 gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, "", updated_memory, gr.update(visible=False)
+                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -370,7 +370,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, "", updated_memory, gr.update(visible=False)
+                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False)
             )
 
     for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
