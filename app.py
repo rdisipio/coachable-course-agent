@@ -106,10 +106,13 @@ from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.justifier_chain import justify_recommendations
 
 
-with gr.Blocks(title="Coachable Course Agent") as demo:
 
+with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
+    recs_state = gr.State(value=[])  # List of recommendations with explanations
+    rec_index_state = gr.State(value=0)  # Current index in recommendations
+    feedback_log_state = gr.State(value=[])  # List of feedbacks
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
@@ -135,6 +138,10 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         with gr.Column(scale=1):
             gr.Markdown("## 🎯 Course Recommendations")
             recommendations = gr.Markdown("(Recommendations will appear here)")
+            approve_btn = gr.Button("Approve", visible=False)
+            adjust_btn = gr.Button("Adjust", visible=False)
+            reject_btn = gr.Button("Reject", visible=False)
+            suggest_btn = gr.Button("Suggest", visible=False)
 
     with gr.Row() as footer:
         footer_status = gr.Markdown("👋 Ready")
@@ -162,21 +169,33 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         recommendations_list = justify_recommendations(user_profile, retrieved_courses)
         print("recommendations_list:", recommendations_list)
 
-        # Render course cards
-        cards_md = "\n---\n".join([render_course_card(c) for c in retrieved_courses])
-        if not cards_md:
+        # Start at the first course
+        if not recommendations_list:
             cards_md = "No recommendations found."
+            approve_vis = adjust_vis = reject_vis = suggest_vis = False
+        else:
+            course = recommendations_list[0]
+            explanation = course.get("explanation", "")
+            card = render_course_card(course)
+            card += f"\n**Why:**  \n{explanation}\n"
+            cards_md = card
+            approve_vis = adjust_vis = reject_vis = suggest_vis = True
+
         return (
             gr.update(visible=False),  # profile_section
             gr.update(visible=True),   # recommend_section
-            cards_md,                  # recommendations
+            gr.update(value=cards_md, visible=True),  # recommendations
             format_memory(user_profile), # agent_memory (show memory)
             "",                       # profile_status (hide)
             uid,                      # user_id_state (keep)
             gr.update(visible=False),  # profile_json (hide)
             "👀 You are now viewing recommendations.",  # footer_status
             "recommend",              # app_mode
-            gr.update(visible=False)   # see_recommendations_btn (hide it)
+            gr.update(visible=False),   # see_recommendations_btn (hide it)
+            recommendations_list,      # recs_state
+            0,                        # rec_index_state
+            [],                       # feedback_log_state
+            approve_vis, adjust_vis, reject_vis, suggest_vis
         )
 
 
@@ -194,9 +213,66 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             profile_json,         # hide profile json
             footer_status,        # update footer
             app_mode,             # update app mode
-            see_recommendations_btn # hide see recommendations button
+            see_recommendations_btn, # hide see recommendations button
+            recs_state,           # store recommendations
+            rec_index_state,      # store current index
+            feedback_log_state,   # store feedback log
+            approve_btn, adjust_btn, reject_btn, suggest_btn
         ]
     )
+
+    def feedback_action(feedback_type, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
+        # Get current course
+        if idx >= len(recs):
+            return (
+                gr.update(value="All feedback collected. Thank you!", visible=True),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                idx, feedback_log, chatbox + [["Agent", "All feedback collected. Thank you!"]]
+            )
+        course = recs[idx]
+        course_id = course.get("id", "?")
+        title = course.get("title", "?")
+        explanation = course.get("explanation", "")
+        # Compose feedback message
+        feedback_map = {
+            "approve": "great fit",
+            "adjust": "close, but not quite",
+            "reject": "nope",
+            "suggest": "you propose a better match"
+        }
+        feedback_label = feedback_map.get(feedback_type, feedback_type)
+        feedback_entry = {
+            "course_id": course_id,
+            "feedback_type": feedback_type,
+            "reason": feedback_label
+        }
+        feedback_log = feedback_log + [feedback_entry]
+        # Prepare next course or finish
+        next_idx = idx + 1
+        if next_idx < len(recs):
+            next_course = recs[next_idx]
+            next_card = render_course_card(next_course)
+            next_card += f"\n**Why:**  \n{next_course.get('explanation', '')}\n"
+            chatbox = chatbox + [["Agent", f"Thanks for your feedback on '{title}' ({feedback_label})."]]
+            return (
+                gr.update(value=next_card, visible=True),
+                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
+                next_idx, feedback_log, chatbox
+            )
+        else:
+            chatbox = chatbox + [["Agent", f"Thanks for your feedback on '{title}' ({feedback_label})."]]
+            return (
+                gr.update(value="All feedback collected. Thank you!", visible=True),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                next_idx, feedback_log, chatbox
+            )
+
+    for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
+        btn.click(
+            feedback_action,
+            inputs=[gr.State(ftype), recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
+            outputs=[recommendations, approve_btn, adjust_btn, reject_btn, suggest_btn, rec_index_state, feedback_log_state, chatbox]
+        )
 
 
     def on_profile_submit(uid, blurb):
