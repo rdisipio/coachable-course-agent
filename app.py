@@ -172,7 +172,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             gr.update(visible=False),  # profile_section
             gr.update(visible=True),   # recommend_section
             cards_md,                  # recommendations
-            "",                       # agent_memory (placeholder)
+            format_memory(user_profile), # agent_memory (show memory)
             "",                       # profile_status (hide)
             uid,                      # user_id_state (keep)
             gr.update(visible=False),  # profile_json (hide)
