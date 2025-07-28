@@ -256,7 +256,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, "", False  # chat_input, send_btn
+                idx, feedback_log, chatbox, "", gr.update(visible=False)  # chat_input, send_btn
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -279,7 +279,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(),  # recommendations (no change)
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, "", True  # chat_input, send_btn enabled
+                idx, feedback_log, chatbox, "", gr.update(visible=True)  # chat_input, send_btn enabled
             )
         # Otherwise, process feedback and move to next course
         feedback_entry = {
@@ -301,13 +301,13 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, "", False
+                next_idx, feedback_log, chatbox, "", gr.update(visible=False)
             )
         else:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, "", False
+                next_idx, feedback_log, chatbox, "", gr.update(visible=False)
             )
 
     def reason_action(reason, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
@@ -315,7 +315,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         if idx >= len(recs):
             return (
                 gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, "", False
+                idx, feedback_log, chatbox, "", gr.update(visible=False)
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -344,13 +344,13 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, "", False
+                next_idx, feedback_log, chatbox, "", gr.update(visible=False)
             )
         else:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, "", False
+                next_idx, feedback_log, chatbox, "", gr.update(visible=False)
             )
 
     for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
