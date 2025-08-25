@@ -1,3 +1,31 @@
 data/esco_chroma/
 data/courses_chroma/
 
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Scraped data files (these are dynamic and shouldn't be in git)
+data/scraped_courses/raw_data/*.json
+
+# Large data files
+data/courses_chroma.tar.gz
+data/esco_chroma.tar.gz
+
+# Memory files (user-specific data)
+data/memory/*.json
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
