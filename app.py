@@ -54,7 +54,7 @@ def load_courses():
         return json.load(f)
 
 
-def render_course_card(course):
+def render_course_card(course, explanation=None):
     # Handle skills as string or list
     skills = course.get("skills", "")
     if isinstance(skills, str):
@@ -76,34 +76,36 @@ def render_course_card(course):
     confidence_text = f"**Confidence:** {confidence:.2f}"
     confidence_bar = "🟩" * int(confidence * 10) + "⬜" * (10 - int(confidence * 10))
     
-    return f"""### [{course.get('title', '')}]({course.get('url', '')})
+    # Build the card with proper order: Details → Why → Confidence → Because
+    card = f"""### [{course.get('title', '')}]({course.get('url', '')})
 **Provider**: {course.get('provider', '')}  
 **Duration**: {course.get('duration_hours', '?')} hrs  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
-**Skills**: {skills_str}
-
-**Because:** {because_text}
-
-{confidence_text} {confidence_bar}
-"""
+**Skills**: {skills_str}"""
+    
+    # Add Why section if explanation is provided
+    if explanation:
+        card += f"\n\n**Why:**\n> {explanation}"
+    
+    # Add Confidence section
+    card += f"\n\n{confidence_text} {confidence_bar}"
+    
+    # Add Because section
+    card += f"\n\n**Because:** {because_text}"
+    
+    return card
 
 def generate_because_chips(course):
     """Generate at least 2 'because' chips showing why this course was recommended."""
     chips = []
     
-    # Goal-based chip
+    # 1. Goal-based chip (first priority)
     if course.get('query_goal'):
         goal_words = course.get('query_goal', '').split()[:3]  # First 3 words of goal
         if goal_words:
             chips.append(f"goal: {' '.join(goal_words)}")
     
-    # Missing skills chips (up to 2)
-    missing_skills = course.get('query_missing_skills', [])
-    for skill in missing_skills[:2]:
-        if skill:
-            chips.append(f"missing: {skill}")
-    
-    # Course-specific skills chips
+    # 2. Course-specific skills chips (teaches - second priority)
     course_skills = course.get('skills', '')
     if isinstance(course_skills, str):
         skill_list = [s.strip() for s in course_skills.split(',')][:2]
@@ -111,7 +113,13 @@ def generate_because_chips(course):
             if skill:
                 chips.append(f"teaches: {skill}")
     
-    # Preferences chip
+    # 3. Missing skills chips (third priority)
+    missing_skills = course.get('query_missing_skills', [])
+    for skill in missing_skills[:2]:
+        if skill:
+            chips.append(f"missing: {skill}")
+    
+    # 4. Preferences chip (fallback)
     preferences = course.get('query_preferences', '')
     if preferences:
         pref_words = preferences.split()[:2]  # First 2 preference words
@@ -268,9 +276,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         else:
             course = recommendations_list[0]
             explanation = course.get("explanation", "")
-            card = render_course_card(course)
-            if explanation:
-                card += f"\n**Why:**\n> {explanation}\n"
+            card = render_course_card(course, explanation)
             cards_md = card
             approve_vis = adjust_vis = reject_vis = suggest_vis = True
             # Compose agent's prompt for chat
@@ -378,10 +384,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         chatbox = chatbox + [{"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}]
         if next_idx < len(recs):
             next_course = recs[next_idx]
-            next_card = render_course_card(next_course)
             explanation = next_course.get('explanation', '')
-            if explanation:
-                next_card += f"\n**Why:**\n> {explanation}\n"
+            next_card = render_course_card(next_course, explanation)
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
@@ -437,10 +441,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         next_idx = idx + 1
         if next_idx < len(recs):
             next_course = recs[next_idx]
-            next_card = render_course_card(next_course)
             explanation = next_course.get('explanation', '')
-            if explanation:
-                next_card += f"\n**Why:**\n> {explanation}\n"
+            next_card = render_course_card(next_course, explanation)
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
