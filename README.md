@@ -8,9 +8,22 @@ app_file: app.py
 pinned: false
 ---
 
-# 🧭 Coachable Course Agent
+# Coachable Course Agent
 
-An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech. This agent doesn't just rank courses, it walks alongside the user, learning from feedback and helping shape a career path.
+An AI-powered, feedback-aware course recommendation system designed for human-AI interaction in HR tech.  
+This agent doesn't just rank courses — it walks alongside the user, learning from feedback and helping shape a career path.
+
+---
+
+This project started as a clever demo. It has since grown into something more fundamental: a principled foundation for human-AI interaction in learning and career growth.
+
+The goal is simple but ambitious:  
+**align what’s technically possible with what is humanly meaningful.**
+
+Guided by the [Google People + AI Guidebook](https://pair.withgoogle.com/guidebook/) and best practices from UX research, the agent is designed not just to recommend courses, but to *listen, adapt, and explain itself*. Every recommendation is transparent, every piece of feedback shapes the next interaction, and every design choice centers on trust and user agency.
+
+This repo is intentionally unfinished in places. It leaves space for collaboration, critique, and refinement — because building human-centered AI is not a solo act.
+
 
 ## ✨ Key Features
 

@@ -216,7 +216,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         gr.Markdown("## 🔐 Create Your Profile")
         blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb", placeholder="Tell us about your background, current role, and career goals...")
         gr.Markdown("💡 *Processing typically takes 2-3 seconds while we analyze your profile and match ESCO skills.*")
-        build_btn = gr.Button("Build Profile and Continue", variant="primary")
+        build_btn = gr.Button("Build Profile and Continue")
         profile_status = gr.Markdown()
         profile_json = gr.JSON(visible=False)
         see_recommendations_btn = gr.Button("See Recommendations", visible=False)
