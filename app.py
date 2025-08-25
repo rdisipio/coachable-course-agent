@@ -82,9 +82,9 @@ def render_course_card(course):
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
 **Skills**: {skills_str}
 
-{confidence_text} {confidence_bar}
-
 **Because:** {because_text}
+
+{confidence_text} {confidence_bar}
 """
 
 def generate_because_chips(course):
