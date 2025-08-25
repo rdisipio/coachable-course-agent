@@ -15,6 +15,7 @@ embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 # Let's turn this project from a clever demo into a foundation. 
 # Let's align what is technically possible with what is humanly meaningful.
+# Google People+AI guidelines shape this project.
 
 # ---------- Download and Extract Prebuilt ChromaDB ----------
 def fetch_and_extract(repo_id, filename, target_dir):
