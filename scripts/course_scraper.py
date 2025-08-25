@@ -82,6 +82,28 @@ def main():
         print("❌ No courses found!")
         return 1
     
+    # Remove duplicates based on URL
+    print(f"\n🔍 Removing duplicates from {len(all_courses)} courses...")
+    seen_urls = set()
+    unique_courses = []
+    duplicates_removed = 0
+    
+    for course in all_courses:
+        course_url = course.get('url', '').strip()
+        if course_url and course_url not in seen_urls:
+            seen_urls.add(course_url)
+            unique_courses.append(course)
+        else:
+            duplicates_removed += 1
+    
+    if duplicates_removed > 0:
+        print(f"✅ Removed {duplicates_removed} duplicate courses")
+        print(f"📚 {len(unique_courses)} unique courses remaining")
+    else:
+        print("✅ No duplicates found")
+    
+    all_courses = unique_courses
+    
     # Process with LLM if requested
     if args.process_llm:
         print(f"\n🤖 Processing {len(all_courses)} courses with LLM...")

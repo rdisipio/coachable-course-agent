@@ -6,6 +6,8 @@ from abc import ABC, abstractmethod
 from typing import List, Dict
 import time
 import random
+import uuid
+from datetime import datetime
 
 
 class BaseScraper(ABC):
@@ -57,6 +59,7 @@ class BaseScraper(ABC):
             Standardized course dictionary
         """
         return {
+            'id': str(uuid.uuid4()),  # Generate unique ID for each course
             'title': raw_data.get('title', ''),
             'provider': raw_data.get('provider', ''),
             'url': raw_data.get('url', ''),
@@ -71,6 +74,8 @@ class BaseScraper(ABC):
             'certificate': raw_data.get('certificate', False),
             'instructor': raw_data.get('instructor', ''),
             'skills': raw_data.get('skills', []),  # Will be populated later with ESCO mapping
+            'source_platform': raw_data.get('source_platform', ''),
+            'scraped_at': datetime.now().isoformat(),
         }
     
     def _parse_duration(self, duration_str: str) -> int:

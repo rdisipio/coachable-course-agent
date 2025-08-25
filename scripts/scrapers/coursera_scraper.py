@@ -97,12 +97,78 @@ class CourseraScraper(BaseScraper):
                 href = link_elem['href']
                 url = self.base_url + href if href.startswith('/') else href
             
-            # Extract any text content for basic info
-            all_text = course_element.get_text(separator=' | ', strip=True)
+            # Improved description extraction - try multiple approaches
+            description = ''
+            
+            # First, try to find specific description elements
+            desc_selectors = [
+                'p[class*="description"]',
+                'div[class*="description"]',
+                'p[class*="summary"]',
+                'div[class*="summary"]',
+                'div[data-track-component="description"]',
+                '[class*="body"]',  # Look for body text
+                'p',  # Fallback to any paragraph
+            ]
+            
+            for selector in desc_selectors:
+                desc_elem = course_element.select_one(selector)
+                if desc_elem and desc_elem.get_text(strip=True):
+                    desc_text = desc_elem.get_text(strip=True)
+                    # Only use if it's a reasonable description (not just metadata)
+                    if (len(desc_text) > 30 and 
+                        not desc_text.lower().startswith(('status:', 'skills:', 'duration:', 'rating:')) and
+                        not desc_text.isdigit()):
+                        description = desc_text
+                        break
+            
+            # If no good description found, try to build one from multiple elements
+            if not description or len(description) < 30:
+                # Look for multiple text elements that might form a description
+                text_elements = []
+                
+                # Try different text-containing elements
+                for elem in course_element.find_all(['p', 'div', 'span'], string=True):
+                    text = elem.get_text(strip=True)
+                    if (text and len(text) > 10 and len(text) < 200 and
+                        not text.lower().startswith(('status:', 'skills:', 'duration:', 'rating:', 'enroll', 'free trial')) and
+                        not text.isdigit() and
+                        not text.endswith('|')):
+                        text_elements.append(text)
+                
+                if text_elements:
+                    # Take the longest meaningful text as description
+                    text_elements.sort(key=len, reverse=True)
+                    description = text_elements[0]
+                    
+            # If still no good description, get contextual information from the whole card
+            if not description or len(description) < 30:
+                # Get all text but clean it up more carefully
+                all_text_parts = []
+                for text_node in course_element.find_all(string=True):
+                    text = text_node.strip()
+                    if (text and len(text) > 5 and 
+                        not any(skip in text.lower() for skip in ['status:', 'free trial', 'enroll now', 'rating', '|']) and
+                        not text.isdigit()):
+                        all_text_parts.append(text)
+                
+                if all_text_parts and len(all_text_parts) > 1:
+                    # Create a meaningful description from the parts
+                    meaningful_parts = [part for part in all_text_parts if len(part) > 15]
+                    if meaningful_parts:
+                        description = '. '.join(meaningful_parts[:2])
+                        if not description.endswith('.'):
+                            description += '.'
+                    else:
+                        # Fallback to joining shorter parts
+                        description = ' '.join(all_text_parts[:5])
+                        if len(description) > 300:
+                            description = description[:300] + '...'
             
             # Try to find provider/university name
             provider = 'Coursera'
             provider_indicators = ['university', 'college', 'institute', 'school']
+            all_text = course_element.get_text(separator=' ', strip=True)
             words = all_text.lower().split()
             for i, word in enumerate(words):
                 if any(indicator in word for indicator in provider_indicators):
@@ -120,7 +186,7 @@ class CourseraScraper(BaseScraper):
                 'title': title,
                 'provider': provider,
                 'url': url,
-                'description': all_text[:200] if len(all_text) > 50 else '',  # Use card text as description
+                'description': description,  # Use the improved description
                 'rating': None,
                 'enrollment_count': None,
                 'level': 'unknown',
@@ -129,6 +195,7 @@ class CourseraScraper(BaseScraper):
                 'format': 'online',
                 'language': 'en',
                 'certificate': True,  # Most Coursera courses offer certificates
+                'source_platform': 'coursera',  # Add source platform for standardization
             }
             
         except Exception as e:
