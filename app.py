@@ -69,7 +69,7 @@ def render_course_card(course):
     
     # Generate "because" chips
     because_chips = generate_because_chips(course)
-    because_text = " ".join([f"`{chip}`" for chip in because_chips])
+    because_text = " • ".join(because_chips)
     
     # Get confidence score and format it
     confidence = course.get('confidence_score', 0)
