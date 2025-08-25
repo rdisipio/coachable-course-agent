@@ -110,26 +110,6 @@ from coachable_course_agent.justifier_chain import justify_recommendations
 from coachable_course_agent.feedback_processor import process_feedback
 
 
-def expectation_banner():
-    banner_text = """
-    ### 🤖 What this agent does
-    - Matches your **skills and goals** to ESCO skills.
-    - Retrieves and ranks relevant courses.
-    - Explains *why* each course fits you.
-    - Lets you give feedback to improve suggestions.
-
-    ### 🚫 What this agent doesn't do (yet)
-    - Guarantee prices, certification status, or course dates.
-    - Replace human career guidance.
-
-    ### 🔒 About your data
-    - Your profile is saved **locally in this app**, not in a central database.
-    - A Large Language Model (LLM) is called to generate explanations.
-    - You can view, edit, or delete your profile and feedback anytime.
-    """
-    return banner_text
-
-
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
@@ -138,7 +118,22 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     feedback_log_state = gr.State(value=[])  # List of feedbacks
 
     with gr.Accordion("Before we start...", open=True):
-        gr.Markdown(expectation_banner())
+        gr.Markdown("""
+### 🤖 What this agent does
+- Matches your **skills and goals** to ESCO skills.
+- Retrieves and ranks relevant courses.
+- Explains *why* each course fits you.
+- Lets you give feedback to improve suggestions.
+
+### 🚫 What this agent doesn't do (yet)
+- Guarantee prices, certification status, or course dates.
+- Replace human career guidance.
+
+### 🔒 About your data
+- Your profile is saved **locally in this app**, not in a central database.
+- A Large Language Model (LLM) is called to generate explanations.
+- You can view, edit, or delete your profile and feedback anytime.
+        """)
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
