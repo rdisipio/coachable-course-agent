@@ -6,6 +6,7 @@ colorTo: indigo
 sdk: gradio
 app_file: app.py
 pinned: false
+sdk_version: 5.43.1
 ---
 
 # Coachable Course Agent
