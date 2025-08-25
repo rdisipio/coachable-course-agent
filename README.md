@@ -19,11 +19,13 @@ This agent doesn't just rank courses — it walks alongside the user, learning f
 This project started as a clever demo. It has since grown into something more fundamental: a principled foundation for human-AI interaction in learning and career growth.
 
 The goal is simple but ambitious:  
-**align what’s technically possible with what is humanly meaningful.**
+**Align what’s technically possible with what is humanly meaningful.**
 
 Guided by the [Google People + AI Guidebook](https://pair.withgoogle.com/guidebook/) and best practices from UX research, the agent is designed not just to recommend courses, but to *listen, adapt, and explain itself*. Every recommendation is transparent, every piece of feedback shapes the next interaction, and every design choice centers on trust and user agency.
 
 This repo is intentionally unfinished in places. It leaves space for collaboration, critique, and refinement — because building human-centered AI is not a solo act.
+I believe that a project like this can make a difference.  
+As Muse once sang, let’s conspire to *“ignite all the souls that would die just to feel alive.”*
 
 
 ## ✨ Key Features
