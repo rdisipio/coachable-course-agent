@@ -1,5 +1,6 @@
 import chromadb
 from transformers import pipeline
+from .utils import calculate_confidence_scores
 
 # Create HuggingFace sentence embedding pipeline
 embedding_pipeline = pipeline("feature-extraction", model="sentence-transformers/all-MiniLM-L6-v2", tokenizer="sentence-transformers/all-MiniLM-L6-v2")
@@ -53,12 +54,16 @@ def query_similar_courses(vectorstore, user_profile, top_n=10):
     # LangChain Chroma API: returns list of (Document, score) tuples
     results = vectorstore.similarity_search_with_score(query_text, k=top_n)
 
-    # Extract metadata and scores from Documents
+    # Extract scores and calculate confidence scores
+    scores = [score for _, score in results]
+    confidence_scores = calculate_confidence_scores(scores)
+
+    # Extract metadata and add confidence scores
     courses = []
-    for doc, score in results:
+    for i, (doc, score) in enumerate(results):
         course = dict(doc.metadata)
-        # Convert distance to similarity score (closer to 1 = more similar)
-        course['confidence_score'] = max(0, 1 - score)
+        course['confidence_score'] = confidence_scores[i]
+        
         # Store query components for "because" chips
         course['query_goal'] = user_goal_str
         course['query_missing_skills'] = missing_skills_str[:3]  # Top 3 missing skills
