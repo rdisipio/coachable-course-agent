@@ -169,7 +169,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     rec_index_state = gr.State(value=0)  # Current index in recommendations
     feedback_log_state = gr.State(value=[])  # List of feedbacks
 
-    with gr.Accordion("Before we start...", open=True):
+    with gr.Accordion("Before we start...", open=True) as expectation_accordion:
         gr.Markdown("""
 ### 🤖 What this agent does
 - Matches your **skills and goals** to ESCO skills.
@@ -296,7 +296,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             gr.update(visible=True),
             gr.update(visible=True),
             chat_history,             # chatbox
-            gr.update(visible=False)  # hide new_recs_btn until feedback loop is finished
+            gr.update(visible=False),  # hide new_recs_btn until feedback loop is finished
+            gr.update(open=False)     # collapse the expectation accordion
         )
 
 
@@ -320,7 +321,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             feedback_log_state,   # store feedback log
             approve_btn, adjust_btn, reject_btn, suggest_btn,
             chatbox,              # update chatbox
-            new_recs_btn          # update new_recs_btn (pad for output count)
+            new_recs_btn,         # update new_recs_btn (pad for output count)
+            expectation_accordion # collapse the accordion
         ]
     )
 
@@ -499,7 +501,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     )
     def on_new_recs_click(user_id_state):
         # Reload user profile and get new recommendations
-        return on_see_recommendations_click(user_id_state)
+        result = on_see_recommendations_click(user_id_state)
+        # Keep the accordion collapsed when getting new recommendations
+        return result
 
     new_recs_btn.click(
         on_new_recs_click,
@@ -520,7 +524,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             feedback_log_state,   # store feedback log
             approve_btn, adjust_btn, reject_btn, suggest_btn,
             chatbox,
-            new_recs_btn
+            new_recs_btn,
+            expectation_accordion # keep accordion collapsed
         ]
     )
 
