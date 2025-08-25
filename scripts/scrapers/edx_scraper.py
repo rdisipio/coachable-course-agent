@@ -56,9 +56,12 @@ class EdxScraper(BaseScraper):
             
         except Exception as e:
             print(f"    Error searching edX: {e}")
-            # Return mock data for now
-            return self._get_mock_edx_data(topic, count)
         
+        if courses:
+            print(f"    Successfully scraped {len(courses)} real courses")
+        else:
+            print(f"    No courses found")
+            
         return courses
     
     def extract_course_data(self, course_element) -> Dict:
@@ -104,28 +107,3 @@ class EdxScraper(BaseScraper):
         except Exception as e:
             print(f"      Error extracting course data: {e}")
             return {}
-    
-    def _get_mock_edx_data(self, topic: str, count: int) -> List[Dict]:
-        """Return mock edX data for testing (remove once scraping works)"""
-        mock_courses = []
-        for i in range(min(count, 3)):
-            course = {
-                'title': f'{topic.title()} Fundamentals - MITx',
-                'provider': 'MIT' if i == 0 else 'Harvard' if i == 1 else 'UC Berkeley',
-                'url': f'https://www.edx.org/course/{topic.replace(" ", "-")}-fundamentals-{i+1}',
-                'description': f'Learn {topic} from world-class universities.',
-                'duration_hours': 40 + i * 20,
-                'level': 'intermediate' if i == 0 else 'advanced' if i == 1 else 'beginner',
-                'format': 'self-paced',
-                'price': 0.0 if i == 2 else 99.0 + i * 50,  # Some free, some paid
-                'rating': 4.4 + i * 0.1,
-                'enrollment_count': 25000 + i * 5000,
-                'language': 'en',
-                'certificate': True,
-                'instructor': f'Professor {topic.title()} {i+1}',
-                'skills': [],
-            }
-            mock_courses.append(course)
-        
-        print(f"    Using mock data: {len(mock_courses)} courses")
-        return mock_courses

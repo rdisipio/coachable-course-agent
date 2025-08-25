@@ -57,9 +57,12 @@ class UdemyScraper(BaseScraper):
             
         except Exception as e:
             print(f"    Error searching Udemy: {e}")
-            # Return mock data for now
-            return self._get_mock_udemy_data(topic, count)
         
+        if courses:
+            print(f"    Successfully scraped {len(courses)} real courses")
+        else:
+            print(f"    No courses found")
+            
         return courses
     
     def extract_course_data(self, course_element) -> Dict:
@@ -116,28 +119,3 @@ class UdemyScraper(BaseScraper):
         except Exception as e:
             print(f"      Error extracting course data: {e}")
             return {}
-    
-    def _get_mock_udemy_data(self, topic: str, count: int) -> List[Dict]:
-        """Return mock Udemy data for testing (remove once scraping works)"""
-        mock_courses = []
-        for i in range(min(count, 3)):
-            course = {
-                'title': f'Complete {topic.title()} Bootcamp {i+1}',
-                'provider': 'Udemy',
-                'url': f'https://www.udemy.com/course/{topic.replace(" ", "-")}-bootcamp-{i+1}/',
-                'description': f'Master {topic} from beginner to expert level.',
-                'duration_hours': 30 + i * 15,
-                'level': 'beginner' if i == 0 else 'intermediate' if i == 1 else 'advanced',
-                'format': 'self-paced',
-                'price': 89.99 + i * 20,
-                'rating': 4.3 + i * 0.1,
-                'enrollment_count': 50000 + i * 10000,
-                'language': 'en',
-                'certificate': True,
-                'instructor': f'{topic.title()} Instructor {i+1}',
-                'skills': [],
-            }
-            mock_courses.append(course)
-        
-        print(f"    Using mock data: {len(mock_courses)} courses")
-        return mock_courses

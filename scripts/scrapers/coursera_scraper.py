@@ -37,8 +37,14 @@ class CourseraScraper(BaseScraper):
             
             soup = BeautifulSoup(response.content, 'html.parser')
             
-            # Find course cards (this selector may need adjustment based on Coursera's current HTML)
-            course_cards = soup.find_all('div', class_='cds-CommonCard-container')[:count]
+            # Find course cards - updated selector based on current Coursera HTML
+            course_cards = soup.find_all('div', class_='cds-CommonCard-clickArea')[:count]
+            
+            if not course_cards:
+                # Fallback to broader selector
+                course_cards = soup.select('div[class*="cds-CommonCard"]')[:count]
+            
+            print(f"    Found {len(course_cards)} course cards")
             
             for card in course_cards:
                 try:
@@ -58,60 +64,68 @@ class CourseraScraper(BaseScraper):
             
         except Exception as e:
             print(f"    Error searching Coursera: {e}")
-            # Return mock data for now - you can remove this once scraping works
-            return self._get_mock_coursera_data(topic, count)
         
+        # Return whatever we found (might be empty)
+        if courses:
+            print(f"    Successfully scraped {len(courses)} real courses")
+        else:
+            print(f"    No courses found")
+            
         return courses
     
     def extract_course_data(self, course_element) -> Dict:
         """Extract course data from Coursera course card"""
         try:
-            # These selectors may need adjustment based on current Coursera HTML structure
-            title_elem = course_element.find('h3') or course_element.find('h2')
-            title = title_elem.get_text(strip=True) if title_elem else ''
+            # Extract title - try multiple selectors
+            title_elem = (course_element.find('h3') or 
+                         course_element.find('h2') or 
+                         course_element.find('h4') or
+                         course_element.find(string=True, class_=lambda x: x and 'title' in x.lower()))
+            title = title_elem.get_text(strip=True) if hasattr(title_elem, 'get_text') else str(title_elem).strip() if title_elem else ''
             
-            # Extract URL
+            # Extract URL - look for any link
             link_elem = course_element.find('a', href=True)
-            url = self.base_url + link_elem['href'] if link_elem and link_elem['href'].startswith('/') else link_elem['href'] if link_elem else ''
+            if not link_elem:
+                # Look in parent elements
+                parent = course_element.parent
+                while parent and not link_elem:
+                    link_elem = parent.find('a', href=True)
+                    parent = parent.parent
+                    
+            url = ''
+            if link_elem:
+                href = link_elem['href']
+                url = self.base_url + href if href.startswith('/') else href
             
-            # Extract provider/university
-            provider_elem = course_element.find('span', class_='partner-name') or course_element.find('div', class_='partner')
-            provider = provider_elem.get_text(strip=True) if provider_elem else 'Coursera'
+            # Extract any text content for basic info
+            all_text = course_element.get_text(separator=' | ', strip=True)
             
-            # Extract rating
-            rating_elem = course_element.find('span', class_='ratings-text')
-            rating = None
-            if rating_elem:
-                rating_text = rating_elem.get_text(strip=True)
-                try:
-                    rating = float(rating_text.split()[0])
-                except:
-                    pass
+            # Try to find provider/university name
+            provider = 'Coursera'
+            provider_indicators = ['university', 'college', 'institute', 'school']
+            words = all_text.lower().split()
+            for i, word in enumerate(words):
+                if any(indicator in word for indicator in provider_indicators):
+                    # Take surrounding words as potential provider name
+                    start = max(0, i-2)
+                    end = min(len(words), i+3)
+                    potential_provider = ' '.join(words[start:end])
+                    if len(potential_provider) < 50:  # Reasonable length
+                        provider = potential_provider.title()
+                        break
             
-            # Extract enrollment count
-            enrollment_elem = course_element.find('span', class_='enrollment-number')
-            enrollment = None
-            if enrollment_elem:
-                enrollment_text = enrollment_elem.get_text(strip=True)
-                # Parse enrollment (e.g., "1.2M", "500K")
-                try:
-                    if 'M' in enrollment_text:
-                        enrollment = int(float(enrollment_text.replace('M', '')) * 1000000)
-                    elif 'K' in enrollment_text:
-                        enrollment = int(float(enrollment_text.replace('K', '')) * 1000)
-                except:
-                    pass
+            print(f"      Extracted: '{title[:50]}...' from {provider}")
             
             return {
                 'title': title,
                 'provider': provider,
                 'url': url,
-                'description': '',  # Would need to visit individual course page for full description
-                'rating': rating,
-                'enrollment_count': enrollment,
-                'level': 'unknown',  # Would need course page for level
-                'duration': '',  # Would need course page for duration
-                'price': '',  # Would need course page for price
+                'description': all_text[:200] if len(all_text) > 50 else '',  # Use card text as description
+                'rating': None,
+                'enrollment_count': None,
+                'level': 'unknown',
+                'duration': '',
+                'price': '',
                 'format': 'online',
                 'language': 'en',
                 'certificate': True,  # Most Coursera courses offer certificates
@@ -120,28 +134,3 @@ class CourseraScraper(BaseScraper):
         except Exception as e:
             print(f"      Error extracting course data: {e}")
             return {}
-    
-    def _get_mock_coursera_data(self, topic: str, count: int) -> List[Dict]:
-        """Return mock Coursera data for testing (remove once scraping works)"""
-        mock_courses = []
-        for i in range(min(count, 3)):
-            course = {
-                'title': f'Introduction to {topic.title()} - Part {i+1}',
-                'provider': 'Stanford University' if i == 0 else 'University of Washington' if i == 1 else 'Google',
-                'url': f'https://www.coursera.org/learn/{topic.replace(" ", "-")}-{i+1}',
-                'description': f'Learn the fundamentals of {topic} in this comprehensive course.',
-                'duration_hours': 20 + i * 10,
-                'level': 'beginner' if i == 0 else 'intermediate' if i == 1 else 'advanced',
-                'format': 'self-paced',
-                'price': 0.0 if i == 0 else 49.0 + i * 10,
-                'rating': 4.5 - i * 0.2,
-                'enrollment_count': 100000 - i * 20000,
-                'language': 'en',
-                'certificate': True,
-                'instructor': f'Dr. {topic.title()} Expert {i+1}',
-                'skills': [],
-            }
-            mock_courses.append(course)
-        
-        print(f"    Using mock data: {len(mock_courses)} courses")
-        return mock_courses

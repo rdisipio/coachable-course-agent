@@ -33,7 +33,7 @@ def main():
     parser.add_argument('--count', type=int, default=10, help='Number of courses to scrape per platform')
     parser.add_argument('--sources', default='coursera,udemy,edx', 
                        help='Comma-separated list of platforms (coursera,udemy,edx)')
-    parser.add_argument('--output', help='Output JSON file (default: data/courses_TOPIC_TIMESTAMP.json)')
+    parser.add_argument('--output', help='Output JSON file (default: data/scraped_courses/raw_data/courses_TOPIC_TIMESTAMP.json)')
     parser.add_argument('--process-llm', action='store_true', 
                        help='Process scraped data with LLM for standardization')
     
@@ -53,7 +53,7 @@ def main():
     if not args.output:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_topic = args.topic.replace(' ', '_').replace('/', '_')
-        args.output = f"data/courses_{safe_topic}_{timestamp}.json"
+        args.output = f"data/scraped_courses/raw_data/courses_{safe_topic}_{timestamp}.json"
     
     print(f"🔍 Scraping {args.count} courses about '{args.topic}' from: {', '.join(sources)}")
     
