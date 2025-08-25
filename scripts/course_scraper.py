@@ -4,9 +4,9 @@ Course Scraper CLI
 Scrapes courses from a single platform and stores them as JSON.
 
 Usage:
-    python scripts/course_scraper.py --topic "data science" --platform coursera --count 10
-    python scripts/course_scraper.py --topic "machine learning" --platform udemy --count 5
-    python scripts/course_scraper.py --topic "web development" --platform edx --count 3
+    pipenv run python scripts/course_scraper.py --topic "data science" --platform coursera --count 10
+    pipenv run python scripts/course_scraper.py --topic "machine learning" --platform udemy --count 5
+    pipenv run python scripts/course_scraper.py --topic "web development" --platform edx --count 3
 """
 
 import argparse

@@ -1,0 +1,65 @@
+# Course Scraping Configuration
+# This file defines what topics to scrape, from which platforms, and how many courses per topic
+
+# Global settings
+defaults:
+  count: 10                    # Default number of courses per topic per platform
+  process_llm: false          # Whether to process with LLM by default
+  
+# Topics to scrape with their specific settings
+topics:
+  - name: "machine learning"
+    platforms:
+      - name: "coursera"
+        count: 15              # Override default count for this topic/platform
+      - name: "udemy"
+        count: 10
+      - name: "edx"
+        count: 5
+        
+  - name: "data science"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 8
+        
+  - name: "artificial intelligence"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 5
+    process_llm: true          # Enable LLM processing for this topic
+    
+  - name: "python programming"
+    platforms:
+      - name: "coursera"
+        # count will use default (10)
+      - name: "udemy"
+        count: 15
+        
+  - name: "web development"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "udemy"
+        count: 12
+      - name: "edx"
+        count: 3
+        
+  - name: "cloud computing"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 5
+
+# Platform-specific settings (optional)
+platform_settings:
+  coursera:
+    delay_between_requests: 2   # Seconds to wait between requests
+  udemy:
+    delay_between_requests: 3   # Longer delay for Udemy
+  edx:
+    delay_between_requests: 1
