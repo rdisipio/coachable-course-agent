@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
 Course Scraper CLI
-Scrapes courses from multiple platforms and stores them as JSON.
+Scrapes courses from a single platform and stores them as JSON.
 
 Usage:
-    python scripts/course_scraper.py --topic "data science" --count 10 --sources coursera,udemy,edx
-    python scripts/course_scraper.py --topic "machine learning" --count 5 --sources coursera
+    python scripts/course_scraper.py --topic "data science" --platform coursera --count 10
+    python scripts/course_scraper.py --topic "machine learning" --platform udemy --count 5
+    python scripts/course_scraper.py --topic "web development" --platform edx --count 3
 """
 
 import argparse
@@ -30,65 +31,55 @@ SCRAPER_MAP = {
 def main():
     parser = argparse.ArgumentParser(description='Scrape courses from online platforms')
     parser.add_argument('--topic', required=True, help='Course topic to search for')
-    parser.add_argument('--count', type=int, default=10, help='Number of courses to scrape per platform')
-    parser.add_argument('--sources', default='coursera,udemy,edx', 
-                       help='Comma-separated list of platforms (coursera,udemy,edx)')
-    parser.add_argument('--output', help='Output JSON file (default: data/scraped_courses/raw_data/courses_TOPIC_TIMESTAMP.json)')
+    parser.add_argument('--count', type=int, default=10, help='Number of courses to scrape')
+    parser.add_argument('--platform', required=True, choices=['coursera', 'udemy', 'edx'],
+                       help='Platform to scrape from (coursera, udemy, or edx)')
     parser.add_argument('--process-llm', action='store_true', 
                        help='Process scraped data with LLM for standardization')
     
     args = parser.parse_args()
     
-    # Parse sources
-    sources = [s.strip() for s in args.sources.split(',')]
+    # Get the platform
+    platform = args.platform
     
-    # Validate sources
-    invalid_sources = [s for s in sources if s not in SCRAPER_MAP]
-    if invalid_sources:
-        print(f"Error: Invalid sources: {invalid_sources}")
-        print(f"Available sources: {list(SCRAPER_MAP.keys())}")
+    # Validate platform
+    if platform not in SCRAPER_MAP:
+        print(f"Error: Invalid platform: {platform}")
+        print(f"Available platforms: {list(SCRAPER_MAP.keys())}")
         return 1
     
-    # Set output file
-    if not args.output:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        safe_topic = args.topic.replace(' ', '_').replace('/', '_')
-        args.output = f"data/scraped_courses/raw_data/courses_{safe_topic}_{timestamp}.json"
+    print(f"🔍 Scraping {args.count} courses about '{args.topic}' from {platform}")
     
-    print(f"🔍 Scraping {args.count} courses about '{args.topic}' from: {', '.join(sources)}")
+    courses = []
     
-    all_courses = []
+    # Scrape from the platform
+    print(f"\n📚 Scraping {platform}...")
+    try:
+        scraper = SCRAPER_MAP[platform]()
+        courses = scraper.search_courses(args.topic, args.count)
+        
+        # Add source info to each course
+        for course in courses:
+            course['source_platform'] = platform
+            course['scraped_at'] = datetime.now().isoformat()
+        
+        print(f"✅ Found {len(courses)} courses from {platform}")
+        
+    except Exception as e:
+        print(f"❌ Error scraping {platform}: {e}")
+        return 1
     
-    # Scrape from each platform
-    for source in sources:
-        print(f"\n📚 Scraping {source}...")
-        try:
-            scraper = SCRAPER_MAP[source]()
-            courses = scraper.search_courses(args.topic, args.count)
-            
-            # Add source info to each course
-            for course in courses:
-                course['source_platform'] = source
-                course['scraped_at'] = datetime.now().isoformat()
-            
-            all_courses.extend(courses)
-            print(f"✅ Found {len(courses)} courses from {source}")
-            
-        except Exception as e:
-            print(f"❌ Error scraping {source}: {e}")
-            continue
-    
-    if not all_courses:
+    if not courses:
         print("❌ No courses found!")
         return 1
     
     # Remove duplicates based on URL
-    print(f"\n🔍 Removing duplicates from {len(all_courses)} courses...")
+    print(f"\n🔍 Removing duplicates from {len(courses)} courses...")
     seen_urls = set()
     unique_courses = []
     duplicates_removed = 0
     
-    for course in all_courses:
+    for course in courses:
         course_url = course.get('url', '').strip()
         if course_url and course_url not in seen_urls:
             seen_urls.add(course_url)
@@ -102,47 +93,46 @@ def main():
     else:
         print("✅ No duplicates found")
     
-    all_courses = unique_courses
+    courses = unique_courses
     
     # Process with LLM if requested
     if args.process_llm:
-        print(f"\n🤖 Processing {len(all_courses)} courses with LLM...")
+        print(f"\n🤖 Processing {len(courses)} courses with LLM...")
         try:
             processor = LLMProcessor()
-            all_courses = processor.standardize_courses(all_courses)
+            courses = processor.standardize_courses(courses)
             print("✅ LLM processing complete")
         except Exception as e:
             print(f"⚠️  LLM processing failed: {e}")
             print("Continuing with raw scraped data...")
     
     # Save to JSON
-    os.makedirs(os.path.dirname(args.output), exist_ok=True)
+    os.makedirs("data/scraped_courses/raw_data", exist_ok=True)
+    
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    safe_topic = args.topic.replace(' ', '_').replace('/', '_')
+    output_file = f"data/scraped_courses/raw_data/{platform}_{safe_topic}_{timestamp}.json"
     
     output_data = {
         'metadata': {
             'topic': args.topic,
-            'sources': sources,
-            'total_courses': len(all_courses),
+            'platform': platform,
+            'total_courses': len(courses),
             'scraped_at': datetime.now().isoformat(),
             'processed_with_llm': args.process_llm
         },
-        'courses': all_courses
+        'courses': courses
     }
     
-    with open(args.output, 'w', encoding='utf-8') as f:
+    with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(output_data, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✅ Saved {len(all_courses)} courses to {args.output}")
+    print(f"\n✅ Saved {len(courses)} courses to {output_file}")
     
     # Summary stats
-    by_platform = {}
-    for course in all_courses:
-        platform = course.get('source_platform', 'unknown')
-        by_platform[platform] = by_platform.get(platform, 0) + 1
-    
-    print("\n📊 Summary:")
-    for platform, count in by_platform.items():
-        print(f"  {platform}: {count} courses")
+    print(f"\n📊 Summary:")
+    print(f"  {platform}: {len(courses)} courses")
+    print(f"\n🎯 Total: {len(courses)} courses saved")
 
 
 if __name__ == '__main__':
