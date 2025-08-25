@@ -211,8 +211,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         with gr.Column(scale=1):
             gr.Markdown("## 💬 Chat with the Agent")
             chatbox = gr.Chatbot(type='messages', elem_id="chatbox")
-            chat_input = gr.Textbox(label="Type your message")
-            send_btn = gr.Button("Send")
+            chat_input = gr.Textbox(label="Type your message", interactive=False, placeholder="Chat will be enabled when feedback explanation is needed...")
+            send_btn = gr.Button("Send", interactive=False)
         # Right: Recommendations
         with gr.Column(scale=1):
             gr.Markdown("## 🎯 Course Recommendations")
@@ -341,9 +341,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                idx, feedback_log, chatbox, updated_memory, 
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
+                gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=True),  # Show new_recs_btn
-                gr.update(), gr.update()  # pad to 12 outputs
+                gr.update()  # pad to 12 outputs
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -366,7 +368,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(),  # recommendations (no change)
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=True),
+                idx, feedback_log, chatbox, agent_memory, 
+                gr.update(interactive=True, placeholder="Please explain your feedback..."), # enable chat_input
+                gr.update(visible=True, interactive=True),  # enable send_btn
                 gr.update(visible=False), gr.update()  # pad to 12 outputs
             )
         # Otherwise, process feedback and move to next course
@@ -390,7 +394,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False),
+                next_idx, feedback_log, chatbox, agent_memory, 
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
+                gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=False), gr.update()  # pad to 12 outputs
             )
         else:
@@ -400,7 +406,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                next_idx, feedback_log, chatbox, updated_memory, 
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
+                gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=True), gr.update()  # pad to 12 outputs
             )
 
@@ -412,7 +420,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory = format_memory(updated_profile) if updated_profile else ""
             return (
                 gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                idx, feedback_log, chatbox, updated_memory, 
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
+                gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=True), gr.update()  # pad to 12 outputs
             )
         course = recs[idx]
@@ -447,7 +457,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, agent_memory, "", gr.update(visible=False),
+                next_idx, feedback_log, chatbox, agent_memory, 
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
+                gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=False), gr.update()  # pad to 12 outputs
             )
         else:
@@ -457,7 +469,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, updated_memory, "", gr.update(visible=False),
+                next_idx, feedback_log, chatbox, updated_memory, 
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
+                gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=True), gr.update()  # pad to 12 outputs
             )
 
