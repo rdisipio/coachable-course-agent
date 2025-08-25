@@ -1,3 +1,13 @@
+# ===========================================================
+#   Coachable Course Agent — Design Manifesto
+#
+#   • From clever demo ➜ to principled foundation
+#   • Align what’s technically possible with what’s humanly meaningful
+#   • Build with Google People+AI guidelines as a compass
+#   • Leave space for UX voices to shape the experience
+# ===========================================================
+
+
 import os
 import json
 import subprocess
@@ -12,10 +22,6 @@ GOALS = "Support cross-functional collaboration and accelerate internal mobility
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
-
-# Let's turn this project from a clever demo into a foundation. 
-# Let's align what is technically possible with what is humanly meaningful.
-# Google People+AI guidelines shape this project.
 
 # ---------- Download and Extract Prebuilt ChromaDB ----------
 def fetch_and_extract(repo_id, filename, target_dir):
