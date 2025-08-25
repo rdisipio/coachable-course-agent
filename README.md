@@ -25,7 +25,7 @@ Guided by the [Google People + AI Guidebook](https://pair.withgoogle.com/guidebo
 
 This repo is intentionally unfinished in places. It leaves space for collaboration, critique, and refinement — because building human-centered AI is not a solo act.
 I believe that a project like this can make a difference.  
-As Muse once sang, let’s conspire to *“ignite all the souls that would die just to feel alive.”*
+As Muse once sang, let’s *“conspire to ignite all the souls that would die just to feel alive.”*
 
 
 ## ✨ Key Features
