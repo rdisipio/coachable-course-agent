@@ -86,8 +86,17 @@ def render_course_card(course, explanation=None):
 {confidence_text} {confidence_bar}"""
     
     # Add Why section if explanation is provided
-    if explanation:
+    if explanation and explanation.strip():
         card += f"\n\n**Why:**\n> {explanation}"
+    else:
+        # Provide a basic explanation based on confidence
+        if confidence > 0.7:
+            fallback = "This course aligns well with your goals and skill gaps."
+        elif confidence > 0.4:
+            fallback = "This course partially matches your profile and learning objectives."
+        else:
+            fallback = "This course may help fill some of your identified skill gaps."
+        card += f"\n\n**Why:**\n> {fallback}"
     
     # Add Because section
     card += f"\n\n**Because:** {because_text}"
@@ -265,6 +274,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                         course_copy['explanation'] = str(exp)
                 else:
                     course_copy['explanation'] = str(exp)
+            else:
+                # No explanation available, provide a fallback
+                course_copy['explanation'] = "This course matches your profile based on skill alignment and learning goals."
             recommendations_list.append(course_copy)
 
         # Start at the first course
