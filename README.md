@@ -29,6 +29,7 @@ I believe that a project like this can make a difference in the world: helping p
 As Muse once sang, let’s 
 🎵 *“conspire to ignite all the souls that would die just to feel alive.”* 🎵
 
+---
 
 ## ✨ Key Features
 
