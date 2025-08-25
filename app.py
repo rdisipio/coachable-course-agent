@@ -66,12 +66,64 @@ def render_course_card(course):
             skills_str = ", ".join(str(skill) for skill in skills)
     else:
         skills_str = ""
+    
+    # Generate "because" chips
+    because_chips = generate_because_chips(course)
+    because_text = " ".join([f"`{chip}`" for chip in because_chips])
+    
+    # Get confidence score and format it
+    confidence = course.get('confidence_score', 0)
+    confidence_text = f"**Confidence:** {confidence:.2f}"
+    confidence_bar = "🟩" * int(confidence * 10) + "⬜" * (10 - int(confidence * 10))
+    
     return f"""### [{course.get('title', '')}]({course.get('url', '')})
 **Provider**: {course.get('provider', '')}  
 **Duration**: {course.get('duration_hours', '?')} hrs  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
 **Skills**: {skills_str}
+
+{confidence_text} {confidence_bar}
+
+**Because:** {because_text}
 """
+
+def generate_because_chips(course):
+    """Generate at least 2 'because' chips showing why this course was recommended."""
+    chips = []
+    
+    # Goal-based chip
+    if course.get('query_goal'):
+        goal_words = course.get('query_goal', '').split()[:3]  # First 3 words of goal
+        if goal_words:
+            chips.append(f"goal: {' '.join(goal_words)}")
+    
+    # Missing skills chips (up to 2)
+    missing_skills = course.get('query_missing_skills', [])
+    for skill in missing_skills[:2]:
+        if skill:
+            chips.append(f"missing: {skill}")
+    
+    # Course-specific skills chips
+    course_skills = course.get('skills', '')
+    if isinstance(course_skills, str):
+        skill_list = [s.strip() for s in course_skills.split(',')][:2]
+        for skill in skill_list:
+            if skill:
+                chips.append(f"teaches: {skill}")
+    
+    # Preferences chip
+    preferences = course.get('query_preferences', '')
+    if preferences:
+        pref_words = preferences.split()[:2]  # First 2 preference words
+        if pref_words:
+            chips.append(f"style: {' '.join(pref_words)}")
+    
+    # Ensure we have at least 2 chips
+    if len(chips) < 2:
+        chips.append(f"level: {course.get('level', 'suitable')}")
+        chips.append(f"format: {course.get('format', 'available')}")
+    
+    return chips[:4]  # Max 4 chips to avoid clutter
 
 def format_memory(mem):
     known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])

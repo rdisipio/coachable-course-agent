@@ -40,6 +40,7 @@ def query_similar_courses(vectorstore, user_profile, top_n=10):
     Query the vector store for courses similar to the user's profile.
     Uses the user's goal, missing skills, and preferences to create a query embedding.
     Missing skills is a list of dictionary items with 'preferredLabel' and 'conceptUri'.
+    Returns courses with similarity scores for confidence display.
     """
     missing_skills = user_profile.get("missing_skills", [])
     missing_skills_str = [skill["preferredLabel"] for skill in missing_skills if skill.get("preferredLabel") != "N/A"]
@@ -49,10 +50,19 @@ def query_similar_courses(vectorstore, user_profile, top_n=10):
     company_goal_str = user_profile.get("company_goal", "")
     query_text = f"{user_goal_str} {company_goal_str} {missing_skills_str} {user_preferences_str}"
 
-    # LangChain Chroma API: returns list of Documents
-    results = vectorstore.similarity_search(query_text, k=top_n)
+    # LangChain Chroma API: returns list of (Document, score) tuples
+    results = vectorstore.similarity_search_with_score(query_text, k=top_n)
 
-    # Extract metadata from Documents
-    courses = [doc.metadata for doc in results]
+    # Extract metadata and scores from Documents
+    courses = []
+    for doc, score in results:
+        course = dict(doc.metadata)
+        # Convert distance to similarity score (closer to 1 = more similar)
+        course['confidence_score'] = max(0, 1 - score)
+        # Store query components for "because" chips
+        course['query_goal'] = user_goal_str
+        course['query_missing_skills'] = missing_skills_str[:3]  # Top 3 missing skills
+        course['query_preferences'] = user_preferences_str
+        courses.append(course)
     
     return courses
