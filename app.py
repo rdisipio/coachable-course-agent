@@ -142,8 +142,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
-        uid_input = gr.Textbox(label="User ID", placeholder="e.g. user_1")
-        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb")
+        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb", placeholder="Tell us about your background, current role, and career goals...")
         build_btn = gr.Button("Build Profile and Continue")
         profile_status = gr.Markdown()
         profile_json = gr.JSON(visible=False)
@@ -479,7 +478,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     )
 
 
-    def on_profile_submit(uid, blurb):
+    def on_profile_submit(blurb):
+        # Use a default user ID since sessions are isolated in HF Spaces
+        uid = "default_user"
         try:
             result_text, data = build_profile_from_bio(uid, blurb)
             # Add company goal to the user profile dict and persist it
@@ -489,7 +490,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 # Save updated profile with company goal
                 with open(f"{MEMORY_DIR}/{uid}.json", "w") as f:
                     json.dump(data, f, indent=2)
-            msg = f"✅ Profile created for **{uid}**.\n\n**Summary:** {result_text}"
+            msg = f"✅ Profile created successfully.\n\n**Summary:** {result_text}"
             # Show the 'See Recommendations' button after profile creation
             return (
                 gr.update(visible=True),   # profile_section
@@ -521,7 +522,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     build_btn.click(
         on_profile_submit,
-        inputs=[uid_input, blurb_input],
+        inputs=[blurb_input],
         outputs=[
             profile_section,      # show/hide
             recommend_section,    # show/hide
