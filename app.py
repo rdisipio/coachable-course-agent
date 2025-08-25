@@ -76,19 +76,18 @@ def render_course_card(course, explanation=None):
     confidence_text = f"**Confidence:** {confidence:.2f}"
     confidence_bar = "🟩" * int(confidence * 10) + "⬜" * (10 - int(confidence * 10))
     
-    # Build the card with proper order: Details → Why → Confidence → Because
+    # Build the card with proper order: Details → Confidence → Why → Because
     card = f"""### [{course.get('title', '')}]({course.get('url', '')})
 **Provider**: {course.get('provider', '')}  
 **Duration**: {course.get('duration_hours', '?')} hrs  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
-**Skills**: {skills_str}"""
+**Skills**: {skills_str}
+
+{confidence_text} {confidence_bar}"""
     
     # Add Why section if explanation is provided
     if explanation:
         card += f"\n\n**Why:**\n> {explanation}"
-    
-    # Add Confidence section
-    card += f"\n\n{confidence_text} {confidence_bar}"
     
     # Add Because section
     card += f"\n\n**Because:** {because_text}"
