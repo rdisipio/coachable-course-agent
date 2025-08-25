@@ -13,6 +13,8 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
+# Let's turn this project from a clever demo into a foundation. 
+# Let's align what is technically possible with what is humanly meaningful.
 
 # ---------- Download and Extract Prebuilt ChromaDB ----------
 def fetch_and_extract(repo_id, filename, target_dir):
