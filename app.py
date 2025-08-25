@@ -215,7 +215,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
         blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb", placeholder="Tell us about your background, current role, and career goals...")
-        build_btn = gr.Button("Build Profile and Continue")
+        gr.Markdown("💡 *Processing typically takes 2-3 seconds while we analyze your profile and match ESCO skills.*")
+        build_btn = gr.Button("Build Profile and Continue", variant="primary")
         profile_status = gr.Markdown()
         profile_json = gr.JSON(visible=False)
         see_recommendations_btn = gr.Button("See Recommendations", visible=False)
@@ -569,6 +570,10 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     def on_profile_submit(blurb):
         # Use a default user ID since sessions are isolated in HF Spaces
         uid = "default_user"
+        
+        # Show immediate processing feedback
+        processing_msg = "🔄 **Processing your profile...** This may take a few seconds while we analyze your background and match skills."
+        
         try:
             result_text, data = build_profile_from_bio(uid, blurb)
             # Add company goal to the user profile dict and persist it
@@ -585,7 +590,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=False),  # recommend_section
                 "",                       # recommendations (not used here)
                 "",                       # agent_memory (not used here)
-                msg,                       # profile_status (just the summary)
+                msg,                       # profile_status (success message)
                 uid,                       # user_id_state
                 gr.update(value=data, visible=False),  # profile_json (hide after creation)
                 "✌️ Profile created.",       # footer_status
