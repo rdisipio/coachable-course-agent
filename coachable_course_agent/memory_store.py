@@ -102,7 +102,7 @@ def format_memory_editor_display(user_id):
             feedback_insights = "\n\n**📊 Feedback Patterns:**\n"
             category_labels = {
                 "friction": "🚫 Friction (time/relevance issues)",
-                "bureaucracy": "📋 Bureaucracy (certification concerns)", 
+                "credibility": "� Credibility (provider/certification concerns)", 
                 "better_way": "🎯 Better Way (too broad/theoretical)",
                 "negative_impact": "❌ Negative Impact (misaligned goals)",
                 "positive": "✅ Positive feedback",

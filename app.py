@@ -170,7 +170,7 @@ def format_agent_memory_panel(mem):
                 category = f["classification"].get("category", "")
                 emoji_map = {
                     "friction": "🚫",
-                    "bureaucracy": "📋", 
+                    "credibility": "🔍", 
                     "better_way": "🎯",
                     "negative_impact": "❌",
                     "positive": "✅",
