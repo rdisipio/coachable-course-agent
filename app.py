@@ -679,7 +679,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     # Also update agent memory when goal is updated
     update_goal_btn.click(
-        lambda uid, goal: load_user_memory(uid),
+        lambda uid, goal: format_memory(load_user_profile(uid)),
         inputs=[user_id_state, goal_input],
         outputs=[agent_memory]
     )
@@ -692,7 +692,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     # Also update agent memory when skill is removed
     remove_skill_btn.click(
-        lambda uid, skill: load_user_memory(uid),
+        lambda uid, skill: format_memory(load_user_profile(uid)),
         inputs=[user_id_state, skill_input],
         outputs=[agent_memory]
     )
@@ -705,7 +705,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     # Also update agent memory when feedback is cleared
     clear_feedback_btn.click(
-        lambda uid: load_user_memory(uid),
+        lambda uid: format_memory(load_user_profile(uid)),
         inputs=[user_id_state],
         outputs=[agent_memory]
     )
