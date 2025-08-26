@@ -103,7 +103,7 @@ def format_memory_editor_display(user_id):
             category_labels = {
                 "friction": "🚫 Friction (time/relevance issues)",
                 "credibility": "� Credibility (provider/certification concerns)", 
-                "better_way": "🎯 Better Way (too broad/theoretical)",
+                "better_way": "🔄 Better Way (too broad/theoretical)",
                 "negative_impact": "❌ Negative Impact (misaligned goals)",
                 "positive": "✅ Positive feedback",
                 "other": "❓ Other/Unclassified"
