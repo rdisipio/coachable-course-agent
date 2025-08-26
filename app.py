@@ -171,7 +171,7 @@ def format_agent_memory_panel(mem):
                 emoji_map = {
                     "friction": "🚫",
                     "credibility": "🔍", 
-                    "better_way": "🎯",
+                    "better_way": "🔄",
                     "negative_impact": "❌",
                     "positive": "✅",
                     "other": "❓"
