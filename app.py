@@ -268,7 +268,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 skill_input = gr.Textbox(
                     label="Skill to Remove", 
                     placeholder="Type skill name (partial match works)...",
-                    lines=1
+                    lines=2
                 )
                 remove_skill_btn = gr.Button("Remove Skill", variant="secondary")
                 skill_status = gr.Markdown()
