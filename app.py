@@ -402,6 +402,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
+            updated_memory_editor = format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
@@ -409,7 +410,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=True),  # Show new_recs_btn
-                gr.update()  # pad to 12 outputs
+                updated_memory_editor  # update memory editor display
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -435,7 +436,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 idx, feedback_log, chatbox, agent_memory, 
                 gr.update(interactive=True, placeholder="Please explain your feedback..."), # enable chat_input
                 gr.update(visible=True, interactive=True),  # enable send_btn
-                gr.update(visible=False), gr.update()  # pad to 12 outputs
+                gr.update(visible=False), gr.update()  # pad outputs to match count - no memory display update needed here
             )
         # Otherwise, process feedback and move to next course
         feedback_entry = {
@@ -461,7 +462,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 next_idx, feedback_log, chatbox, agent_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=False), gr.update()  # pad to 12 outputs
+                gr.update(visible=False), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
             )
         else:
             # Update agent memory after feedback loop is finished
@@ -473,7 +474,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 next_idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True), gr.update()  # pad to 12 outputs
+                gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
             )
 
     def reason_action(reason, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
@@ -487,7 +488,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True), gr.update()  # pad to 12 outputs
+                gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -524,7 +525,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 next_idx, feedback_log, chatbox, agent_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=False), gr.update()  # pad to 12 outputs
+                gr.update(visible=False), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
             )
         else:
             # Update agent memory after feedback loop is finished
@@ -536,7 +537,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 next_idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True), gr.update()  # pad to 12 outputs
+                gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
             )
 
     for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
@@ -555,7 +556,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 agent_memory,         # update agent_memory (left column)
                 chat_input,           # update chat_input (text box)
                 send_btn,             # update send_btn
-                new_recs_btn          # update new_recs_btn (show/hide)
+                new_recs_btn,         # update new_recs_btn (show/hide)
+                memory_display        # update memory editor display
             ]
         )
 
@@ -575,7 +577,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             agent_memory,         # update agent_memory (left column)
             chat_input,           # update chat_input (text box)
             send_btn,             # update send_btn
-            new_recs_btn          # update new_recs_btn (show/hide)
+            new_recs_btn,         # update new_recs_btn (show/hide)
+            memory_display        # update memory editor display
         ]
     )
     def on_new_recs_click(user_id_state):
