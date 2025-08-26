@@ -58,3 +58,117 @@ def update_preferences(user_id, new_prefs):
             prefs[key] = list(updated)
 
     update_user_profile(user_id, profile)
+
+
+# Memory Editor UI Functions
+# =========================
+
+def load_user_memory(user_id):
+    """Load and display user memory in a readable format"""
+    if not user_id:
+        return "No user profile loaded."
+    
+    profile = load_user_profile(user_id)
+    
+    goal = profile.get("goal", "No goal set")
+    skills = profile.get("known_skills", [])
+    feedback_count = len(profile.get("feedback_log", []))
+    
+    # Format skills list
+    if skills:
+        formatted_skills = []
+        for skill in skills:
+            if isinstance(skill, dict):
+                skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
+            else:
+                skill_name = str(skill)
+            formatted_skills.append(f"• {skill_name}")
+        skills_text = "\n".join(formatted_skills)
+    else:
+        skills_text = "No skills recorded"
+    
+    memory_display = f"""### Current Memory Profile
+
+**🎯 Goal:**
+{goal}
+
+**🔧 Known Skills ({len(skills)}):**
+{skills_text}
+
+**📝 Feedback Log:**
+{feedback_count} feedback entries recorded
+    """
+    
+    return memory_display
+
+
+def update_goal_dialog(user_id):
+    """Return current goal for editing"""
+    if not user_id:
+        return ""
+    
+    profile = load_user_profile(user_id)
+    return profile.get("goal", "")
+
+
+def save_updated_goal(user_id, new_goal):
+    """Save the updated goal to user's memory"""
+    if not new_goal or not new_goal.strip():
+        return "Please enter a goal before saving"
+    
+    memory = load_user_profile(user_id)
+    memory["goal"] = new_goal.strip()
+    update_user_profile(user_id, memory)
+    
+    return f"Goal updated successfully!"
+
+
+def remove_skill(user_id, skill_to_remove):
+    """Remove a skill from user's memory"""
+    if not skill_to_remove or not skill_to_remove.strip():
+        return "Please enter a skill to remove", ""
+    
+    memory = load_user_profile(user_id)
+    
+    if not memory or "known_skills" not in memory:
+        return "No skills found to remove", ""
+    
+    skills = memory["known_skills"]
+    original_count = len(skills)
+    
+    # Remove skills that match (case-insensitive)
+    skill_to_remove_lower = skill_to_remove.strip().lower()
+    updated_skills = []
+    
+    for skill in skills:
+        if isinstance(skill, dict):
+            # Check preferredLabel for match
+            skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
+        else:
+            skill_name = str(skill)
+        
+        if skill_name.lower() != skill_to_remove_lower:
+            updated_skills.append(skill)
+    
+    removed_count = original_count - len(updated_skills)
+    
+    if removed_count > 0:
+        memory["known_skills"] = updated_skills
+        update_user_profile(user_id, memory)
+        return f"Removed {removed_count} skill(s) matching '{skill_to_remove}'", ""
+    else:
+        return f"No skill found matching '{skill_to_remove}'", ""
+
+
+def clear_feedback_log(user_id):
+    """Clear user's feedback log"""
+    memory = load_user_profile(user_id)
+    
+    if not memory:
+        return "No user profile found", ""
+    
+    feedback_count = len(memory.get("feedback_log", []))
+    memory["feedback_log"] = []
+    update_user_profile(user_id, memory)
+    
+    return f"Cleared {feedback_count} feedback entries", ""

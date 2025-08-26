@@ -185,8 +185,13 @@ from coachable_course_agent.vector_store import query_similar_courses
 
 from coachable_course_agent.justifier_chain import justify_recommendations
 from coachable_course_agent.feedback_processor import process_feedback
-
-
+from coachable_course_agent.memory_store import (
+    load_user_memory,
+    update_goal_dialog,
+    save_updated_goal,
+    remove_skill,
+    clear_feedback_log
+)
 with gr.Blocks(title="Coachable Course Agent") as demo:
     user_id_state = gr.State()
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
@@ -211,6 +216,35 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 - A Large Language Model (LLM) is called to generate explanations.
 - You can view, edit, or delete your profile and feedback anytime.
         """)
+
+    with gr.Accordion("Memory Editor", open=False, visible=False) as memory_editor_accordion:
+        gr.Markdown("### 🧠 Manage Your Profile Memory")
+        memory_display = gr.Markdown("No profile loaded.", elem_id="memory_display")
+        
+        with gr.Row():
+            with gr.Column():
+                gr.Markdown("**Update Goal:**")
+                goal_input = gr.Textbox(
+                    label="Career Goal", 
+                    placeholder="Enter your new career goal...",
+                    lines=2
+                )
+                update_goal_btn = gr.Button("Update Goal", variant="primary")
+                goal_status = gr.Markdown()
+            
+            with gr.Column():
+                gr.Markdown("**Remove Skill:**")
+                skill_input = gr.Textbox(
+                    label="Skill to Remove", 
+                    placeholder="Type skill name (partial match works)...",
+                    lines=1
+                )
+                remove_skill_btn = gr.Button("Remove Skill", variant="secondary")
+                skill_status = gr.Markdown()
+        
+        with gr.Row():
+            clear_feedback_btn = gr.Button("Clear Feedback Log", variant="stop")
+            feedback_status = gr.Markdown()
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 🔐 Create Your Profile")
@@ -324,7 +358,10 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             gr.update(visible=True),
             chat_history,             # chatbox
             gr.update(visible=False),  # hide new_recs_btn until feedback loop is finished
-            gr.update(open=False)     # collapse the expectation accordion
+            gr.update(open=False),     # collapse the expectation accordion
+            gr.update(visible=True),   # show memory editor accordion
+            load_user_memory(uid),     # load memory display
+            update_goal_dialog(uid)    # load current goal for editing
         )
 
 
@@ -349,7 +386,10 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             approve_btn, adjust_btn, reject_btn, suggest_btn,
             chatbox,              # update chatbox
             new_recs_btn,         # update new_recs_btn (pad for output count)
-            expectation_accordion # collapse the accordion
+            expectation_accordion, # collapse the accordion
+            memory_editor_accordion, # show memory editor
+            memory_display,       # load memory display
+            goal_input           # load current goal for editing
         ]
     )
 
@@ -628,6 +668,25 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             app_mode,             # update app mode
             see_recommendations_btn # show/hide see recommendations button
         ]
+    )
+
+    # Memory Editor Event Handlers
+    update_goal_btn.click(
+        save_updated_goal,
+        inputs=[user_id_state, goal_input],
+        outputs=[goal_status, memory_display]
+    )
+    
+    remove_skill_btn.click(
+        remove_skill,
+        inputs=[user_id_state, skill_input],
+        outputs=[skill_status, memory_display, skill_input]
+    )
+    
+    clear_feedback_btn.click(
+        clear_feedback_log,
+        inputs=[user_id_state],
+        outputs=[feedback_status, memory_display]
     )
 
 demo.launch()
