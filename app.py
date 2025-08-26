@@ -229,7 +229,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     rec_index_state = gr.State(value=0)  # Current index in recommendations
     feedback_log_state = gr.State(value=[])  # List of feedbacks
 
-    with gr.Accordion("Before we start...", open=True) as expectation_accordion:
+    with gr.Accordion("Instructions", open=True) as expectation_accordion:
         gr.Markdown("""
 ### 🤖 What this agent does
 - Matches your **skills and goals** to ESCO skills.
