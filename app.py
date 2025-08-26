@@ -677,16 +677,37 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         outputs=[goal_status, memory_display]
     )
     
+    # Also update agent memory when goal is updated
+    update_goal_btn.click(
+        lambda uid, goal: load_user_memory(uid),
+        inputs=[user_id_state, goal_input],
+        outputs=[agent_memory]
+    )
+    
     remove_skill_btn.click(
         remove_skill,
         inputs=[user_id_state, skill_input],
         outputs=[skill_status, memory_display, skill_input]
     )
     
+    # Also update agent memory when skill is removed
+    remove_skill_btn.click(
+        lambda uid, skill: load_user_memory(uid),
+        inputs=[user_id_state, skill_input],
+        outputs=[agent_memory]
+    )
+    
     clear_feedback_btn.click(
         clear_feedback_log,
         inputs=[user_id_state],
         outputs=[feedback_status, memory_display]
+    )
+    
+    # Also update agent memory when feedback is cleared
+    clear_feedback_btn.click(
+        lambda uid: load_user_memory(uid),
+        inputs=[user_id_state],
+        outputs=[agent_memory]
     )
 
 demo.launch()
