@@ -126,12 +126,12 @@ def save_updated_goal(user_id, new_goal):
 def remove_skill(user_id, skill_to_remove):
     """Remove a skill from user's memory"""
     if not skill_to_remove or not skill_to_remove.strip():
-        return "Please enter a skill to remove", ""
+        return "Please enter a skill to remove", load_user_memory(user_id), ""
     
     memory = load_user_profile(user_id)
     
     if not memory or "known_skills" not in memory:
-        return "No skills found to remove", ""
+        return "No skills found to remove", load_user_memory(user_id), ""
     
     skills = memory["known_skills"]
     original_count = len(skills)
@@ -155,9 +155,9 @@ def remove_skill(user_id, skill_to_remove):
     if removed_count > 0:
         memory["known_skills"] = updated_skills
         update_user_profile(user_id, memory)
-        return f"Removed {removed_count} skill(s) matching '{skill_to_remove}'", ""
+        return f"Removed {removed_count} skill(s) matching '{skill_to_remove}'", load_user_memory(user_id), ""
     else:
-        return f"No skill found matching '{skill_to_remove}'", ""
+        return f"No skill found matching '{skill_to_remove}'", load_user_memory(user_id), ""
 
 
 def clear_feedback_log(user_id):
@@ -165,10 +165,10 @@ def clear_feedback_log(user_id):
     memory = load_user_profile(user_id)
     
     if not memory:
-        return "No user profile found", ""
+        return "No user profile found", load_user_memory(user_id)
     
     feedback_count = len(memory.get("feedback_log", []))
     memory["feedback_log"] = []
     update_user_profile(user_id, memory)
     
-    return f"Cleared {feedback_count} feedback entries", ""
+    return f"Cleared {feedback_count} feedback entries", load_user_memory(user_id)

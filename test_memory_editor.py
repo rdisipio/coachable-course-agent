@@ -39,15 +39,16 @@ def test_memory_editor():
     
     # Test 4: Remove skill (if any skills exist)
     print("\n4. Attempting to remove a skill:")
-    status, cleared_input = remove_skill(user_id, "Python (computer programming)")
+    status, updated_memory, cleared_input = remove_skill(user_id, "JavaScript Framework")
     print(f"Status: {status}")
     print(f"Cleared input: '{cleared_input}'")
+    print(f"Updated memory preview: {updated_memory[:100]}...")
     
     # Test 5: Clear feedback log
     print("\n5. Clearing feedback log:")
-    status, cleared_input = clear_feedback_log(user_id)
+    status, updated_memory = clear_feedback_log(user_id)
     print(f"Status: {status}")
-    print(f"Cleared input: '{cleared_input}'")
+    print(f"Updated memory preview: {updated_memory[:100]}...")
     
     print("\n=== Test Complete ===")
 
