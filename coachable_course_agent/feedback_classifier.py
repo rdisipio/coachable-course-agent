@@ -42,7 +42,8 @@ def classify_feedback(feedback_text: str, feedback_type: str) -> Dict[str, str]:
         "too long", "time consuming", "takes too much time", "too many hours",
         "don't have time", "too intensive", "not relevant", "irrelevant", 
         "doesn't match", "off topic", "not what i need", "waste of time",
-        "too difficult", "too advanced", "too basic", "wrong level"
+        "too difficult", "too advanced", "too basic", "wrong level",
+        "not interested", "no interest", "don't want"
     ]
     
     credibility_keywords = [

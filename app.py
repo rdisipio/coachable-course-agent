@@ -178,7 +178,7 @@ def format_agent_memory_panel(mem):
                 }
                 classification_emoji = emoji_map.get(category, "")
             
-            feedback_lines.append(f"- {classification_emoji}{course_id}: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+            feedback_lines.append(f"- {classification_emoji} {course_id}: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
         
         feedback = "\n".join(feedback_lines)
         if len(feedback_log) > 5:
