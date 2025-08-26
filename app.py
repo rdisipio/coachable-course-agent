@@ -150,7 +150,8 @@ def generate_because_chips(course):
     
     return chips[:4]  # Max 4 chips to avoid clutter
 
-def format_memory(mem):
+def format_agent_memory_panel(mem):
+    """Format user memory for display in the left agent memory panel"""
     known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])
     missing = "\n".join(f"- {s['preferredLabel']}" for s in mem["missing_skills"])
     feedback = "\n".join(
@@ -186,7 +187,7 @@ from coachable_course_agent.vector_store import query_similar_courses
 from coachable_course_agent.justifier_chain import justify_recommendations
 from coachable_course_agent.feedback_processor import process_feedback
 from coachable_course_agent.memory_store import (
-    load_user_memory,
+    format_memory_editor_display,
     update_goal_dialog,
     save_updated_goal,
     remove_skill,
@@ -342,7 +343,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             gr.update(visible=False),  # profile_section
             gr.update(visible=True),   # recommend_section
             gr.update(value=cards_md, visible=True),  # recommendations
-            format_memory(user_profile), # agent_memory (show memory)
+            format_agent_memory_panel(user_profile), # agent_memory (show memory)
             "",                       # profile_status (hide)
             uid,                      # user_id_state (keep)
             gr.update(visible=False),  # profile_json (hide)
@@ -360,7 +361,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             gr.update(visible=False),  # hide new_recs_btn until feedback loop is finished
             gr.update(open=False),     # collapse the expectation accordion
             gr.update(visible=True),   # show memory editor accordion
-            load_user_memory(uid),     # load memory display
+            format_memory_editor_display(uid),     # load memory display
             update_goal_dialog(uid)    # load current goal for editing
         )
 
@@ -399,7 +400,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             chatbox = chatbox + [{"role": "assistant", "content": "All feedback collected. Thank you!"}]
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
-            updated_memory = format_memory(updated_profile) if updated_profile else ""
+            updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
@@ -464,7 +465,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         else:
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
-            updated_memory = format_memory(updated_profile) if updated_profile else ""
+            updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
@@ -479,7 +480,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         if idx >= len(recs):
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
-            updated_memory = format_memory(updated_profile) if updated_profile else ""
+            updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
                 gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 idx, feedback_log, chatbox, updated_memory, 
@@ -527,7 +528,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         else:
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
-            updated_memory = format_memory(updated_profile) if updated_profile else ""
+            updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
                 gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
@@ -679,7 +680,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     # Also update agent memory when goal is updated
     update_goal_btn.click(
-        lambda uid, goal: format_memory(load_user_profile(uid)),
+        lambda uid, goal: format_agent_memory_panel(load_user_profile(uid)),
         inputs=[user_id_state, goal_input],
         outputs=[agent_memory]
     )
@@ -692,7 +693,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     # Also update agent memory when skill is removed
     remove_skill_btn.click(
-        lambda uid, skill: format_memory(load_user_profile(uid)),
+        lambda uid, skill: format_agent_memory_panel(load_user_profile(uid)),
         inputs=[user_id_state, skill_input],
         outputs=[agent_memory]
     )
@@ -705,7 +706,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     # Also update agent memory when feedback is cleared
     clear_feedback_btn.click(
-        lambda uid: format_memory(load_user_profile(uid)),
+        lambda uid: format_agent_memory_panel(load_user_profile(uid)),
         inputs=[user_id_state],
         outputs=[agent_memory]
     )

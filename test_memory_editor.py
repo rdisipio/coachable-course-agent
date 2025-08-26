@@ -9,7 +9,7 @@ sys.path.append('.')
 
 # Test the memory editor functions
 from coachable_course_agent.memory_store import (
-    load_user_memory,
+    format_memory_editor_display,
     update_goal_dialog,
     save_updated_goal,
     remove_skill,
@@ -24,7 +24,7 @@ def test_memory_editor():
     
     # Test 1: Load user memory
     print("\n1. Loading user memory:")
-    memory_display = load_user_memory(user_id)
+    memory_display = format_memory_editor_display(user_id)
     print(memory_display)
     
     # Test 2: Update goal dialog
