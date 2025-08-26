@@ -702,17 +702,17 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         outputs=[agent_memory]
     )
     
+    def clear_feedback_and_update_all(user_id):
+        """Clear feedback and return updates for both memory displays"""
+        status, memory_editor_display = clear_feedback_log(user_id)
+        updated_profile = load_user_profile(user_id) if user_id else {}
+        agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
+        return status, memory_editor_display, agent_memory_display
+
     clear_feedback_btn.click(
-        clear_feedback_log,
+        clear_feedback_and_update_all,
         inputs=[user_id_state],
-        outputs=[feedback_status, memory_display]
-    )
-    
-    # Also update agent memory when feedback is cleared
-    clear_feedback_btn.click(
-        lambda uid: format_agent_memory_panel(load_user_profile(uid)),
-        inputs=[user_id_state],
-        outputs=[agent_memory]
+        outputs=[feedback_status, memory_display, agent_memory]
     )
 
 demo.launch()
