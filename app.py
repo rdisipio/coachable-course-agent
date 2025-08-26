@@ -459,7 +459,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, agent_memory, 
+                next_idx, feedback_log, chatbox, format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "", 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=False), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
@@ -522,7 +522,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             return (
                 gr.update(value=next_card, visible=True),
                 gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, agent_memory, 
+                next_idx, feedback_log, chatbox, format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "", 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
                 gr.update(visible=False), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
