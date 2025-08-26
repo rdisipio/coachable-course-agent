@@ -207,6 +207,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 - Retrieves and ranks relevant courses.
 - Explains *why* each course fits you.
 - Lets you give feedback to improve suggestions.
+- Provides a **Memory Editor** so you can view and modify your profile data.
 
 ### 🚫 What this agent doesn't do
 - Guarantee prices, certification status, or course dates.
@@ -215,7 +216,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 ### 🔒 About your data
 - Your profile is saved **locally in this app**, not in a central database.
 - A Large Language Model (LLM) is called to generate explanations.
-- You can view, edit, or delete your profile and feedback anytime.
+- You can view, edit, or delete your profile and feedback anytime using the Memory Editor.
         """)
 
     with gr.Accordion("Memory Editor", open=False, visible=False) as memory_editor_accordion:
