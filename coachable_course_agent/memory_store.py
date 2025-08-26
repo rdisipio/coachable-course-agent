@@ -72,7 +72,8 @@ def format_memory_editor_display(user_id):
     
     goal = profile.get("goal", "No goal set")
     skills = profile.get("known_skills", [])
-    feedback_count = len(profile.get("feedback_log", []))
+    feedback_log = profile.get("feedback_log", [])
+    feedback_count = len(feedback_log)
     
     # Format skills list
     if skills:
@@ -87,6 +88,32 @@ def format_memory_editor_display(user_id):
     else:
         skills_text = "No skills recorded"
     
+    # Analyze feedback classifications if available
+    feedback_insights = ""
+    if feedback_count > 0:
+        # Count classifications
+        classifications = {}
+        for entry in feedback_log:
+            if "classification" in entry:
+                category = entry["classification"].get("category", "unclassified")
+                classifications[category] = classifications.get(category, 0) + 1
+        
+        if classifications:
+            feedback_insights = "\n\n**📊 Feedback Patterns:**\n"
+            category_labels = {
+                "friction": "🚫 Friction (time/relevance issues)",
+                "bureaucracy": "📋 Bureaucracy (certification concerns)", 
+                "better_way": "🎯 Better Way (too broad/theoretical)",
+                "negative_impact": "❌ Negative Impact (misaligned goals)",
+                "positive": "✅ Positive feedback",
+                "other": "❓ Other/Unclassified"
+            }
+            
+            for category, count in sorted(classifications.items(), key=lambda x: x[1], reverse=True):
+                if count > 0:
+                    label = category_labels.get(category, f"📝 {category.title()}")
+                    feedback_insights += f"{label}: {count}\n"
+    
     memory_display = f"""### Current Memory Profile
 
 **🎯 Goal:**
@@ -96,7 +123,7 @@ def format_memory_editor_display(user_id):
 {skills_text}
 
 **📝 Feedback Log:**
-{feedback_count} feedback entries recorded
+{feedback_count} feedback entries recorded{feedback_insights}
     """
     
     return memory_display

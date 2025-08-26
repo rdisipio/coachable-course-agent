@@ -154,12 +154,41 @@ def format_agent_memory_panel(mem):
     """Format user memory for display in the left agent memory panel"""
     known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])
     missing = "\n".join(f"- {s['preferredLabel']}" for s in mem["missing_skills"])
-    feedback = "\n".join(
-        f"- {f.get('course_id','?')}: {f.get('feedback_type','?')} — {f.get('reason','')}"
-        for f in mem.get("feedback_log", [])
-    )
+    
+    # Enhanced feedback display with classifications
+    feedback_log = mem.get("feedback_log", [])
+    if feedback_log:
+        feedback_lines = []
+        for f in feedback_log[-5:]:  # Show last 5 entries
+            course_id = f.get('course_id', '?')
+            feedback_type = f.get('feedback_type', '?')
+            reason = f.get('reason', '')
+            
+            # Add classification emoji if available
+            classification_emoji = ""
+            if "classification" in f:
+                category = f["classification"].get("category", "")
+                emoji_map = {
+                    "friction": "🚫",
+                    "bureaucracy": "📋", 
+                    "better_way": "🎯",
+                    "negative_impact": "❌",
+                    "positive": "✅",
+                    "other": "❓"
+                }
+                classification_emoji = emoji_map.get(category, "")
+            
+            feedback_lines.append(f"- {classification_emoji}{course_id}: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+        
+        feedback = "\n".join(feedback_lines)
+        if len(feedback_log) > 5:
+            feedback += f"\n... and {len(feedback_log) - 5} more entries"
+    else:
+        feedback = "No feedback recorded yet"
+    
     company_goal = mem.get('company_goal', '')
     company_goal_md = f"\n\n### 📈 Company Goal\n{company_goal}" if company_goal else ""
+    
     return f"""### 🌟 User's Goal
 {mem['goal']}{company_goal_md}
 
@@ -205,7 +234,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 ### 🤖 What this agent does
 - Matches your **skills and goals** to ESCO skills.
 - Retrieves and ranks relevant courses.
-- Explains *why* each course fits you.
+- Explains *why* each course fits both you and your company's goals.
 - Lets you give feedback to improve suggestions.
 - Provides a **Memory Editor** so you can view and modify your profile data.
 
