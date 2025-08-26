@@ -676,30 +676,31 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     )
 
     # Memory Editor Event Handlers
+    def update_goal_and_update_all(user_id, new_goal):
+        """Update goal and return updates for both memory displays"""
+        status = save_updated_goal(user_id, new_goal)
+        memory_editor_display = format_memory_editor_display(user_id) if user_id else "No profile loaded."
+        updated_profile = load_user_profile(user_id) if user_id else {}
+        agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
+        return status, memory_editor_display, agent_memory_display
+
     update_goal_btn.click(
-        save_updated_goal,
+        update_goal_and_update_all,
         inputs=[user_id_state, goal_input],
-        outputs=[goal_status, memory_display]
+        outputs=[goal_status, memory_display, agent_memory]
     )
     
-    # Also update agent memory when goal is updated
-    update_goal_btn.click(
-        lambda uid, goal: format_agent_memory_panel(load_user_profile(uid)),
-        inputs=[user_id_state, goal_input],
-        outputs=[agent_memory]
-    )
-    
+    def remove_skill_and_update_all(user_id, skill_to_remove):
+        """Remove skill and return updates for both memory displays"""
+        status, memory_editor_display, cleared_input = remove_skill(user_id, skill_to_remove)
+        updated_profile = load_user_profile(user_id) if user_id else {}
+        agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
+        return status, memory_editor_display, cleared_input, agent_memory_display
+
     remove_skill_btn.click(
-        remove_skill,
+        remove_skill_and_update_all,
         inputs=[user_id_state, skill_input],
-        outputs=[skill_status, memory_display, skill_input]
-    )
-    
-    # Also update agent memory when skill is removed
-    remove_skill_btn.click(
-        lambda uid, skill: format_agent_memory_panel(load_user_profile(uid)),
-        inputs=[user_id_state, skill_input],
-        outputs=[agent_memory]
+        outputs=[skill_status, memory_display, skill_input, agent_memory]
     )
     
     def clear_feedback_and_update_all(user_id):
