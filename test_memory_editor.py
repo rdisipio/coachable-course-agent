@@ -50,7 +50,7 @@ def test_memory_editor():
     print(f"Status: {status}")
     print(f"Updated memory preview: {updated_memory[:100]}...")
     
-    print("\n=== Test Complete ===")
+    print("\n=== Test Complete! ===")
 
 if __name__ == "__main__":
     test_memory_editor()
