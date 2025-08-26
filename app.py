@@ -17,7 +17,7 @@ from huggingface_hub import hf_hub_download
 
 MEMORY_DIR = "data/memory"
 COURSES_PATH = "data/course_catalog_esco.json"
-GOALS = "Support cross-functional collaboration and accelerate internal mobility."
+GOALS = "Support cross-functional collaboration, and accelerate internal mobility."
 
 from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
