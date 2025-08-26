@@ -1,23 +1,20 @@
 """
 Feedback Classification Module
-Classifies user feedback into specific categories to improve recommendation learning
+Classifies user feedback into specific categories using LLM for better accuracy
 """
 
-import re
+import json
 from typing import Dict, Optional
+from langchain_groq import ChatGroq
+from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 
-def classify_feedback(feedback_text: str, feedback_type: str) -> Dict[str, str]:
-    """
-    Classify user feedback into specific categories based on content analysis.
-    
-    Args:
-        feedback_text: The user's written feedback/reason
-        feedback_type: The feedback type (approve, adjust, reject, suggest)
-    
-    Returns:
-        Dict with classification results including category and confidence
-    """
+def _fallback_keyword_classification(feedback_text: str, feedback_type: str) -> Dict[str, str]:
+    """Fallback keyword-based classification when LLM is unavailable"""
     if feedback_type == "approve":
         return {
             "category": "positive",
@@ -108,6 +105,107 @@ def classify_feedback(feedback_text: str, feedback_type: str) -> Dict[str, str]:
         "keyword_scores": scores,
         "original_feedback": feedback_text
     }
+
+
+def classify_feedback(feedback_text: str, feedback_type: str) -> Dict[str, str]:
+    """
+    Classify user feedback using LLM for better accuracy and context understanding.
+    Falls back to keyword-based classification if LLM is unavailable.
+    
+    Args:
+        feedback_text: The user's written feedback/reason
+        feedback_type: The feedback type (approve, adjust, reject, suggest)
+    
+    Returns:
+        Dict with classification results including category and confidence
+    """
+    # Handle obvious positive feedback first
+    if feedback_type == "approve":
+        return {
+            "category": "positive",
+            "subcategory": "approved", 
+            "confidence": "high",
+            "reasoning": "User approved the recommendation",
+            "method": "rule_based"
+        }
+    
+    # Handle empty feedback
+    if not feedback_text or feedback_text.strip() == "":
+        return {
+            "category": "unknown",
+            "subcategory": "no_reason",
+            "confidence": "low", 
+            "reasoning": "No feedback text provided",
+            "method": "rule_based"
+        }
+    
+    try:
+        # Try LLM classification first
+        return _llm_classify_feedback(feedback_text, feedback_type)
+    except Exception as e:
+        print(f"LLM classification failed, falling back to keywords: {e}")
+        # Fall back to keyword-based classification
+        result = _fallback_keyword_classification(feedback_text, feedback_type)
+        result["method"] = "keyword_fallback"
+        return result
+
+
+def _llm_classify_feedback(feedback_text: str, feedback_type: str) -> Dict[str, str]:
+    """Use LLM to classify feedback with better context understanding"""
+    
+    # Initialize LLM
+    llm = ChatGroq(model="llama3-70b-8192", temperature=0.1, api_key=os.getenv("GROQ_API_KEY"))
+    
+    # Create classification prompt
+    prompt_template = """
+You are an expert at analyzing user feedback about online course recommendations. 
+Classify the following feedback into one of these categories:
+
+**Categories:**
+- **friction**: User finds the course not relevant, too time-consuming, too difficult/easy, or generally not interested
+- **credibility**: User has concerns about the course provider, certification value, accreditation, or trustworthiness
+- **better_way**: User wants something more specific, practical, hands-on, or has a preferred learning approach
+- **negative_impact**: User believes the course doesn't align with their goals or would not help their career
+- **positive**: User likes the recommendation (even if providing minor adjustments)
+- **other**: Doesn't clearly fit the above categories
+
+**User Feedback:**
+Feedback Type: {feedback_type}
+User's Reason: "{feedback_text}"
+
+Analyze the feedback and respond with ONLY a valid JSON object in this exact format:
+{{
+    "category": "one of the categories above",
+    "confidence": "high|medium|low",
+    "reasoning": "brief explanation of why this category was chosen",
+    "key_phrases": ["list", "of", "key", "phrases", "that", "influenced", "classification"]
+}}
+"""
+    
+    prompt = PromptTemplate.from_template(prompt_template)
+    formatted_prompt = prompt.format(feedback_text=feedback_text, feedback_type=feedback_type)
+    
+    # Get LLM response
+    response = llm.invoke(formatted_prompt)
+    
+    # Parse JSON response
+    try:
+        result = json.loads(response.content.strip())
+        
+        # Add metadata
+        result["subcategory"] = feedback_type
+        result["original_feedback"] = feedback_text
+        result["method"] = "llm"
+        
+        # Validate required fields
+        required_fields = ["category", "confidence", "reasoning"]
+        if all(field in result for field in required_fields):
+            return result
+        else:
+            raise ValueError("Missing required fields in LLM response")
+            
+    except (json.JSONDecodeError, ValueError) as e:
+        raise Exception(f"Failed to parse LLM response: {e}")
 
 
 def _calculate_keyword_score(text: str, keywords: list) -> int:
