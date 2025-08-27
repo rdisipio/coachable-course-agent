@@ -39,6 +39,92 @@ courses_collection = Chroma(
     embedding_function=embedding_model
 )
 
+# ---------- Output Management System ----------
+class GradioOutputManager:
+    """Manages Gradio outputs by name instead of index to prevent order-related bugs."""
+    
+    def __init__(self, output_names):
+        """Initialize with a list of output component names in the expected order."""
+        self.output_names = output_names
+        self.output_map = {name: idx for idx, name in enumerate(output_names)}
+        self._values = [None] * len(output_names)
+    
+    def set(self, name, value):
+        """Set a value for a named output."""
+        if name not in self.output_map:
+            raise ValueError(f"Unknown output name: {name}. Available: {list(self.output_map.keys())}")
+        self._values[self.output_map[name]] = value
+        return self
+    
+    def set_multiple(self, **kwargs):
+        """Set multiple outputs at once."""
+        for name, value in kwargs.items():
+            self.set(name, value)
+        return self
+    
+    def get_tuple(self):
+        """Return the values as a tuple in the correct order."""
+        return tuple(self._values)
+    
+    def reset(self):
+        """Reset all values to None."""
+        self._values = [None] * len(self.output_names)
+        return self
+
+# Define output schemas for different functions
+FEEDBACK_OUTPUTS = [
+    "recommendations",      # 0
+    "keep_btn",            # 1
+    "adjust_btn",          # 2
+    "reject_btn",          # 3
+    "rec_index_state",     # 4
+    "feedback_log_state",  # 5
+    "chatbox",             # 6
+    "agent_memory",        # 7
+    "chat_input",          # 8
+    "send_btn",            # 9
+    "new_recs_btn",        # 10
+    "memory_display"       # 11
+]
+
+SEE_RECOMMENDATIONS_OUTPUTS = [
+    "profile_section",      # 0
+    "recommend_section",    # 1
+    "recommendations",      # 2
+    "agent_memory",         # 3
+    "profile_status",       # 4
+    "user_id_state",        # 5
+    "profile_json",         # 6
+    "footer_status",        # 7
+    "app_mode",             # 8
+    "see_recommendations_btn", # 9
+    "recs_state",           # 10
+    "rec_index_state",      # 11
+    "feedback_log_state",   # 12
+    "keep_btn",             # 13
+    "adjust_btn",           # 14
+    "reject_btn",           # 15
+    "chatbox",              # 16
+    "new_recs_btn",         # 17
+    "expectation_accordion", # 18
+    "memory_editor_accordion", # 19
+    "memory_display",       # 20
+    "goal_input"            # 21
+]
+
+PROFILE_BUILD_OUTPUTS = [
+    "profile_section",      # 0
+    "recommend_section",    # 1
+    "recommendations",      # 2
+    "agent_memory",         # 3
+    "profile_status",       # 4
+    "user_id_state",        # 5
+    "profile_json",         # 6
+    "footer_status",        # 7
+    "app_mode",             # 8
+    "see_recommendations_btn" # 9
+]
+
 # ---------- Helper Functions ----------
 def user_profile_exists(user_id):
     return os.path.exists(f"{MEMORY_DIR}/{user_id}.json")
@@ -330,6 +416,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     
     def on_see_recommendations_click(uid):
+        outputs = GradioOutputManager(SEE_RECOMMENDATIONS_OUTPUTS)
+        
         # Load user profile and compute recommendations
         user_profile = load_user_profile(uid)
         # Print user profile skills
@@ -387,31 +475,30 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             chat_msg = f"Suggested: {course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chat_history = [{"role": "assistant", "content": chat_msg}]
 
-        return (
-            gr.update(visible=False),  # profile_section
-            gr.update(visible=True),   # recommend_section
-            gr.update(value=cards_md, visible=True),  # recommendations
-            format_agent_memory_panel(user_profile), # agent_memory (show memory)
-            "",                       # profile_status (hide)
-            uid,                      # user_id_state (keep)
-            gr.update(visible=False),  # profile_json (hide)
-            "👀 You are now viewing recommendations.",  # footer_status
-            "recommend",              # app_mode
-            gr.update(visible=False),   # see_recommendations_btn (hide it)
-            recommendations_list,      # recs_state
-            0,                        # rec_index_state
-            [],                       # feedback_log_state
-            gr.update(visible=True),
-            gr.update(visible=True),
-            gr.update(visible=True),
-            gr.update(visible=True),
-            chat_history,             # chatbox
-            gr.update(visible=False),  # hide new_recs_btn until feedback loop is finished
-            gr.update(open=False),     # collapse the expectation accordion
-            gr.update(visible=True),   # show memory editor accordion
-            format_memory_editor_display(uid),     # load memory display
-            update_goal_dialog(uid)    # load current goal for editing
-        )
+        return outputs.set_multiple(
+            profile_section=gr.update(visible=False),
+            recommend_section=gr.update(visible=True),
+            recommendations=gr.update(value=cards_md, visible=True),
+            agent_memory=format_agent_memory_panel(user_profile),
+            profile_status="",
+            user_id_state=uid,
+            profile_json=gr.update(visible=False),
+            footer_status="👀 You are now viewing recommendations.",
+            app_mode="recommend",
+            see_recommendations_btn=gr.update(visible=False),
+            recs_state=recommendations_list,
+            rec_index_state=0,
+            feedback_log_state=[],
+            keep_btn=gr.update(visible=True),
+            adjust_btn=gr.update(visible=True),
+            reject_btn=gr.update(visible=True),
+            chatbox=chat_history,
+            new_recs_btn=gr.update(visible=False),
+            expectation_accordion=gr.update(open=False),
+            memory_editor_accordion=gr.update(visible=True),
+            memory_display=format_memory_editor_display(uid),
+            goal_input=update_goal_dialog(uid)
+        ).get_tuple()
 
 
     # Bind the 'See Recommendations' button to the handler (must be inside Blocks context)
@@ -443,6 +530,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     )
 
     def feedback_action(feedback_type, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
+        outputs = GradioOutputManager(FEEDBACK_OUTPUTS)
+        
         # Get current course
         if idx >= len(recs):
             chatbox = chatbox + [{"role": "assistant", "content": "All feedback collected. Thank you!"}]
@@ -450,17 +539,22 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             updated_memory_editor = format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
-            return (
-                gr.update(value="All feedback collected. Thank you!", visible=True),  # recommendations
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),  # keep_btn, adjust_btn, reject_btn
-                idx, feedback_log,  # rec_index_state, feedback_log_state
-                chatbox,  # chatbox
-                updated_memory,  # agent_memory
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # chat_input
-                gr.update(visible=False, interactive=False),  # send_btn
-                gr.update(visible=True),  # new_recs_btn
-                updated_memory_editor  # memory_display
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(value="All feedback collected. Thank you!", visible=True),
+                keep_btn=gr.update(visible=False),
+                adjust_btn=gr.update(visible=False),
+                reject_btn=gr.update(visible=False),
+                rec_index_state=idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=updated_memory,
+                chat_input=gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."),
+                send_btn=gr.update(visible=False, interactive=False),
+                new_recs_btn=gr.update(visible=True),
+                memory_display=updated_memory_editor
+            ).get_tuple()
+        
         course = recs[idx]
         course_id = course.get("id", "?")
         title = course.get("title", "?")
@@ -475,6 +569,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         chatbox = chatbox + [
             {"role": "user", "content": user_feedback_msg}
         ]
+        
         # If feedback requires a reason, prompt for it
         if feedback_type in ["adjust", "reject"]:
             if feedback_type == "adjust":
@@ -482,14 +577,22 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             else:  # reject
                 prompt = "Why isn't this course a good fit? (optional)"
             chatbox = chatbox + [{"role": "assistant", "content": prompt}]
-            return (
-                gr.update(),  # recommendations (no change)
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), # keep/adjust/reject buttons
-                idx, feedback_log, chatbox, agent_memory, 
-                gr.update(interactive=True, placeholder="Please explain your feedback..."), # enable chat_input
-                gr.update(visible=True, interactive=True),  # enable send_btn
-                gr.update(visible=False), gr.update()  # pad outputs to match count - no memory display update needed here
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(),  # no change
+                keep_btn=gr.update(visible=False),
+                adjust_btn=gr.update(visible=False),
+                reject_btn=gr.update(visible=False),
+                rec_index_state=idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=agent_memory,  # no change
+                chat_input=gr.update(interactive=True, placeholder="Please explain your feedback..."),
+                send_btn=gr.update(visible=True, interactive=True),
+                new_recs_btn=gr.update(visible=False),
+                memory_display=gr.update()  # no change
+            ).get_tuple()
+        
         # Otherwise, process feedback and move to next course
         feedback_entry = {
             "course_id": course_id,
@@ -508,92 +611,133 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             next_card = render_course_card(next_course, explanation)
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
-            return (
-                gr.update(value=next_card, visible=True),  # recommendations
-                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),  # keep_btn, adjust_btn, reject_btn
-                next_idx, feedback_log,  # rec_index_state, feedback_log_state
-                chatbox,  # chatbox
-                format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "",  # agent_memory
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # chat_input
-                gr.update(visible=False, interactive=False),  # send_btn
-                gr.update(visible=False),  # new_recs_btn
-                format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # memory_display
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(value=next_card, visible=True),
+                keep_btn=gr.update(visible=True),
+                adjust_btn=gr.update(visible=True),
+                reject_btn=gr.update(visible=True),
+                rec_index_state=next_idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "",
+                chat_input=gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."),
+                send_btn=gr.update(visible=False, interactive=False),
+                new_recs_btn=gr.update(visible=False),
+                memory_display=format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
+            ).get_tuple()
         else:
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
-            return (
-                gr.update(value="All feedback collected. Thank you!", visible=True),
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, updated_memory, 
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
-                gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(value="All feedback collected. Thank you!", visible=True),
+                keep_btn=gr.update(visible=False),
+                adjust_btn=gr.update(visible=False),
+                reject_btn=gr.update(visible=False),
+                rec_index_state=next_idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=updated_memory,
+                chat_input=gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."),
+                send_btn=gr.update(visible=False, interactive=False),
+                new_recs_btn=gr.update(visible=True),
+                memory_display=format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
+            ).get_tuple()
 
     def reason_action(reason, recs, idx, feedback_log, user_id_state, agent_memory, chatbox):
+        outputs = GradioOutputManager(FEEDBACK_OUTPUTS)
+        
         # Get current course
         if idx >= len(recs):
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
-            return (
-                gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, 
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
-                gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(),
+                keep_btn=gr.update(visible=False),
+                adjust_btn=gr.update(visible=False),
+                reject_btn=gr.update(visible=False),
+                rec_index_state=idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=updated_memory,
+                chat_input=gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."),
+                send_btn=gr.update(visible=False, interactive=False),
+                new_recs_btn=gr.update(visible=True),
+                memory_display=format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
+            ).get_tuple()
+        
         course = recs[idx]
         course_id = course.get("id", "?")
         title = course.get("title", "?")
+        
         # Find the last feedback entry for this course and update it with the reason and correct feedback_type
         if feedback_log and feedback_log[-1]["course_id"] == course_id and feedback_log[-1]["feedback_type"]:
             feedback_type = feedback_log[-1]["feedback_type"]
         else:
             # fallback: try to infer from previous state or default to 'adjust'
             feedback_type = "adjust"
+        
         feedback_entry = {
             "course_id": course_id,
             "feedback_type": feedback_type,
             "reason": reason if reason else feedback_type
         }
         feedback_log = feedback_log[:-1] + [feedback_entry] if feedback_log else [feedback_entry]
+        
         # Persist feedback to disk
         if user_id_state:
             process_feedback(user_id_state, course_id, feedback_type, reason if reason else feedback_type)
+        
         chatbox = chatbox + [
             {"role": "user", "content": reason},
             {"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_type})."}
         ]
         next_idx = idx + 1
+        
         if next_idx < len(recs):
             next_course = recs[next_idx]
             explanation = next_course.get('explanation', '')
             next_card = render_course_card(next_course, explanation)
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
-            return (
-                gr.update(value=next_card, visible=True),
-                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "", 
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
-                gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=False), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(value=next_card, visible=True),
+                keep_btn=gr.update(visible=True),
+                adjust_btn=gr.update(visible=True),
+                reject_btn=gr.update(visible=True),
+                rec_index_state=next_idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "",
+                chat_input=gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."),
+                send_btn=gr.update(visible=False, interactive=False),
+                new_recs_btn=gr.update(visible=False),
+                memory_display=format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
+            ).get_tuple()
         else:
             # Update agent memory after feedback loop is finished
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
-            return (
-                gr.update(value="All feedback collected. Thank you!", visible=True),
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                next_idx, feedback_log, chatbox, updated_memory, 
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
-                gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
-            )
+            
+            return outputs.set_multiple(
+                recommendations=gr.update(value="All feedback collected. Thank you!", visible=True),
+                keep_btn=gr.update(visible=False),
+                adjust_btn=gr.update(visible=False),
+                reject_btn=gr.update(visible=False),
+                rec_index_state=next_idx,
+                feedback_log_state=feedback_log,
+                chatbox=chatbox,
+                agent_memory=updated_memory,
+                chat_input=gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."),
+                send_btn=gr.update(visible=False, interactive=False),
+                new_recs_btn=gr.update(visible=True),
+                memory_display=format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
+            ).get_tuple()
 
     for btn, ftype in zip([keep_btn, adjust_btn, reject_btn], ["keep", "adjust", "reject"]):
         btn.click(
@@ -666,6 +810,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
 
     def on_profile_submit(blurb):
+        outputs = GradioOutputManager(PROFILE_BUILD_OUTPUTS)
+        
         # Use a default user ID since sessions are isolated in HF Spaces
         uid = "default_user"
         
@@ -682,32 +828,34 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 with open(f"{MEMORY_DIR}/{uid}.json", "w") as f:
                     json.dump(data, f, indent=2)
             msg = f"✅ Profile created successfully.\n\n**Summary:** {result_text}"
+            
             # Show the 'See Recommendations' button after profile creation
-            return (
-                gr.update(visible=True),   # profile_section
-                gr.update(visible=False),  # recommend_section
-                "",                       # recommendations (not used here)
-                "",                       # agent_memory (not used here)
-                msg,                       # profile_status (success message)
-                uid,                       # user_id_state
-                gr.update(value=data, visible=False),  # profile_json (hide after creation)
-                "✌️ Profile created.",       # footer_status
-                "profile",                # app_mode
-                gr.update(visible=True)    # see_recommendations_btn (show it)
-            )
+            return outputs.set_multiple(
+                profile_section=gr.update(visible=True),
+                recommend_section=gr.update(visible=False),
+                recommendations="",
+                agent_memory="",
+                profile_status=msg,
+                user_id_state=uid,
+                profile_json=gr.update(value=data, visible=False),
+                footer_status="✌️ Profile created.",
+                app_mode="profile",
+                see_recommendations_btn=gr.update(visible=True)
+            ).get_tuple()
+            
         except Exception as e:
-            return (
-                gr.update(visible=True),   # profile_section
-                gr.update(visible=False),  # recommend_section
-                "",                       # recommendations
-                "",                       # agent_memory
-                f"❌ Error: {e}",          # profile_status
-                None,                      # user_id_state
-                gr.update(visible=False),  # profile_json
-                f"❌ Error: {e}",          # footer_status
-                "profile",                # app_mode
-                gr.update(visible=False)   # see_recommendations_btn (hide it)
-            )
+            return outputs.set_multiple(
+                profile_section=gr.update(visible=True),
+                recommend_section=gr.update(visible=False),
+                recommendations="",
+                agent_memory="",
+                profile_status=f"❌ Error: {e}",
+                user_id_state=None,
+                profile_json=gr.update(visible=False),
+                footer_status=f"❌ Error: {e}",
+                app_mode="profile",
+                see_recommendations_btn=gr.update(visible=False)
+            ).get_tuple()
 
 
 
