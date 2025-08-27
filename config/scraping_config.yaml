@@ -7,7 +7,9 @@ defaults:
   process_llm: false          # Whether to process with LLM by default
   
 # Topics to scrape with their specific settings
+# Organized by domain for better management
 topics:
+  # ====== COMPUTER SCIENCE & AI ======
   - name: "machine learning"
     platforms:
       - name: "coursera"
@@ -27,15 +29,15 @@ topics:
   - name: "artificial intelligence"
     platforms:
       - name: "coursera"
-        count: 10
+        count: 12
       - name: "edx"
-        count: 5
+        count: 6
     process_llm: true          # Enable LLM processing for this topic
     
   - name: "python programming"
     platforms:
       - name: "coursera"
-        # count will use default (10)
+        count: 10
       - name: "udemy"
         count: 15
         
@@ -53,7 +55,299 @@ topics:
       - name: "coursera"
         count: 10
       - name: "udemy"
+        count: 8
+
+  - name: "computer science"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "edx"
+        count: 8
+
+  - name: "software architecture"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "udemy"
+        count: 6
+
+  - name: "game development"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 15
+      - name: "edx"
         count: 5
+
+  # ====== BUSINESS & MANAGEMENT ======
+  - name: "project management"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 10
+      - name: "edx"
+        count: 5
+
+  - name: "product management"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 8
+
+  - name: "leadership"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 10
+      - name: "edx"
+        count: 6
+
+  - name: "marketing"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 12
+
+  - name: "social media management"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "udemy"
+        count: 10
+
+  - name: "finance"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  # ====== ENGINEERING ======
+  - name: "civil engineering"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  - name: "electrical engineering"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+
+  # ====== SCIENCES ======
+  - name: "physics"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "edx"
+        count: 10
+
+  - name: "chemistry"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "edx"
+        count: 8
+
+  - name: "mathematics"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "edx"
+        count: 10
+
+  - name: "biology"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+
+  - name: "geology"
+    platforms:
+      - name: "coursera"
+        count: 6
+      - name: "edx"
+        count: 5
+
+  - name: "paleontology"
+    platforms:
+      - name: "coursera"
+        count: 5
+      - name: "edx"
+        count: 4
+
+  # ====== HEALTH & SOCIAL SCIENCES ======
+  - name: "medical studies"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+
+  - name: "psychology"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  # ====== ENVIRONMENTAL STUDIES & CONSERVATION ======
+  - name: "environmental studies"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "edx"
+        count: 10
+      - name: "udemy"
+        count: 8
+
+  - name: "conservation"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+
+  - name: "sustainability"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 10
+      - name: "edx"
+        count: 6
+
+  - name: "climate change"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+
+  - name: "renewable energy"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  # ====== HUMANITIES & ARTS ======
+  - name: "journalism"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "udemy"
+        count: 6
+
+  - name: "law and regulations"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+
+  - name: "arts and crafts"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "udemy"
+        count: 12
+
+  - name: "teaching"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  - name: "philosophy"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "edx"
+        count: 10
+      - name: "udemy"
+        count: 6
+
+  - name: "ethics"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "edx"
+        count: 8
+      - name: "udemy"
+        count: 6
+
+  - name: "media ethics"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  - name: "political science"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "edx"
+        count: 10
+      - name: "udemy"
+        count: 8
+
+  # Design & Architecture
+  - name: "design"
+    platforms:
+      - name: "coursera"
+        count: 12
+      - name: "udemy"
+        count: 15
+      - name: "edx"
+        count: 5
+
+  - name: "ux principles"
+    platforms:
+      - name: "coursera"
+        count: 10
+      - name: "udemy"
+        count: 12
+
+  - name: "architecture"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "edx"
+        count: 6
+
+  - name: "landscape design"
+    platforms:
+      - name: "coursera"
+        count: 6
+      - name: "udemy"
+        count: 8
+
+  - name: "interior design"
+    platforms:
+      - name: "coursera"
+        count: 8
+      - name: "udemy"
+        count: 12
 
 # Platform-specific settings (optional)
 platform_settings:
