@@ -259,17 +259,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             feedback_status = gr.Markdown()
 
     with gr.Column(visible=True) as profile_section:
-        gr.Markdown("## 🔐 Create Your Profile")
-        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb", placeholder="Tell us about your background, current role, and career goals...")
-        gr.Markdown("💡 *Processing typically takes 2-3 seconds while we analyze your profile and match ESCO skills.*")
-        build_btn = gr.Button("Build Profile and Continue")
-        profile_status = gr.Markdown()
-        profile_json = gr.JSON(visible=False)
-        see_recommendations_btn = gr.Button("See Recommendations", visible=False)
-
-    gr.Markdown("💡 **New here?** Click below for a quick overview of how this agent works and what to expect.")
-    with gr.Accordion("📋 Instructions & What to Expect", open=False) as expectation_accordion:
-        gr.Markdown("""
+        gr.Markdown("## � Create Your Profile")
+        
+        gr.Markdown("💡 **New here?** Click below for a quick overview of how this agent works and what to expect.")
+        with gr.Accordion("📋 Instructions & What to Expect", open=False) as expectation_accordion:
+            gr.Markdown("""
 ### 🤖 What this agent does
 - Analyzes your **background and goals** to identify your skills and learning gaps
 - Uses the **ESCO framework** (European skills taxonomy) to standardize skill matching
@@ -302,7 +296,14 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 ### 💻 Best experience
 - **Desktop recommended** for detailed feedback and course research
 - **Mobile works great** for initial exploration of possibilities
-        """)
+            """)
+        
+        blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb", placeholder="Tell us about your background, current role, and career goals...")
+        gr.Markdown("💡 *Processing typically takes 2-3 seconds while we analyze your profile and match ESCO skills.*")
+        build_btn = gr.Button("Build Profile and Continue")
+        profile_status = gr.Markdown()
+        profile_json = gr.JSON(visible=False)
+        see_recommendations_btn = gr.Button("See Recommendations", visible=False)
 
     with gr.Row(visible=False) as recommend_section:
         # Left: Agent memory
@@ -319,7 +320,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             new_recs_btn = gr.Button("Get New Recommendations", visible=False)
         # Right: Chat
         with gr.Column(scale=1):
-            gr.Markdown("## 💬 Chat with the Agent")
+            gr.Markdown("## 💬 Your Feedback")
             chatbox = gr.Chatbot(type='messages', elem_id="chatbox")
             chat_input = gr.Textbox(label="Type your message", interactive=False, placeholder="Chat will be enabled when feedback explanation is needed...")
             send_btn = gr.Button("Send", interactive=False)
