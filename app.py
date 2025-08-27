@@ -229,7 +229,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     rec_index_state = gr.State(value=0)  # Current index in recommendations
     feedback_log_state = gr.State(value=[])  # List of feedbacks
 
-    with gr.Accordion("Instructions", open=True) as expectation_accordion:
+    with gr.Accordion("**Instructions**", open=True) as expectation_accordion:
         gr.Markdown("""
 ### 🤖 What this agent does
 - Analyzes your **background and goals** to identify your skills and learning gaps
@@ -502,7 +502,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             next_course = recs[next_idx]
             explanation = next_course.get('explanation', '')
             next_card = render_course_card(next_course, explanation)
-            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
+            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
@@ -565,7 +565,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             next_course = recs[next_idx]
             explanation = next_course.get('explanation', '')
             next_card = render_course_card(next_course, explanation)
-            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
+            chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
