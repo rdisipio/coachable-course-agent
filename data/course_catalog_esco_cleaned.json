@@ -1,32 +1,18 @@
 {
   "metadata": {
     "total_courses": 366,
-    "consolidated_at": "2025-08-27T17:38:27.358092",
+    "consolidated_at": "2025-08-27T17:28:41.140249",
     "esco_matched": true,
     "sources": [
       "coursera"
     ],
     "cleaned_at": "2025-08-27T17:45:00",
     "cleanup_stats": {
-      "total_skills_before": 4262,
+      "total_skills_before": 4860,
       "total_skills_after": 4262,
-      "duplicates_removed": 0,
-      "false_positives_removed": 0,
-      "cleanup_rate": 0.0
-    },
-    "pipeline_completed_at": "2025-08-27T17:36:32.222100",
-    "quality_report": {
-      "total_courses": 366,
-      "total_skills": 4262,
-      "avg_skills_per_course": 11.64,
-      "courses_without_skills": 26,
-      "domain_coverage": 4,
-      "domains_found": [
-        "Business & Management",
-        "Computer Science & AI",
-        "Design & Architecture",
-        "Engineering"
-      ]
+      "duplicates_removed": 548,
+      "false_positives_removed": 50,
+      "cleanup_rate": 12.3
     }
   },
   "courses": [
@@ -103,7 +89,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:33.510194"
+      "consolidated_at": "2025-08-27T17:26:44.929650"
     },
     {
       "id": "997d3efd-3ddc-4296-92d4-ef74330a8e5b",
@@ -168,7 +154,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:33.857451"
+      "consolidated_at": "2025-08-27T17:26:45.588836"
     },
     {
       "id": "907ba4db-41d4-4c1e-8788-acb3f6b977ce",
@@ -187,7 +173,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:33.860147"
+      "consolidated_at": "2025-08-27T17:26:45.593257"
     },
     {
       "id": "4c4d87ee-c6b5-464f-8b95-b11bff045f5a",
@@ -282,7 +268,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:34.387910"
+      "consolidated_at": "2025-08-27T17:26:46.278110"
     },
     {
       "id": "589435fa-7fc5-4ccf-96be-a816e419b7d4",
@@ -377,7 +363,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:34.771610"
+      "consolidated_at": "2025-08-27T17:26:46.952747"
     },
     {
       "id": "6444da96-2f16-4d96-be6f-f33de5bc581c",
@@ -467,7 +453,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:35.257081"
+      "consolidated_at": "2025-08-27T17:26:47.425228"
     },
     {
       "id": "c82c85c6-2016-4d49-8f67-6cb72359bd57",
@@ -542,7 +528,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:35.520212"
+      "consolidated_at": "2025-08-27T17:26:47.691976"
     },
     {
       "id": "7abb76c6-bfd1-41ad-8b57-f7863680efaf",
@@ -622,7 +608,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:35.855045"
+      "consolidated_at": "2025-08-27T17:26:48.033098"
     },
     {
       "id": "0b351af4-3d58-4b81-8b53-7e8ccda014ce",
@@ -687,7 +673,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:36.117575"
+      "consolidated_at": "2025-08-27T17:26:48.302941"
     },
     {
       "id": "eba799cd-2a82-4a70-ac40-e7c8be855a7a",
@@ -802,7 +788,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:36.582723"
+      "consolidated_at": "2025-08-27T17:26:48.786466"
     },
     {
       "id": "06677c4b-8cd9-4738-9d75-576d33497352",
@@ -882,7 +868,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:36.863026"
+      "consolidated_at": "2025-08-27T17:26:49.075528"
     },
     {
       "id": "817838ac-1154-4f12-9161-e42697faf096",
@@ -942,7 +928,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:37.098078"
+      "consolidated_at": "2025-08-27T17:26:49.315495"
     },
     {
       "id": "d05c91da-98f1-445e-908d-aa850393bde5",
@@ -1007,7 +993,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:37.573513"
+      "consolidated_at": "2025-08-27T17:26:49.799679"
     },
     {
       "id": "5bfc59d0-6277-4d96-b0a5-3e332d80a367",
@@ -1102,7 +1088,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:38.045415"
+      "consolidated_at": "2025-08-27T17:26:50.273428"
     },
     {
       "id": "c9900c8f-7fa6-45f4-bffb-713492f22398",
@@ -1167,7 +1153,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:38.383009"
+      "consolidated_at": "2025-08-27T17:26:50.608332"
     },
     {
       "id": "e0576559-270d-469a-a476-bfa17acaf07c",
@@ -1247,7 +1233,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:38.744666"
+      "consolidated_at": "2025-08-27T17:26:50.945352"
     },
     {
       "id": "4c84cb6e-3751-4312-a48a-38348af07259",
@@ -1337,7 +1323,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:39.123205"
+      "consolidated_at": "2025-08-27T17:26:51.328437"
     },
     {
       "id": "544b09b4-d1af-499c-bde6-06a6621d2ef1",
@@ -1412,7 +1398,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:39.510141"
+      "consolidated_at": "2025-08-27T17:26:51.715325"
     },
     {
       "id": "4e4623a8-421f-4af9-bb4f-b635d811d855",
@@ -1497,7 +1483,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:39.877769"
+      "consolidated_at": "2025-08-27T17:26:52.082711"
     },
     {
       "id": "a83a2401-2c90-4322-a702-8a22bdd3d701",
@@ -1587,7 +1573,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:40.285020"
+      "consolidated_at": "2025-08-27T17:26:52.493707"
     },
     {
       "id": "d4425c79-aea9-449d-ac38-85b0df821685",
@@ -1677,7 +1663,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:40.767364"
+      "consolidated_at": "2025-08-27T17:26:52.970954"
     },
     {
       "id": "fe9d92ce-7766-4936-8ed3-f824f9098040",
@@ -1777,7 +1763,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:41.257325"
+      "consolidated_at": "2025-08-27T17:26:53.467641"
     },
     {
       "id": "42808281-054f-4c31-a1ad-c35c70e97860",
@@ -1887,7 +1873,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:41.749199"
+      "consolidated_at": "2025-08-27T17:26:53.953497"
     },
     {
       "id": "dae53ffc-b04e-48ec-ad27-380c942d3d81",
@@ -1952,7 +1938,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:41.978668"
+      "consolidated_at": "2025-08-27T17:26:54.206706"
     },
     {
       "id": "f9232cac-0b91-485c-a652-d17aa2841565",
@@ -2022,7 +2008,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:42.244466"
+      "consolidated_at": "2025-08-27T17:26:54.487835"
     },
     {
       "id": "00218a50-66ae-458a-86aa-64c437ae63e5",
@@ -2087,7 +2073,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:42.473265"
+      "consolidated_at": "2025-08-27T17:26:54.732557"
     },
     {
       "id": "35aa880a-c6ac-4262-8de1-4da6e28bc7ca",
@@ -2127,7 +2113,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:42.585966"
+      "consolidated_at": "2025-08-27T17:26:54.844502"
     },
     {
       "id": "2f47cfa4-eee2-4de4-94bd-500b997817a6",
@@ -2162,7 +2148,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:42.678736"
+      "consolidated_at": "2025-08-27T17:26:54.936656"
     },
     {
       "id": "0f11f603-318f-412c-a76f-923aeb990f7b",
@@ -2242,7 +2228,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:43.145149"
+      "consolidated_at": "2025-08-27T17:26:55.416416"
     },
     {
       "id": "493468cb-44f1-47dd-a6ed-073c7bbd99bb",
@@ -2337,7 +2323,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:43.617008"
+      "consolidated_at": "2025-08-27T17:26:55.904724"
     },
     {
       "id": "a4d2d032-a6df-4061-b71f-a29bd2a3dd5d",
@@ -2407,7 +2393,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:43.929342"
+      "consolidated_at": "2025-08-27T17:26:56.222317"
     },
     {
       "id": "cd7f991b-eafa-4041-b8ec-52aa227bdf86",
@@ -2512,7 +2498,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:44.393839"
+      "consolidated_at": "2025-08-27T17:26:56.701024"
     },
     {
       "id": "10d3f440-06b1-4685-8705-365f3f7af4a6",
@@ -2562,7 +2548,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:44.615965"
+      "consolidated_at": "2025-08-27T17:26:56.930175"
     },
     {
       "id": "e60897a4-12de-4049-92f1-1a58b5fbb2b4",
@@ -2617,7 +2603,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:44.936504"
+      "consolidated_at": "2025-08-27T17:26:57.252187"
     },
     {
       "id": "8e069f78-8b5d-495d-afcb-d65e555f244c",
@@ -2692,7 +2678,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:45.255516"
+      "consolidated_at": "2025-08-27T17:26:57.579185"
     },
     {
       "id": "2adf6c6c-c133-475e-9a0b-d95152279cc3",
@@ -2782,7 +2768,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:45.752556"
+      "consolidated_at": "2025-08-27T17:26:58.065205"
     },
     {
       "id": "7a5aa3eb-c33b-4e83-9797-72489318d580",
@@ -2862,7 +2848,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:46.037666"
+      "consolidated_at": "2025-08-27T17:26:58.372536"
     },
     {
       "id": "26c95cf1-4fe7-4837-9d99-7da792a5d8db",
@@ -2932,7 +2918,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:46.343154"
+      "consolidated_at": "2025-08-27T17:26:58.675370"
     },
     {
       "id": "58200feb-ac2a-4a51-a2cf-dc086d54c24d",
@@ -3037,7 +3023,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:46.820291"
+      "consolidated_at": "2025-08-27T17:26:59.219217"
     },
     {
       "id": "1332e1cd-c4ff-4aba-af68-25230e827301",
@@ -3147,7 +3133,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:47.281586"
+      "consolidated_at": "2025-08-27T17:26:59.702305"
     },
     {
       "id": "dd806504-1cb4-4c42-a9ed-e7de7fc1ba37",
@@ -3247,7 +3233,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:47.755515"
+      "consolidated_at": "2025-08-27T17:27:00.178397"
     },
     {
       "id": "e30488d7-aa48-4c3e-960a-9d016be40637",
@@ -3337,7 +3323,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:48.238339"
+      "consolidated_at": "2025-08-27T17:27:00.678320"
     },
     {
       "id": "515bdf63-608e-4d59-b229-9d2301a699fe",
@@ -3407,7 +3393,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:48.547181"
+      "consolidated_at": "2025-08-27T17:27:00.983102"
     },
     {
       "id": "c1d3b7b0-75bc-4e39-be6a-ceced9b79cae",
@@ -3487,7 +3473,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:48.815747"
+      "consolidated_at": "2025-08-27T17:27:01.260788"
     },
     {
       "id": "bc0dc248-3f53-4c0a-a78c-7397f6c2b1ae",
@@ -3527,7 +3513,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:48.989896"
+      "consolidated_at": "2025-08-27T17:27:01.438404"
     },
     {
       "id": "525282be-f411-4966-8ef3-b185b267599b",
@@ -3567,7 +3553,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:49.085183"
+      "consolidated_at": "2025-08-27T17:27:01.542146"
     },
     {
       "id": "b0a47ca6-5da0-41e9-abf4-9fec92e4af4f",
@@ -3662,7 +3648,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:49.545508"
+      "consolidated_at": "2025-08-27T17:27:02.028329"
     },
     {
       "id": "63366f30-818e-4537-8c4b-7fe6b6b053d7",
@@ -3737,7 +3723,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:49.865581"
+      "consolidated_at": "2025-08-27T17:27:02.354119"
     },
     {
       "id": "843170ce-856e-4445-94d5-b7b6268d46c8",
@@ -3817,7 +3803,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:50.319833"
+      "consolidated_at": "2025-08-27T17:27:02.818602"
     },
     {
       "id": "7a47985a-da31-4818-a1a3-14dbe08ee44c",
@@ -3882,7 +3868,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:50.525812"
+      "consolidated_at": "2025-08-27T17:27:03.030327"
     },
     {
       "id": "75d74d22-9d57-4461-a127-7ee4728370e5",
@@ -3922,7 +3908,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:50.771162"
+      "consolidated_at": "2025-08-27T17:27:03.284166"
     },
     {
       "id": "1db5422c-9fc2-4b0d-aff0-7398ef84d04f",
@@ -3947,7 +3933,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:50.816352"
+      "consolidated_at": "2025-08-27T17:27:03.329098"
     },
     {
       "id": "5c9597cb-ddff-4ca1-a53c-c353c378af62",
@@ -3966,7 +3952,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:50.818741"
+      "consolidated_at": "2025-08-27T17:27:03.331702"
     },
     {
       "id": "6d2d4009-b512-43d7-a92f-a8c9cb4324f9",
@@ -3985,7 +3971,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:50.821763"
+      "consolidated_at": "2025-08-27T17:27:03.334442"
     },
     {
       "id": "bd370960-1018-497e-bd74-99285d76d1e0",
@@ -4055,7 +4041,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:51.079787"
+      "consolidated_at": "2025-08-27T17:27:03.591995"
     },
     {
       "id": "ac99b8e6-38b2-418c-822e-4b78c70461b2",
@@ -4170,7 +4156,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:51.576967"
+      "consolidated_at": "2025-08-27T17:27:04.090916"
     },
     {
       "id": "3b97f597-2311-4b27-97a8-3532b7b4d235",
@@ -4280,7 +4266,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:52.046564"
+      "consolidated_at": "2025-08-27T17:27:04.570536"
     },
     {
       "id": "2129ebec-648f-4912-8822-a3a576193b13",
@@ -4340,7 +4326,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:52.288646"
+      "consolidated_at": "2025-08-27T17:27:04.829436"
     },
     {
       "id": "508edfb2-d783-4775-bef9-a77a33a35fa2",
@@ -4430,7 +4416,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:52.654558"
+      "consolidated_at": "2025-08-27T17:27:05.196492"
     },
     {
       "id": "4334580f-fbb0-406a-a1f7-49b55e02f903",
@@ -4535,7 +4521,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:53.137226"
+      "consolidated_at": "2025-08-27T17:27:05.687063"
     },
     {
       "id": "90a43c65-5535-4225-be71-49b642a10dbb",
@@ -4620,7 +4606,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:53.549586"
+      "consolidated_at": "2025-08-27T17:27:06.088023"
     },
     {
       "id": "1f2b1d76-72e8-45ef-8876-ad8b3b397a4a",
@@ -4710,7 +4696,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:53.890138"
+      "consolidated_at": "2025-08-27T17:27:06.424768"
     },
     {
       "id": "ad9e5ed3-7053-4404-b13b-e6df4d80ccf8",
@@ -4780,7 +4766,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:54.146505"
+      "consolidated_at": "2025-08-27T17:27:06.690536"
     },
     {
       "id": "16306229-c137-4ab7-8edc-47f67b2ac95a",
@@ -4900,7 +4886,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:54.676215"
+      "consolidated_at": "2025-08-27T17:27:07.231417"
     },
     {
       "id": "8b26c210-1ed1-471a-b1dd-13dcc01c44ac",
@@ -4919,7 +4905,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:54.679164"
+      "consolidated_at": "2025-08-27T17:27:07.234204"
     },
     {
       "id": "7e4846c7-b524-46a1-8540-67682bb315af",
@@ -5034,7 +5020,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:55.157790"
+      "consolidated_at": "2025-08-27T17:27:07.709781"
     },
     {
       "id": "e3cbc1c6-8836-41bf-a486-9d615766ce1a",
@@ -5144,7 +5130,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:55.622649"
+      "consolidated_at": "2025-08-27T17:27:08.182156"
     },
     {
       "id": "b73dbd6c-2d61-4f84-9ae9-cb43ca7d09da",
@@ -5234,7 +5220,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:55.970558"
+      "consolidated_at": "2025-08-27T17:27:08.538374"
     },
     {
       "id": "cb44a3b0-d84b-4335-8660-54edfd955b86",
@@ -5344,7 +5330,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:56.439405"
+      "consolidated_at": "2025-08-27T17:27:09.011591"
     },
     {
       "id": "ac4cd2ea-e943-4506-9d7c-55802e066265",
@@ -5439,7 +5425,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:56.843118"
+      "consolidated_at": "2025-08-27T17:27:09.412791"
     },
     {
       "id": "2dcaffd6-1474-491b-8b9d-0db24f6a53cd",
@@ -5514,7 +5500,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:57.143442"
+      "consolidated_at": "2025-08-27T17:27:09.728492"
     },
     {
       "id": "86dddcc3-956c-4ab0-9d72-2d33460c332c",
@@ -5619,7 +5605,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:57.616943"
+      "consolidated_at": "2025-08-27T17:27:10.214593"
     },
     {
       "id": "1528ee39-14ca-42c0-ade3-a5b06e322de0",
@@ -5729,7 +5715,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:58.099294"
+      "consolidated_at": "2025-08-27T17:27:10.706181"
     },
     {
       "id": "e24775c6-ff8c-4125-b09e-a0f0c9d2e45e",
@@ -5809,7 +5795,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:58.409182"
+      "consolidated_at": "2025-08-27T17:27:11.017983"
     },
     {
       "id": "eb23d944-66f8-436f-8a09-7065f409c306",
@@ -5859,7 +5845,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:58.572824"
+      "consolidated_at": "2025-08-27T17:27:11.187578"
     },
     {
       "id": "72ea4d80-aa5c-4f26-9e25-b71ccfb3a6be",
@@ -5974,7 +5960,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:59.040029"
+      "consolidated_at": "2025-08-27T17:27:11.660527"
     },
     {
       "id": "30b07067-20b9-4894-986f-fbcd88ba6c5d",
@@ -6039,7 +6025,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:59.324096"
+      "consolidated_at": "2025-08-27T17:27:11.946170"
     },
     {
       "id": "4f32ac6a-e159-48fd-abf1-a2cbcad73d0e",
@@ -6134,7 +6120,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:59.703585"
+      "consolidated_at": "2025-08-27T17:27:12.332516"
     },
     {
       "id": "2db3ba9e-b769-4753-999c-3c695d586e37",
@@ -6204,7 +6190,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:36:59.965419"
+      "consolidated_at": "2025-08-27T17:27:12.605921"
     },
     {
       "id": "325de735-435f-4214-8ec4-77a35c42a4b4",
@@ -6289,7 +6275,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:00.298775"
+      "consolidated_at": "2025-08-27T17:27:12.946486"
     },
     {
       "id": "8cefe45c-dcf8-47e1-b4e0-4d04f48b83a4",
@@ -6384,7 +6370,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:00.775094"
+      "consolidated_at": "2025-08-27T17:27:13.430952"
     },
     {
       "id": "f14e5a17-6271-433a-bc05-e03e9e82dc51",
@@ -6403,7 +6389,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:00.778055"
+      "consolidated_at": "2025-08-27T17:27:13.433920"
     },
     {
       "id": "abba7eb6-8177-46a7-9ca7-29e4a2a4f16a",
@@ -6422,7 +6408,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:00.780368"
+      "consolidated_at": "2025-08-27T17:27:13.436278"
     },
     {
       "id": "c616f73d-9c20-409d-9cfe-1dfdc5994c84",
@@ -6467,7 +6453,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:00.970027"
+      "consolidated_at": "2025-08-27T17:27:13.630816"
     },
     {
       "id": "506ada4d-ec70-4483-9802-0882d32347ce",
@@ -6567,7 +6553,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:01.438506"
+      "consolidated_at": "2025-08-27T17:27:14.111204"
     },
     {
       "id": "b08dd627-1cfd-45e1-a82b-00c21aa253e5",
@@ -6657,7 +6643,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:01.923841"
+      "consolidated_at": "2025-08-27T17:27:14.470972"
     },
     {
       "id": "7c35b00d-a647-4e88-834a-58e9d5cefc5d",
@@ -6757,7 +6743,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:02.392568"
+      "consolidated_at": "2025-08-27T17:27:14.951137"
     },
     {
       "id": "bf975586-4106-49ee-a333-c737ca80ea27",
@@ -6822,7 +6808,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:02.649281"
+      "consolidated_at": "2025-08-27T17:27:15.217543"
     },
     {
       "id": "6aae0ad4-b97f-4c12-a779-1a308bf8ef6b",
@@ -6922,7 +6908,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:03.121963"
+      "consolidated_at": "2025-08-27T17:27:15.689467"
     },
     {
       "id": "17ee0294-aef9-491b-b812-db77a52acf6b",
@@ -6941,7 +6927,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:03.124866"
+      "consolidated_at": "2025-08-27T17:27:15.692417"
     },
     {
       "id": "4dc52522-b44a-49a6-b12e-f8276a13062b",
@@ -6960,7 +6946,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:03.127445"
+      "consolidated_at": "2025-08-27T17:27:15.695019"
     },
     {
       "id": "64d88e53-e4db-435e-a108-44067fe94347",
@@ -6979,7 +6965,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:03.129781"
+      "consolidated_at": "2025-08-27T17:27:15.697404"
     },
     {
       "id": "64dc813c-463c-471d-b7c3-b3d9ada204e8",
@@ -6998,7 +6984,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:03.132313"
+      "consolidated_at": "2025-08-27T17:27:15.699965"
     },
     {
       "id": "147e89ab-c1e5-4c1d-8d52-c0afddb218bd",
@@ -7108,7 +7094,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:03.594839"
+      "consolidated_at": "2025-08-27T17:27:16.181805"
     },
     {
       "id": "11e3b325-474b-49f7-97a0-f7c3d4eae3ea",
@@ -7223,7 +7209,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.068880"
+      "consolidated_at": "2025-08-27T17:27:16.671959"
     },
     {
       "id": "7f6934d0-5afb-4636-a73d-ebb4d9042e3b",
@@ -7323,7 +7309,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.543390"
+      "consolidated_at": "2025-08-27T17:27:17.156611"
     },
     {
       "id": "5ef21562-ee99-4317-bf56-4597b57ea527",
@@ -7342,7 +7328,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.546326"
+      "consolidated_at": "2025-08-27T17:27:17.159536"
     },
     {
       "id": "a9fe49e6-2274-43d4-a83f-3a5b5c7e9c4a",
@@ -7361,7 +7347,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.548789"
+      "consolidated_at": "2025-08-27T17:27:17.162045"
     },
     {
       "id": "f55fab01-944a-451d-a8a4-9b7dac870cb6",
@@ -7380,7 +7366,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.551505"
+      "consolidated_at": "2025-08-27T17:27:17.164768"
     },
     {
       "id": "855dd15e-cd2a-4899-b72c-92a557841647",
@@ -7399,7 +7385,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.553973"
+      "consolidated_at": "2025-08-27T17:27:17.167239"
     },
     {
       "id": "672eaad6-6bc8-4a0c-aec9-966cd1bd2e71",
@@ -7504,7 +7490,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:04.965670"
+      "consolidated_at": "2025-08-27T17:27:17.596535"
     },
     {
       "id": "cd6187e3-7928-45fe-85ff-ede28e4fc49d",
@@ -7604,7 +7590,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:05.352948"
+      "consolidated_at": "2025-08-27T17:27:17.999647"
     },
     {
       "id": "9420c975-bee2-4997-9305-fbbc7fdb2264",
@@ -7719,7 +7705,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:05.815814"
+      "consolidated_at": "2025-08-27T17:27:18.472148"
     },
     {
       "id": "a12f068f-58ac-4314-a38b-a2cc9e6b94ba",
@@ -7824,7 +7810,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:06.204091"
+      "consolidated_at": "2025-08-27T17:27:18.877503"
     },
     {
       "id": "808baea3-0d63-42a6-bbd8-2073e41665b7",
@@ -7904,7 +7890,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:06.502901"
+      "consolidated_at": "2025-08-27T17:27:19.184654"
     },
     {
       "id": "52d61011-e49c-425d-b054-10c0eebb753a",
@@ -8014,7 +8000,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:06.959037"
+      "consolidated_at": "2025-08-27T17:27:19.664057"
     },
     {
       "id": "6abf2145-43f2-4dff-bf6a-c8bdb8e57d7c",
@@ -8124,7 +8110,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:07.425482"
+      "consolidated_at": "2025-08-27T17:27:20.141650"
     },
     {
       "id": "6a673111-9ad3-46c7-a457-b9e1ce26a481",
@@ -8229,7 +8215,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:07.894689"
+      "consolidated_at": "2025-08-27T17:27:20.616949"
     },
     {
       "id": "6812a2c3-8130-405b-8763-43d96074ead8",
@@ -8334,7 +8320,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:08.364236"
+      "consolidated_at": "2025-08-27T17:27:21.096727"
     },
     {
       "id": "ca6dab88-c9f8-4b09-b90b-8ac056a6bc49",
@@ -8444,7 +8430,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:08.824012"
+      "consolidated_at": "2025-08-27T17:27:21.572493"
     },
     {
       "id": "c144486b-5866-4b0d-bc91-0c7ae9316505",
@@ -8514,7 +8500,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:09.148865"
+      "consolidated_at": "2025-08-27T17:27:21.908498"
     },
     {
       "id": "59e18475-e183-4e5d-a73b-9c46c976f382",
@@ -8599,7 +8585,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:09.491064"
+      "consolidated_at": "2025-08-27T17:27:22.258227"
     },
     {
       "id": "d15c4d53-36e9-4716-b70a-7c198ec6da82",
@@ -8704,7 +8690,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:09.959598"
+      "consolidated_at": "2025-08-27T17:27:22.727640"
     },
     {
       "id": "31b00650-f8f9-45bf-9692-b30a5afbe238",
@@ -8819,7 +8805,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:10.434338"
+      "consolidated_at": "2025-08-27T17:27:23.205000"
     },
     {
       "id": "d400e5f4-db9a-4178-b786-eba4d974eae2",
@@ -8924,7 +8910,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:10.905363"
+      "consolidated_at": "2025-08-27T17:27:23.680549"
     },
     {
       "id": "78092796-aeae-419d-b082-a0b249c4f170",
@@ -9039,7 +9025,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:11.370849"
+      "consolidated_at": "2025-08-27T17:27:24.154799"
     },
     {
       "id": "5665bc3b-5e4e-436f-bef1-aec4bc850dbc",
@@ -9119,7 +9105,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:11.770812"
+      "consolidated_at": "2025-08-27T17:27:24.564808"
     },
     {
       "id": "7a847392-0433-41bb-a8ed-6d2864d4d253",
@@ -9138,7 +9124,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:11.773544"
+      "consolidated_at": "2025-08-27T17:27:24.567755"
     },
     {
       "id": "1dd42af1-2f9e-46d7-8e99-2038cb077b24",
@@ -9157,7 +9143,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:11.776098"
+      "consolidated_at": "2025-08-27T17:27:24.570073"
     },
     {
       "id": "3d233e5f-f0ca-4e33-87cb-8fa206e46e5b",
@@ -9237,7 +9223,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:12.079223"
+      "consolidated_at": "2025-08-27T17:27:24.873590"
     },
     {
       "id": "182089f2-a253-46cc-8829-ac2a0110acda",
@@ -9342,7 +9328,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:12.513106"
+      "consolidated_at": "2025-08-27T17:27:25.313420"
     },
     {
       "id": "fdb7dfe3-47ba-460b-8505-8317a700dc03",
@@ -9412,7 +9398,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:12.793169"
+      "consolidated_at": "2025-08-27T17:27:25.597158"
     },
     {
       "id": "0a6b0a01-a3b7-4f97-a8c5-5062a1a4dbb5",
@@ -9492,7 +9478,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:13.077515"
+      "consolidated_at": "2025-08-27T17:27:25.882861"
     },
     {
       "id": "efab1fcb-f182-4252-bfa8-bb933feb4a7b",
@@ -9602,7 +9588,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:13.538024"
+      "consolidated_at": "2025-08-27T17:27:26.346903"
     },
     {
       "id": "72f6e6c3-a074-41de-b4ca-de164623ef88",
@@ -9677,7 +9663,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:13.844195"
+      "consolidated_at": "2025-08-27T17:27:26.659739"
     },
     {
       "id": "74def1cb-b694-4d90-b84f-96131a1cd8da",
@@ -9782,7 +9768,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:14.307501"
+      "consolidated_at": "2025-08-27T17:27:27.131658"
     },
     {
       "id": "7bef652b-5b7a-4ced-8715-90bd4e8e33cd",
@@ -9892,7 +9878,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:14.779513"
+      "consolidated_at": "2025-08-27T17:27:27.609741"
     },
     {
       "id": "3e564c3e-804d-484d-8723-d4f5c593e8b4",
@@ -9967,7 +9953,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:15.062659"
+      "consolidated_at": "2025-08-27T17:27:27.895653"
     },
     {
       "id": "865d9be3-83fa-469b-81a6-1adeb31e671a",
@@ -10067,7 +10053,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:15.536455"
+      "consolidated_at": "2025-08-27T17:27:28.375601"
     },
     {
       "id": "df677d1f-5364-4b5e-93f8-9aa75c12d9d2",
@@ -10177,7 +10163,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:16.005709"
+      "consolidated_at": "2025-08-27T17:27:28.852222"
     },
     {
       "id": "44d05bfa-59be-43cc-a3dd-3ee194151a1b",
@@ -10232,7 +10218,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:16.227361"
+      "consolidated_at": "2025-08-27T17:27:29.072521"
     },
     {
       "id": "273f9eeb-a9bd-40e6-b036-e7a463b81a78",
@@ -10342,7 +10328,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:16.685224"
+      "consolidated_at": "2025-08-27T17:27:29.680636"
     },
     {
       "id": "41f73a6b-0d1f-4bc8-b2ca-0b88fc887a9d",
@@ -10412,7 +10398,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:16.940570"
+      "consolidated_at": "2025-08-27T17:27:29.938500"
     },
     {
       "id": "251287b2-fd93-4ddb-9c1a-f0d207ab9b5e",
@@ -10532,7 +10518,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:17.406412"
+      "consolidated_at": "2025-08-27T17:27:30.404318"
     },
     {
       "id": "de82e73a-b833-479d-b28c-6afa23119779",
@@ -10612,7 +10598,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:17.685143"
+      "consolidated_at": "2025-08-27T17:27:30.696952"
     },
     {
       "id": "ddf8d5c6-6810-4d69-a902-8101ef658567",
@@ -10697,7 +10683,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:17.999468"
+      "consolidated_at": "2025-08-27T17:27:31.011358"
     },
     {
       "id": "c6e30ec5-a6df-4642-8e81-be4bcffec334",
@@ -10817,7 +10803,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:18.460692"
+      "consolidated_at": "2025-08-27T17:27:31.484684"
     },
     {
       "id": "be645d10-adb0-42f0-b8a2-ca54e913dd06",
@@ -10882,7 +10868,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:18.669212"
+      "consolidated_at": "2025-08-27T17:27:31.697814"
     },
     {
       "id": "d143b22d-e9e9-4cde-9a9c-4092b808ffcb",
@@ -10987,7 +10973,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.062511"
+      "consolidated_at": "2025-08-27T17:27:32.098075"
     },
     {
       "id": "d9247790-aca1-4df7-8e44-7454fae4e504",
@@ -11062,7 +11048,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.323728"
+      "consolidated_at": "2025-08-27T17:27:32.365379"
     },
     {
       "id": "c77ffe08-d211-4af4-8b92-1168daefdbdd",
@@ -11117,7 +11103,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.513684"
+      "consolidated_at": "2025-08-27T17:27:32.563546"
     },
     {
       "id": "035e1db1-cb2d-45db-bb68-f72f07e7f1e5",
@@ -11136,7 +11122,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.516777"
+      "consolidated_at": "2025-08-27T17:27:32.566300"
     },
     {
       "id": "bca9b43f-e6fc-42ab-b609-f3cf7053f0ed",
@@ -11155,7 +11141,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.519414"
+      "consolidated_at": "2025-08-27T17:27:32.568363"
     },
     {
       "id": "4781cc76-e936-4afd-b63b-2141f0f90c79",
@@ -11174,7 +11160,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.521858"
+      "consolidated_at": "2025-08-27T17:27:32.570729"
     },
     {
       "id": "d26b007d-6421-46cd-b001-80572130c7dc",
@@ -11193,7 +11179,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.524398"
+      "consolidated_at": "2025-08-27T17:27:32.573578"
     },
     {
       "id": "2ed9d55c-c73b-4d55-8f49-1951f1ea5c4f",
@@ -11273,7 +11259,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.829932"
+      "consolidated_at": "2025-08-27T17:27:32.883590"
     },
     {
       "id": "0d02cd7c-ff2d-4492-9262-ce7a17c8b172",
@@ -11328,7 +11314,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:19.995282"
+      "consolidated_at": "2025-08-27T17:27:33.051033"
     },
     {
       "id": "a27ed0f1-0eb6-48d4-9c78-17eb6ab7201b",
@@ -11403,7 +11389,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:20.300782"
+      "consolidated_at": "2025-08-27T17:27:33.364072"
     },
     {
       "id": "2d4a117e-1bbd-4fbd-818c-8a78b3ed7e9d",
@@ -11493,7 +11479,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:20.690504"
+      "consolidated_at": "2025-08-27T17:27:33.760813"
     },
     {
       "id": "487ac855-3fc3-4f56-9efe-5661c71df221",
@@ -11568,7 +11554,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:20.972503"
+      "consolidated_at": "2025-08-27T17:27:34.058238"
     },
     {
       "id": "b2fb959c-46bf-4807-86eb-7a93caad4d92",
@@ -11613,7 +11599,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:21.085407"
+      "consolidated_at": "2025-08-27T17:27:34.170819"
     },
     {
       "id": "12894a63-8d8d-4385-8262-3c20f127cec9",
@@ -11678,7 +11664,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:21.334688"
+      "consolidated_at": "2025-08-27T17:27:34.421420"
     },
     {
       "id": "13987834-0ece-4ddd-ab0d-c8f6a42eca13",
@@ -11733,7 +11719,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:21.493044"
+      "consolidated_at": "2025-08-27T17:27:34.584442"
     },
     {
       "id": "7dd4dae1-ee9c-45ae-b83e-c3c2ad1d9f93",
@@ -11808,7 +11794,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:21.815766"
+      "consolidated_at": "2025-08-27T17:27:34.909661"
     },
     {
       "id": "2dfdf16c-b10d-444c-a3df-84227ff28695",
@@ -11893,7 +11879,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:22.158904"
+      "consolidated_at": "2025-08-27T17:27:35.249266"
     },
     {
       "id": "cb052fad-9ed5-449d-9794-be899eb57679",
@@ -11943,7 +11929,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:22.316635"
+      "consolidated_at": "2025-08-27T17:27:35.410211"
     },
     {
       "id": "26d825d5-86e4-4350-bc72-ae45225e3e9c",
@@ -12003,7 +11989,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:22.497189"
+      "consolidated_at": "2025-08-27T17:27:35.592527"
     },
     {
       "id": "c2d58fa1-4f33-46b9-9053-32a89ad09635",
@@ -12063,7 +12049,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:22.702855"
+      "consolidated_at": "2025-08-27T17:27:35.797360"
     },
     {
       "id": "5fd5c4d5-7b31-4748-8910-b20851fa4236",
@@ -12168,7 +12154,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:23.172462"
+      "consolidated_at": "2025-08-27T17:27:36.278589"
     },
     {
       "id": "e6b67a0f-0595-4498-ac61-c4686f75777f",
@@ -12273,7 +12259,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:23.651781"
+      "consolidated_at": "2025-08-27T17:27:36.763645"
     },
     {
       "id": "1c54bc37-690c-4de0-883b-6ef343800dca",
@@ -12323,7 +12309,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:23.813824"
+      "consolidated_at": "2025-08-27T17:27:36.923501"
     },
     {
       "id": "68323932-dc82-46a9-9bca-6927947ad7f1",
@@ -12373,7 +12359,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:23.952332"
+      "consolidated_at": "2025-08-27T17:27:37.059305"
     },
     {
       "id": "f8b34c06-f15f-4558-8fb8-e1e05dfa5a52",
@@ -12438,7 +12424,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.158478"
+      "consolidated_at": "2025-08-27T17:27:37.265338"
     },
     {
       "id": "7674c7ec-d557-4ad2-b157-10460e109c68",
@@ -12483,7 +12469,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.296955"
+      "consolidated_at": "2025-08-27T17:27:37.407325"
     },
     {
       "id": "a32e9938-5ab6-4e9e-906c-b32b2ce5f124",
@@ -12553,7 +12539,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.563117"
+      "consolidated_at": "2025-08-27T17:27:37.677988"
     },
     {
       "id": "cd4bccd9-e0bd-41cb-bca3-8e4b7956b366",
@@ -12628,7 +12614,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.804592"
+      "consolidated_at": "2025-08-27T17:27:37.924903"
     },
     {
       "id": "482dcaaa-7635-4df2-bec5-5a1267837059",
@@ -12647,7 +12633,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.807415"
+      "consolidated_at": "2025-08-27T17:27:37.927867"
     },
     {
       "id": "875894eb-8aae-4d38-af01-bcaf011fee2b",
@@ -12666,7 +12652,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.809895"
+      "consolidated_at": "2025-08-27T17:27:37.930244"
     },
     {
       "id": "bb00e517-fd49-4976-b0f1-19bd9be5c2d5",
@@ -12716,7 +12702,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:24.998245"
+      "consolidated_at": "2025-08-27T17:27:38.120183"
     },
     {
       "id": "a511452e-a296-4f3c-bf43-7ab72bf52355",
@@ -12796,7 +12782,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:25.320093"
+      "consolidated_at": "2025-08-27T17:27:38.445619"
     },
     {
       "id": "d1fe6205-1d33-43cd-9a90-e68a0ae26734",
@@ -12841,7 +12827,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:25.436842"
+      "consolidated_at": "2025-08-27T17:27:38.567462"
     },
     {
       "id": "fbc34347-c084-451c-9729-efb6ddc735e2",
@@ -12941,7 +12927,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:25.889988"
+      "consolidated_at": "2025-08-27T17:27:39.024021"
     },
     {
       "id": "33bd3a6e-0e2f-4faf-9f43-58ee7b9d7dab",
@@ -13001,7 +12987,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:26.144554"
+      "consolidated_at": "2025-08-27T17:27:39.279614"
     },
     {
       "id": "06154570-c907-4b82-8069-18e08a5c26e2",
@@ -13106,7 +13092,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:26.609145"
+      "consolidated_at": "2025-08-27T17:27:39.755619"
     },
     {
       "id": "b3d7911e-4263-4883-a4d1-4ed52a01ac58",
@@ -13186,7 +13172,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:26.880452"
+      "consolidated_at": "2025-08-27T17:27:40.033974"
     },
     {
       "id": "682fe770-f35a-44b1-82d4-d219f372b43c",
@@ -13205,7 +13191,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:26.883256"
+      "consolidated_at": "2025-08-27T17:27:40.036851"
     },
     {
       "id": "ac9f8d48-5647-43d0-a477-02652a5f451f",
@@ -13224,7 +13210,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:26.885640"
+      "consolidated_at": "2025-08-27T17:27:40.039128"
     },
     {
       "id": "ecfe8e4b-1ce9-4d01-9486-44e2c7be6a1d",
@@ -13243,7 +13229,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:26.888202"
+      "consolidated_at": "2025-08-27T17:27:40.041447"
     },
     {
       "id": "55fe51e0-41b4-47ff-8e8b-2c11ffad323a",
@@ -13333,7 +13319,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:27.291232"
+      "consolidated_at": "2025-08-27T17:27:40.454300"
     },
     {
       "id": "a518eaa9-bb03-457d-bec0-069e617386d5",
@@ -13398,7 +13384,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:27.517935"
+      "consolidated_at": "2025-08-27T17:27:40.687366"
     },
     {
       "id": "b193b590-4f06-4d8d-b432-1344839a6c7f",
@@ -13483,7 +13469,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:27.866198"
+      "consolidated_at": "2025-08-27T17:27:41.047372"
     },
     {
       "id": "2b774126-67b5-4386-a35c-3f85a0239d1f",
@@ -13583,7 +13569,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:28.326539"
+      "consolidated_at": "2025-08-27T17:27:41.517698"
     },
     {
       "id": "dbb08546-6614-4db6-8ee9-fad47a6c43ae",
@@ -13663,7 +13649,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:28.637067"
+      "consolidated_at": "2025-08-27T17:27:41.827381"
     },
     {
       "id": "0ab34430-ab00-4f82-9d92-7f0d8d1d89a6",
@@ -13728,7 +13714,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:28.844356"
+      "consolidated_at": "2025-08-27T17:27:42.035227"
     },
     {
       "id": "5a4ea05e-654f-44ca-91b2-812caa92bb68",
@@ -13788,7 +13774,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:29.060252"
+      "consolidated_at": "2025-08-27T17:27:42.251765"
     },
     {
       "id": "fc471db2-a7dc-42f4-b676-d416e00da0b6",
@@ -13853,7 +13839,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:29.342759"
+      "consolidated_at": "2025-08-27T17:27:42.540089"
     },
     {
       "id": "2719ab3a-3a14-415e-b098-447527c66feb",
@@ -13908,7 +13894,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:29.504548"
+      "consolidated_at": "2025-08-27T17:27:42.702898"
     },
     {
       "id": "4ae3ae61-324a-44fc-a6b5-02eb7ef18a1d",
@@ -13973,7 +13959,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:29.763781"
+      "consolidated_at": "2025-08-27T17:27:42.970328"
     },
     {
       "id": "e66050d0-4e08-417a-aba5-5ff2b6831b29",
@@ -14078,7 +14064,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:30.210260"
+      "consolidated_at": "2025-08-27T17:27:43.425293"
     },
     {
       "id": "14a4b911-8da9-4fb6-8c97-50c082d45cee",
@@ -14148,7 +14134,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:30.471850"
+      "consolidated_at": "2025-08-27T17:27:43.688299"
     },
     {
       "id": "99c896b6-bcf0-4bf0-932f-3cfa8fd1963d",
@@ -14218,7 +14204,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:30.708105"
+      "consolidated_at": "2025-08-27T17:27:43.927806"
     },
     {
       "id": "8c88881c-c295-4d6a-8be1-e60d84b11130",
@@ -14293,7 +14279,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:31.174938"
+      "consolidated_at": "2025-08-27T17:27:44.402963"
     },
     {
       "id": "c210d42b-3e4f-4b89-a64f-45c1ebc0098d",
@@ -14403,7 +14389,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:31.651217"
+      "consolidated_at": "2025-08-27T17:27:44.886599"
     },
     {
       "id": "b7af5d49-51fa-4a7f-b428-00bcdac51aaa",
@@ -14493,7 +14479,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:32.088258"
+      "consolidated_at": "2025-08-27T17:27:45.242989"
     },
     {
       "id": "e05c63fb-4d20-46c9-8c8e-1763ecc2769d",
@@ -14603,7 +14589,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:32.541250"
+      "consolidated_at": "2025-08-27T17:27:45.717155"
     },
     {
       "id": "118ee3c9-c441-4e71-bacb-82212c2163a0",
@@ -14703,7 +14689,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:33.011005"
+      "consolidated_at": "2025-08-27T17:27:46.192689"
     },
     {
       "id": "0e1d9e6b-b333-4984-a12b-55df1133fc73",
@@ -14773,7 +14759,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:33.276846"
+      "consolidated_at": "2025-08-27T17:27:46.452682"
     },
     {
       "id": "e788939b-9239-4a6f-8a27-285f9c80e0d6",
@@ -14868,7 +14854,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:33.763046"
+      "consolidated_at": "2025-08-27T17:27:46.927262"
     },
     {
       "id": "686096e5-0a88-4b7c-8a9a-703d73e82e58",
@@ -14968,7 +14954,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:34.173695"
+      "consolidated_at": "2025-08-27T17:27:47.358409"
     },
     {
       "id": "383c0657-0bfc-4cd1-8c6c-24cd5c09a42f",
@@ -15078,7 +15064,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:34.625641"
+      "consolidated_at": "2025-08-27T17:27:47.821186"
     },
     {
       "id": "03c285b7-9fc9-44cf-b808-5dc7aed057fa",
@@ -15183,7 +15169,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:35.080871"
+      "consolidated_at": "2025-08-27T17:27:48.281011"
     },
     {
       "id": "60ae2ebd-5b37-4e79-87b5-deab3a32d234",
@@ -15258,7 +15244,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:35.332053"
+      "consolidated_at": "2025-08-27T17:27:48.538354"
     },
     {
       "id": "fe5f74ec-3672-4835-8dd8-51002e3e5567",
@@ -15333,7 +15319,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:35.612854"
+      "consolidated_at": "2025-08-27T17:27:48.827097"
     },
     {
       "id": "7acca1b6-5849-4ddd-9645-f9646e9e857c",
@@ -15438,7 +15424,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:36.072838"
+      "consolidated_at": "2025-08-27T17:27:49.293681"
     },
     {
       "id": "460e1923-2e98-46e5-b5a7-c3890b41d3ee",
@@ -15498,7 +15484,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:36.253746"
+      "consolidated_at": "2025-08-27T17:27:49.475686"
     },
     {
       "id": "1ecf0394-52c0-4de8-bc9e-0e56e351995b",
@@ -15598,7 +15584,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:36.721993"
+      "consolidated_at": "2025-08-27T17:27:49.945294"
     },
     {
       "id": "f82e0777-aa57-4e5b-8b4d-e8e6559cb902",
@@ -15703,7 +15689,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:37.185179"
+      "consolidated_at": "2025-08-27T17:27:50.411177"
     },
     {
       "id": "b20cde64-a14c-40d6-9c93-ace2aeab255d",
@@ -15778,7 +15764,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:37.504586"
+      "consolidated_at": "2025-08-27T17:27:50.736205"
     },
     {
       "id": "aa913b37-ad1e-451b-93e8-764b63175175",
@@ -15893,7 +15879,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:37.968394"
+      "consolidated_at": "2025-08-27T17:27:51.192062"
     },
     {
       "id": "119940db-7fb2-42a2-b114-86c2829b56f1",
@@ -16013,7 +15999,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:38.426062"
+      "consolidated_at": "2025-08-27T17:27:51.648843"
     },
     {
       "id": "0ed53e00-5f0c-4dbb-9278-1ec2453dfc02",
@@ -16113,7 +16099,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:38.894092"
+      "consolidated_at": "2025-08-27T17:27:52.126946"
     },
     {
       "id": "63b808a8-bea4-45a0-8af3-151830ccc3c9",
@@ -16203,7 +16189,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:39.206848"
+      "consolidated_at": "2025-08-27T17:27:52.451226"
     },
     {
       "id": "c6d24fb6-7108-4629-bf5f-5a80386166a4",
@@ -16273,7 +16259,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:39.438160"
+      "consolidated_at": "2025-08-27T17:27:52.686327"
     },
     {
       "id": "5aa5870d-b21e-476c-adc5-84462e13c519",
@@ -16328,7 +16314,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:39.597213"
+      "consolidated_at": "2025-08-27T17:27:52.845518"
     },
     {
       "id": "bf4f209f-7281-478a-9003-0c898c06b058",
@@ -16408,7 +16394,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:39.918340"
+      "consolidated_at": "2025-08-27T17:27:53.154959"
     },
     {
       "id": "3af34908-e915-474b-96c0-7095fb12e277",
@@ -16488,7 +16474,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:40.197884"
+      "consolidated_at": "2025-08-27T17:27:53.434241"
     },
     {
       "id": "531b9a3b-ba1a-48d9-b2db-33f2c80d3fac",
@@ -16598,7 +16584,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:40.705514"
+      "consolidated_at": "2025-08-27T17:27:53.945178"
     },
     {
       "id": "253a186a-08ab-4254-bf81-76d32b65e3c6",
@@ -16698,7 +16684,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:41.218345"
+      "consolidated_at": "2025-08-27T17:27:54.473859"
     },
     {
       "id": "1452ead2-6db2-45cc-9eac-e83fa566192d",
@@ -16813,7 +16799,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:41.724839"
+      "consolidated_at": "2025-08-27T17:27:54.990453"
     },
     {
       "id": "6f57542d-77a3-4374-9af6-145646e58aa1",
@@ -16888,7 +16874,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:42.086686"
+      "consolidated_at": "2025-08-27T17:27:55.361422"
     },
     {
       "id": "15ade6bb-c3db-4f6b-9c75-57d8b04507a1",
@@ -16968,7 +16954,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:42.392752"
+      "consolidated_at": "2025-08-27T17:27:55.668400"
     },
     {
       "id": "ddbb3716-cea2-4109-9c71-fe414e5d5bb7",
@@ -17063,7 +17049,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:42.845609"
+      "consolidated_at": "2025-08-27T17:27:56.132005"
     },
     {
       "id": "7f767206-662f-4699-aa43-b40b9e35818e",
@@ -17128,7 +17114,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:43.068798"
+      "consolidated_at": "2025-08-27T17:27:56.362065"
     },
     {
       "id": "3c530fcd-1528-4e16-8fae-e68ac616248e",
@@ -17223,7 +17209,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:43.539958"
+      "consolidated_at": "2025-08-27T17:27:56.834028"
     },
     {
       "id": "84ab6277-75af-4205-9e20-f33c38f10aa3",
@@ -17298,7 +17284,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:43.834208"
+      "consolidated_at": "2025-08-27T17:27:57.127001"
     },
     {
       "id": "63c630c2-6cbc-465a-8247-42c6e745703e",
@@ -17368,7 +17354,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:44.135997"
+      "consolidated_at": "2025-08-27T17:27:57.437169"
     },
     {
       "id": "897f1c2d-d305-47b7-9472-b663ea822d5c",
@@ -17453,7 +17439,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:44.426838"
+      "consolidated_at": "2025-08-27T17:27:57.727913"
     },
     {
       "id": "6a606910-ba31-4757-baa1-1a79345750ff",
@@ -17518,7 +17504,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:44.631827"
+      "consolidated_at": "2025-08-27T17:27:57.937437"
     },
     {
       "id": "dec9870f-006d-48b0-9aaf-a9f5dae677de",
@@ -17613,7 +17599,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:44.995340"
+      "consolidated_at": "2025-08-27T17:27:58.314418"
     },
     {
       "id": "5db9914e-74dc-4b20-adec-d24e4cc8e6ff",
@@ -17728,7 +17714,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:45.451158"
+      "consolidated_at": "2025-08-27T17:27:58.773043"
     },
     {
       "id": "2909f346-3360-4bd9-b5c9-fa483d99c50a",
@@ -17843,7 +17829,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:45.905369"
+      "consolidated_at": "2025-08-27T17:27:59.228962"
     },
     {
       "id": "b6ab73af-ec9d-4115-9a3b-67f1e17233cf",
@@ -17908,7 +17894,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:46.161828"
+      "consolidated_at": "2025-08-27T17:27:59.564050"
     },
     {
       "id": "58d1967a-b1f1-4936-b748-7922edaab545",
@@ -18013,7 +17999,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:46.559099"
+      "consolidated_at": "2025-08-27T17:28:00.014755"
     },
     {
       "id": "06e01129-cfb4-4587-9618-6b585784b2ec",
@@ -18068,7 +18054,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:46.720987"
+      "consolidated_at": "2025-08-27T17:28:00.200570"
     },
     {
       "id": "00c89a64-2283-4125-99ad-676babeb527a",
@@ -18133,7 +18119,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:46.953635"
+      "consolidated_at": "2025-08-27T17:28:00.469251"
     },
     {
       "id": "fa8abb49-34c5-47a4-9587-7a1cd5416cf4",
@@ -18198,7 +18184,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:47.183987"
+      "consolidated_at": "2025-08-27T17:28:00.712382"
     },
     {
       "id": "6e16d3e1-37e0-4234-b72b-24d39152a5db",
@@ -18308,7 +18294,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:47.646586"
+      "consolidated_at": "2025-08-27T17:28:01.188935"
     },
     {
       "id": "e9ed0cae-7836-42c4-b9f2-9986ce1e1870",
@@ -18398,7 +18384,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:47.990121"
+      "consolidated_at": "2025-08-27T17:28:01.536603"
     },
     {
       "id": "21f8f0da-c4bd-4278-993b-001d46985809",
@@ -18468,7 +18454,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:48.247791"
+      "consolidated_at": "2025-08-27T17:28:01.797447"
     },
     {
       "id": "312c0e01-dc1a-43e3-a0cc-fb746c75283c",
@@ -18583,7 +18569,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:48.711653"
+      "consolidated_at": "2025-08-27T17:28:02.264968"
     },
     {
       "id": "9fdcda94-2445-444e-8ee5-9bfc398504f6",
@@ -18638,7 +18624,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:48.883883"
+      "consolidated_at": "2025-08-27T17:28:02.435099"
     },
     {
       "id": "481689a1-494f-477f-ab47-414ecf6818ca",
@@ -18703,7 +18689,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:49.137399"
+      "consolidated_at": "2025-08-27T17:28:02.694000"
     },
     {
       "id": "378a1d91-3bb0-4b6e-9e26-47edafae55af",
@@ -18773,7 +18759,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:49.369962"
+      "consolidated_at": "2025-08-27T17:28:02.928173"
     },
     {
       "id": "88cf5eca-8161-4c61-859e-c17ccf86bf09",
@@ -18888,7 +18874,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:49.841817"
+      "consolidated_at": "2025-08-27T17:28:03.412142"
     },
     {
       "id": "9546655d-9634-4e5b-8a49-8870cbc783ba",
@@ -18998,7 +18984,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:50.321771"
+      "consolidated_at": "2025-08-27T17:28:03.894250"
     },
     {
       "id": "b2fe8026-e2b5-4b88-9bc2-f4ceac1c2179",
@@ -19113,7 +19099,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:50.796336"
+      "consolidated_at": "2025-08-27T17:28:04.374376"
     },
     {
       "id": "a2f6b54b-6730-480f-b845-a6544dbabfa5",
@@ -19233,7 +19219,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:51.266703"
+      "consolidated_at": "2025-08-27T17:28:04.866628"
     },
     {
       "id": "cb84c6b9-958d-41fc-a5e8-16a344528226",
@@ -19298,7 +19284,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:51.474579"
+      "consolidated_at": "2025-08-27T17:28:05.077543"
     },
     {
       "id": "d3e7b7ca-0b2a-44b0-86d2-804a615d97c0",
@@ -19373,7 +19359,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:51.778502"
+      "consolidated_at": "2025-08-27T17:28:05.381343"
     },
     {
       "id": "beda8dbe-2af3-42a5-ae86-d27d12ce8da3",
@@ -19438,7 +19424,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:51.988726"
+      "consolidated_at": "2025-08-27T17:28:05.595114"
     },
     {
       "id": "4a0a905c-c121-4f12-98bc-a54a08ee67b2",
@@ -19513,7 +19499,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:52.264070"
+      "consolidated_at": "2025-08-27T17:28:05.876562"
     },
     {
       "id": "aed46a72-f252-4aaa-97ad-40952231e9b8",
@@ -19623,7 +19609,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:52.694396"
+      "consolidated_at": "2025-08-27T17:28:06.308640"
     },
     {
       "id": "cdfb7d59-62e6-4051-9c88-17360672a3bf",
@@ -19688,7 +19674,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:52.922279"
+      "consolidated_at": "2025-08-27T17:28:06.539880"
     },
     {
       "id": "3710be02-f178-4e50-a109-7176219a902b",
@@ -19788,7 +19774,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:53.382054"
+      "consolidated_at": "2025-08-27T17:28:07.003287"
     },
     {
       "id": "e74fb45b-3668-41dd-8803-ab405e124a0c",
@@ -19868,7 +19854,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:53.662783"
+      "consolidated_at": "2025-08-27T17:28:07.295455"
     },
     {
       "id": "3946d379-82eb-4a79-b695-3b86beb8c9c7",
@@ -19938,7 +19924,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:53.940591"
+      "consolidated_at": "2025-08-27T17:28:07.577680"
     },
     {
       "id": "91ef8d63-b964-4081-8d73-356cce404d67",
@@ -20013,7 +19999,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:54.223857"
+      "consolidated_at": "2025-08-27T17:28:07.863930"
     },
     {
       "id": "46123346-73da-4821-85af-2dacf2c3992e",
@@ -20128,7 +20114,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:54.683743"
+      "consolidated_at": "2025-08-27T17:28:08.345497"
     },
     {
       "id": "bc1f3d31-ac48-43b0-96e2-6424fa41e731",
@@ -20203,7 +20189,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:54.936972"
+      "consolidated_at": "2025-08-27T17:28:08.599750"
     },
     {
       "id": "0000653c-dc85-4d9e-a8f3-f4400a49ade3",
@@ -20273,7 +20259,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:55.198240"
+      "consolidated_at": "2025-08-27T17:28:08.856131"
     },
     {
       "id": "84d67328-e704-4443-a0d9-543f0cff77be",
@@ -20383,7 +20369,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:55.681589"
+      "consolidated_at": "2025-08-27T17:28:09.326754"
     },
     {
       "id": "ef23e62f-ba67-40cd-8029-60dcc144f3e5",
@@ -20458,7 +20444,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:55.953018"
+      "consolidated_at": "2025-08-27T17:28:09.607774"
     },
     {
       "id": "b4a1098f-946a-4a7e-a073-ac7c43512e7b",
@@ -20568,7 +20554,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:56.434282"
+      "consolidated_at": "2025-08-27T17:28:10.084438"
     },
     {
       "id": "c1f444b9-5f0d-45a3-b7ea-e0a3c42ef156",
@@ -20623,7 +20609,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:56.622723"
+      "consolidated_at": "2025-08-27T17:28:10.273389"
     },
     {
       "id": "10d4a95e-46e0-4e31-9c37-f5576fa6a661",
@@ -20693,7 +20679,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:56.865133"
+      "consolidated_at": "2025-08-27T17:28:10.518073"
     },
     {
       "id": "4a566da3-f2cc-4de3-a079-85151f114b1d",
@@ -20758,7 +20744,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:57.104887"
+      "consolidated_at": "2025-08-27T17:28:10.756339"
     },
     {
       "id": "d2b8a74c-fd0a-41d6-be9d-2fffa5e21ac5",
@@ -20863,7 +20849,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:57.568543"
+      "consolidated_at": "2025-08-27T17:28:11.228219"
     },
     {
       "id": "3deb37df-2ee5-4e7d-87f1-0a520811a581",
@@ -20938,7 +20924,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:57.829992"
+      "consolidated_at": "2025-08-27T17:28:11.489942"
     },
     {
       "id": "553cac6b-a5fa-4d91-b7df-b12a6cf99023",
@@ -20998,7 +20984,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:58.034534"
+      "consolidated_at": "2025-08-27T17:28:11.698918"
     },
     {
       "id": "c55d452f-3cde-4073-b4b5-f52cf5886d1f",
@@ -21053,7 +21039,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:58.189978"
+      "consolidated_at": "2025-08-27T17:28:11.857228"
     },
     {
       "id": "a23c3074-5fe2-4c87-9727-1fc39539be9d",
@@ -21072,7 +21058,7 @@
       "instructor": "",
       "skills": [],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:58.192677"
+      "consolidated_at": "2025-08-27T17:28:11.859901"
     },
     {
       "id": "210c9cc2-0d4e-4ac4-88d2-a739e5f3ca91",
@@ -21152,7 +21138,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:58.502675"
+      "consolidated_at": "2025-08-27T17:28:12.166159"
     },
     {
       "id": "bf4a2a11-91ae-4a3b-952e-8547180e04bb",
@@ -21227,7 +21213,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:58.802709"
+      "consolidated_at": "2025-08-27T17:28:12.453696"
     },
     {
       "id": "e011b23b-6aee-452e-9c98-9bb7f06abf97",
@@ -21312,7 +21298,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:59.211153"
+      "consolidated_at": "2025-08-27T17:28:12.865969"
     },
     {
       "id": "9c04f6cf-2907-48cb-aa7f-6d75be3a9319",
@@ -21397,7 +21383,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:37:59.564526"
+      "consolidated_at": "2025-08-27T17:28:13.229376"
     },
     {
       "id": "21a442ea-cf1b-4917-9528-cc7f60e2bb25",
@@ -21502,7 +21488,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:00.026133"
+      "consolidated_at": "2025-08-27T17:28:13.703040"
     },
     {
       "id": "cf10af7b-4ff4-4bcc-a52e-b9bf0a2f8699",
@@ -21582,7 +21568,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:00.331803"
+      "consolidated_at": "2025-08-27T17:28:14.014480"
     },
     {
       "id": "92884838-1ada-4217-b4b4-e4bc433054e5",
@@ -21662,7 +21648,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:00.640122"
+      "consolidated_at": "2025-08-27T17:28:14.327829"
     },
     {
       "id": "55fea401-96f8-467a-bf03-7371ae9f01f4",
@@ -21732,7 +21718,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:00.904778"
+      "consolidated_at": "2025-08-27T17:28:14.596661"
     },
     {
       "id": "b3556661-bf97-4dcb-9075-f5587439949e",
@@ -21797,7 +21783,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:01.120472"
+      "consolidated_at": "2025-08-27T17:28:14.813566"
     },
     {
       "id": "d2453338-c69c-43f9-86de-55f5a4e601b5",
@@ -21922,7 +21908,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:01.633498"
+      "consolidated_at": "2025-08-27T17:28:15.327659"
     },
     {
       "id": "97baa91e-895e-4e16-956c-afe350da17a6",
@@ -22037,7 +22023,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:02.174202"
+      "consolidated_at": "2025-08-27T17:28:15.797499"
     },
     {
       "id": "bb8d6a30-0f9b-4976-bb19-05ee0cf0e90e",
@@ -22107,7 +22093,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:02.401287"
+      "consolidated_at": "2025-08-27T17:28:16.024287"
     },
     {
       "id": "7e3c665a-65a8-442b-85fa-acf1a5eaa249",
@@ -22187,7 +22173,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:02.727774"
+      "consolidated_at": "2025-08-27T17:28:16.354248"
     },
     {
       "id": "22c30193-92f6-4b19-805d-5945873a0af7",
@@ -22292,7 +22278,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:03.191920"
+      "consolidated_at": "2025-08-27T17:28:16.820531"
     },
     {
       "id": "bd9c4348-d0d8-4ade-ac91-26bb389f7a48",
@@ -22397,7 +22383,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:03.659818"
+      "consolidated_at": "2025-08-27T17:28:17.298782"
     },
     {
       "id": "80e0b06f-8cad-4762-8cc9-b3733752cccd",
@@ -22512,7 +22498,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:04.124724"
+      "consolidated_at": "2025-08-27T17:28:17.769116"
     },
     {
       "id": "0e92b2d5-b2f2-4215-aa74-82b3e3f6bdce",
@@ -22592,7 +22578,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:04.412146"
+      "consolidated_at": "2025-08-27T17:28:18.061454"
     },
     {
       "id": "003f2d45-d822-42c3-8584-b71e96bf510d",
@@ -22662,7 +22648,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:04.716081"
+      "consolidated_at": "2025-08-27T17:28:18.368262"
     },
     {
       "id": "f2ce3176-5a2b-4abe-9350-6b3a2caf1bc3",
@@ -22782,7 +22768,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:05.183341"
+      "consolidated_at": "2025-08-27T17:28:18.847250"
     },
     {
       "id": "ad6fb9ab-c75e-42c4-82c8-277b01abfd5c",
@@ -22862,7 +22848,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:05.468933"
+      "consolidated_at": "2025-08-27T17:28:19.137193"
     },
     {
       "id": "af32c125-3738-4c64-81bf-5454570f359d",
@@ -22917,7 +22903,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:05.677050"
+      "consolidated_at": "2025-08-27T17:28:19.347768"
     },
     {
       "id": "a2204b46-e43f-4621-9769-63088fad5128",
@@ -22977,7 +22963,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:05.911408"
+      "consolidated_at": "2025-08-27T17:28:19.586276"
     },
     {
       "id": "c54c6069-5b48-413a-88ba-aa3223bd560f",
@@ -23087,7 +23073,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:06.377052"
+      "consolidated_at": "2025-08-27T17:28:20.062355"
     },
     {
       "id": "117c09cd-cfa0-4e9d-92bc-564b8409473e",
@@ -23147,7 +23133,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:06.587609"
+      "consolidated_at": "2025-08-27T17:28:20.280292"
     },
     {
       "id": "46e7a8c3-203c-4a67-a33d-a196ec24ff23",
@@ -23217,7 +23203,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:06.814082"
+      "consolidated_at": "2025-08-27T17:28:20.512016"
     },
     {
       "id": "b8a41b55-8f45-4855-8eac-105b18d87f84",
@@ -23302,7 +23288,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:07.119040"
+      "consolidated_at": "2025-08-27T17:28:20.824229"
     },
     {
       "id": "46955702-5a4f-4c08-8178-111e863f3f2e",
@@ -23357,7 +23343,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:07.296770"
+      "consolidated_at": "2025-08-27T17:28:21.008108"
     },
     {
       "id": "f3f64a5c-7927-4cdc-8cc6-4582662cd8e3",
@@ -23412,7 +23398,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:07.491289"
+      "consolidated_at": "2025-08-27T17:28:21.202257"
     },
     {
       "id": "67021ab1-2f4c-45ea-aa2c-60bc26f80f1c",
@@ -23497,7 +23483,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:07.819947"
+      "consolidated_at": "2025-08-27T17:28:21.538845"
     },
     {
       "id": "9894e86d-2ef1-42c0-952b-23a39dcd2dd6",
@@ -23592,7 +23578,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:08.228007"
+      "consolidated_at": "2025-08-27T17:28:21.898073"
     },
     {
       "id": "419111cd-df9b-4bf8-a1fd-bf329deb2991",
@@ -23652,7 +23638,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:08.485762"
+      "consolidated_at": "2025-08-27T17:28:22.157722"
     },
     {
       "id": "917c40f9-06fb-4f94-9af5-2670c4492525",
@@ -23762,7 +23748,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:08.953913"
+      "consolidated_at": "2025-08-27T17:28:22.635178"
     },
     {
       "id": "c8f7afab-5e77-413a-8ccd-81e83481b740",
@@ -23872,7 +23858,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:09.428731"
+      "consolidated_at": "2025-08-27T17:28:23.115608"
     },
     {
       "id": "77c25605-3f13-4a06-9c99-5c90ee9549e7",
@@ -23982,7 +23968,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:09.902706"
+      "consolidated_at": "2025-08-27T17:28:23.588317"
     },
     {
       "id": "f95c4b28-e5cd-4ceb-b418-f4801d5a476c",
@@ -24092,7 +24078,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:10.372029"
+      "consolidated_at": "2025-08-27T17:28:24.057993"
     },
     {
       "id": "ebeada97-b164-4ae7-aa09-a7fae3684fb1",
@@ -24162,7 +24148,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:10.610873"
+      "consolidated_at": "2025-08-27T17:28:24.298729"
     },
     {
       "id": "a6c3aa71-91e1-467d-8d71-56ad8bb414f9",
@@ -24242,7 +24228,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:10.898993"
+      "consolidated_at": "2025-08-27T17:28:24.594267"
     },
     {
       "id": "30e22f91-30dd-4099-8c28-5366a4cd7a39",
@@ -24302,7 +24288,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:11.113589"
+      "consolidated_at": "2025-08-27T17:28:24.819424"
     },
     {
       "id": "7ecb7c6a-55f8-45ad-982a-6b52d7f49b9f",
@@ -24372,7 +24358,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:11.367902"
+      "consolidated_at": "2025-08-27T17:28:25.077288"
     },
     {
       "id": "cc75d864-4546-4a71-9eb7-d7f1df70e051",
@@ -24442,7 +24428,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:11.623712"
+      "consolidated_at": "2025-08-27T17:28:25.339140"
     },
     {
       "id": "12a7eab1-4467-4328-b96a-f80c237ab8fe",
@@ -24522,7 +24508,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:11.920815"
+      "consolidated_at": "2025-08-27T17:28:25.640929"
     },
     {
       "id": "d56797d2-5818-4c32-ad67-91c9025eea3d",
@@ -24592,7 +24578,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:12.181524"
+      "consolidated_at": "2025-08-27T17:28:25.905822"
     },
     {
       "id": "da8fed66-9899-4d78-b362-362c46e15cf5",
@@ -24662,7 +24648,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:12.413765"
+      "consolidated_at": "2025-08-27T17:28:26.140102"
     },
     {
       "id": "773de942-212d-461c-9700-bd7a6b891492",
@@ -24782,7 +24768,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:12.876913"
+      "consolidated_at": "2025-08-27T17:28:26.607392"
     },
     {
       "id": "3b680a8b-a9c1-4bed-a529-5e48ffbdb26a",
@@ -24867,7 +24853,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:13.167070"
+      "consolidated_at": "2025-08-27T17:28:26.907364"
     },
     {
       "id": "7328a463-a46d-4bea-b7fb-464aa225987c",
@@ -24937,7 +24923,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:13.446351"
+      "consolidated_at": "2025-08-27T17:28:27.187267"
     },
     {
       "id": "6b72792e-d99d-4f7f-bf0c-433a6cae9eb3",
@@ -25007,7 +24993,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:13.704265"
+      "consolidated_at": "2025-08-27T17:28:27.449749"
     },
     {
       "id": "bb3dca7c-9fe9-420e-964b-cb0da1c699dd",
@@ -25082,7 +25068,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:13.982296"
+      "consolidated_at": "2025-08-27T17:28:27.732050"
     },
     {
       "id": "7bfca322-7f3c-434f-9e28-ded6ede4d225",
@@ -25182,7 +25168,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:14.446965"
+      "consolidated_at": "2025-08-27T17:28:28.199260"
     },
     {
       "id": "53cd4207-0db9-4b91-96a9-45607675d2dc",
@@ -25297,7 +25283,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:14.912820"
+      "consolidated_at": "2025-08-27T17:28:28.680346"
     },
     {
       "id": "45944554-0353-4241-a8cd-f94c166e99c4",
@@ -25407,7 +25393,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:15.377933"
+      "consolidated_at": "2025-08-27T17:28:29.153743"
     },
     {
       "id": "e0c3edca-4f15-4e53-bb66-b370a52928f9",
@@ -25527,7 +25513,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:15.845715"
+      "consolidated_at": "2025-08-27T17:28:29.704981"
     },
     {
       "id": "4449b25b-a3ff-4f1d-b5bc-d0279ef720e6",
@@ -25637,7 +25623,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:16.288426"
+      "consolidated_at": "2025-08-27T17:28:30.150049"
     },
     {
       "id": "40690c5c-7b78-441a-a838-75900f124950",
@@ -25727,7 +25713,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:16.636123"
+      "consolidated_at": "2025-08-27T17:28:30.499003"
     },
     {
       "id": "136a8cd6-0372-44ca-a00d-55ed89295acd",
@@ -25822,7 +25808,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:16.982622"
+      "consolidated_at": "2025-08-27T17:28:30.852786"
     },
     {
       "id": "94b870c9-45ea-460a-a36a-b29d89e6f1a6",
@@ -25897,7 +25883,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:17.271410"
+      "consolidated_at": "2025-08-27T17:28:31.143911"
     },
     {
       "id": "b81a3517-d12f-4445-9f87-e63dde48bd89",
@@ -25987,7 +25973,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:17.602608"
+      "consolidated_at": "2025-08-27T17:28:31.474326"
     },
     {
       "id": "c62becff-ddbc-4c40-b159-b0baf7a52c68",
@@ -26052,7 +26038,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:17.812073"
+      "consolidated_at": "2025-08-27T17:28:31.685487"
     },
     {
       "id": "51b4f44f-a12a-49f0-b266-6ffbab9c8398",
@@ -26132,7 +26118,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:18.117294"
+      "consolidated_at": "2025-08-27T17:28:31.991562"
     },
     {
       "id": "62f0bced-d62c-4d90-9a18-868e878f2099",
@@ -26192,7 +26178,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:18.306850"
+      "consolidated_at": "2025-08-27T17:28:32.181682"
     },
     {
       "id": "f044f5cb-2d37-46c0-a2c1-2564f2ced227",
@@ -26247,7 +26233,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:18.474312"
+      "consolidated_at": "2025-08-27T17:28:32.349951"
     },
     {
       "id": "e18af316-d26c-404c-80ad-f77eedf7c861",
@@ -26302,7 +26288,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:18.636725"
+      "consolidated_at": "2025-08-27T17:28:32.513430"
     },
     {
       "id": "7754ae94-869f-434b-89ad-8859672f6156",
@@ -26362,7 +26348,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:18.822055"
+      "consolidated_at": "2025-08-27T17:28:32.697095"
     },
     {
       "id": "3697a1d4-c3a0-4b66-9d43-bf69ded7eb20",
@@ -26417,7 +26403,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:18.979726"
+      "consolidated_at": "2025-08-27T17:28:32.859946"
     },
     {
       "id": "23b7ff49-66c0-4739-8c84-ee5ec58dbd59",
@@ -26482,7 +26468,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:19.206662"
+      "consolidated_at": "2025-08-27T17:28:33.093693"
     },
     {
       "id": "870326c5-21d9-4ba3-b26f-1858993fff05",
@@ -26547,7 +26533,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:19.412711"
+      "consolidated_at": "2025-08-27T17:28:33.300351"
     },
     {
       "id": "37af8b62-9eca-4684-ac35-8371023a095b",
@@ -26647,7 +26633,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:19.870660"
+      "consolidated_at": "2025-08-27T17:28:33.762067"
     },
     {
       "id": "9162c079-38c0-4719-9ff5-1e15d8067b64",
@@ -26712,7 +26698,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:20.074097"
+      "consolidated_at": "2025-08-27T17:28:33.967061"
     },
     {
       "id": "6d52ed7d-9143-45fa-9bee-e0e82c8fb7db",
@@ -26777,7 +26763,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:20.278170"
+      "consolidated_at": "2025-08-27T17:28:34.175163"
     },
     {
       "id": "186e58ec-f8ab-40bc-a956-e5071144bd89",
@@ -26832,7 +26818,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:20.437072"
+      "consolidated_at": "2025-08-27T17:28:34.340051"
     },
     {
       "id": "34e35793-cc5e-4732-bde4-8dc4a147dbcb",
@@ -26917,7 +26903,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:20.798934"
+      "consolidated_at": "2025-08-27T17:28:34.706088"
     },
     {
       "id": "731f6975-7adb-4573-8a94-115039aa37ac",
@@ -26982,7 +26968,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:21.025736"
+      "consolidated_at": "2025-08-27T17:28:34.922537"
     },
     {
       "id": "05f9eb66-37ee-41af-80bb-13ea87ba2d7e",
@@ -27057,7 +27043,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:21.317075"
+      "consolidated_at": "2025-08-27T17:28:35.198902"
     },
     {
       "id": "b6254910-3db9-460d-b4f4-4211ab443edb",
@@ -27087,7 +27073,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:21.369516"
+      "consolidated_at": "2025-08-27T17:28:35.246177"
     },
     {
       "id": "b2a00d0d-d0b1-4ef0-8856-70f0e9107458",
@@ -27137,7 +27123,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:21.595212"
+      "consolidated_at": "2025-08-27T17:28:35.462653"
     },
     {
       "id": "dcedc81b-f1c6-43da-b714-7cfa3b6e5540",
@@ -27212,7 +27198,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:21.915821"
+      "consolidated_at": "2025-08-27T17:28:35.775650"
     },
     {
       "id": "fb83fb87-5b97-4a8a-ad9d-ee0359881870",
@@ -27297,7 +27283,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:22.232069"
+      "consolidated_at": "2025-08-27T17:28:36.084257"
     },
     {
       "id": "a4b4e1f5-1299-4b0d-8230-2b7b7daabe88",
@@ -27337,7 +27323,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:22.331959"
+      "consolidated_at": "2025-08-27T17:28:36.182985"
     },
     {
       "id": "5d84674f-b621-4f25-9a93-0bb5ebd701b4",
@@ -27422,7 +27408,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:22.674162"
+      "consolidated_at": "2025-08-27T17:28:36.518753"
     },
     {
       "id": "2c1145b9-b0f3-4ab3-a943-b1ec27c0295d",
@@ -27482,7 +27468,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:22.858062"
+      "consolidated_at": "2025-08-27T17:28:36.701651"
     },
     {
       "id": "f7e4d158-5961-4de7-9cb8-f293e2d90408",
@@ -27592,7 +27578,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:23.332641"
+      "consolidated_at": "2025-08-27T17:28:37.172447"
     },
     {
       "id": "83b9c18c-ab60-42b9-88f7-b95632f1e13a",
@@ -27712,7 +27698,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:23.812928"
+      "consolidated_at": "2025-08-27T17:28:37.641154"
     },
     {
       "id": "7ba53c51-5d57-44d2-83d3-f5148908b562",
@@ -27777,7 +27763,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:24.124953"
+      "consolidated_at": "2025-08-27T17:28:37.946947"
     },
     {
       "id": "be863e70-8fe8-44db-b3eb-36a0fa03eb28",
@@ -27887,7 +27873,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:24.602693"
+      "consolidated_at": "2025-08-27T17:28:38.417809"
     },
     {
       "id": "4e409da9-ac30-46a5-bfc6-6afcb5135ef8",
@@ -27962,7 +27948,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:24.879689"
+      "consolidated_at": "2025-08-27T17:28:38.697058"
     },
     {
       "id": "7d7a65e9-29fc-4fa6-a2fc-af6c2c0c298f",
@@ -28027,7 +28013,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:25.114815"
+      "consolidated_at": "2025-08-27T17:28:38.926708"
     },
     {
       "id": "44f5ef9c-b58b-4d6b-b649-ddf4e2944d30",
@@ -28087,7 +28073,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:25.328690"
+      "consolidated_at": "2025-08-27T17:28:39.136956"
     },
     {
       "id": "c392365d-d183-4f2b-8914-5ada4c803182",
@@ -28147,7 +28133,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:25.542191"
+      "consolidated_at": "2025-08-27T17:28:39.347923"
     },
     {
       "id": "8a26b989-5354-4d07-a1d8-dc583adb4e2f",
@@ -28207,7 +28193,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:25.759997"
+      "consolidated_at": "2025-08-27T17:28:39.569325"
     },
     {
       "id": "989827cf-9077-4a67-bf3c-f675944284ce",
@@ -28287,7 +28273,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:26.069834"
+      "consolidated_at": "2025-08-27T17:28:39.874458"
     },
     {
       "id": "56bb3922-16e3-4735-85e0-97daa5aa37af",
@@ -28362,7 +28348,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:26.377632"
+      "consolidated_at": "2025-08-27T17:28:40.173499"
     },
     {
       "id": "5b3012c6-136a-4a98-aecf-93ea9b865a06",
@@ -28432,7 +28418,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:26.616944"
+      "consolidated_at": "2025-08-27T17:28:40.408809"
     },
     {
       "id": "4894dc98-ec0a-48c7-bdc6-fae3b0674040",
@@ -28487,7 +28473,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:26.835166"
+      "consolidated_at": "2025-08-27T17:28:40.624413"
     },
     {
       "id": "ac92606c-053e-4d8d-822e-523543c418c9",
@@ -28557,7 +28543,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:27.095280"
+      "consolidated_at": "2025-08-27T17:28:40.882305"
     },
     {
       "id": "41d1d7d8-1295-432b-b412-9af2740fef40",
@@ -28632,7 +28618,7 @@
         }
       ],
       "source_platform": "coursera",
-      "consolidated_at": "2025-08-27T17:38:27.357515"
+      "consolidated_at": "2025-08-27T17:28:41.139710"
     }
   ]
 }
