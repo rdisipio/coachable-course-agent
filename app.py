@@ -171,10 +171,21 @@ def render_course_card(course, explanation=None):
     confidence_text = f"**Confidence:** {confidence:.2f}"
     confidence_bar = "🟩" * int(confidence * 10) + "⬜" * (10 - int(confidence * 10))
     
+    # Format duration with better fallback
+    duration_hours = course.get('duration_hours', 0)
+    try:
+        duration_num = float(duration_hours) if duration_hours else 0
+        if duration_num > 0:
+            duration_text = f"{duration_num:g} hrs"  # :g removes trailing zeros
+        else:
+            duration_text = "Unknown"
+    except (ValueError, TypeError):
+        duration_text = "Unknown"
+    
     # Build the card with proper order: Details → Confidence → Why → Because
     card = f"""### [{course.get('title', '')}]({course.get('url', '')})
 **Provider**: {course.get('provider', '')}  
-**Duration**: {course.get('duration_hours', '?')} hrs  
+**Duration**: {duration_text}  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
 **Skills**: {skills_str}
 
@@ -246,7 +257,7 @@ def format_agent_memory_panel(mem):
     if feedback_log:
         feedback_lines = []
         for f in feedback_log[-5:]:  # Show last 5 entries
-            course_id = f.get('course_id', '?')
+            course_title = f.get('course_title', f.get('course_id', '?'))  # Fallback to ID for old entries
             feedback_type = f.get('feedback_type', '?')
             reason = f.get('reason', '')
             
@@ -264,7 +275,9 @@ def format_agent_memory_panel(mem):
                 }
                 classification_emoji = emoji_map.get(category, "")
             
-            feedback_lines.append(f"- {classification_emoji} {course_id}: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+            # Truncate long course titles for better display
+            display_title = course_title[:40] + "..." if len(course_title) > 40 else course_title
+            feedback_lines.append(f"- {classification_emoji} {display_title}: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
         
         feedback = "\n".join(feedback_lines)
         if len(feedback_log) > 5:
@@ -603,6 +616,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         # Otherwise, process feedback and move to next course
         feedback_entry = {
             "course_id": course_id,
+            "course_title": title,
             "feedback_type": feedback_type,
             "reason": feedback_label
         }
@@ -690,6 +704,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         feedback_entry = {
             "course_id": course_id,
+            "course_title": title,
             "feedback_type": feedback_type,
             "reason": reason if reason else feedback_type
         }
