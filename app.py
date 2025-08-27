@@ -244,7 +244,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 - **Goal alignment**: We match courses that advance your career while supporting company priorities
 - **ESCO**: European skills framework **curated by humans** (not algorithms) to standardize job skills
 - We translate your experience into these standardized categories for better course matching
-- Don't worry if skill names seem formal - the system handles this automatically
 
 ### 🚫 What this agent doesn't do
 - Guarantee prices, certification status, or course dates
