@@ -259,7 +259,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             feedback_status = gr.Markdown()
 
     with gr.Column(visible=True) as profile_section:
-        gr.Markdown("## � Create Your Profile")
+        gr.Markdown("## 📝 Create Your Profile")
         
         gr.Markdown("💡 **New here?** Click below for a quick overview of how this agent works and what to expect.")
         with gr.Accordion("📋 Instructions & What to Expect", open=False) as expectation_accordion:
