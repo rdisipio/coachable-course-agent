@@ -13,7 +13,18 @@ from langchain.schema import Document
 from coachable_course_agent.load_data import load_courses
 
 # 1. Load course catalog (including ESCO-linked skills)
-courses = load_courses("data/course_catalog_esco.json")
+course_data = load_courses("data/course_catalog_esco.json")
+
+# Handle both old format (direct array) and new format (with metadata)
+if isinstance(course_data, dict) and 'courses' in course_data:
+    courses = course_data['courses']
+    print(f"📊 Loaded {len(courses)} courses from catalog with metadata")
+elif isinstance(course_data, list):
+    courses = course_data
+    print(f"📊 Loaded {len(courses)} courses from legacy format")
+else:
+    print("❌ Unexpected course data format")
+    sys.exit(1)
 
 # 2. Initialize embedding model
 embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2", show_progress=True)
