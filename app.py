@@ -838,7 +838,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             msg += f"**Skills identified:** {skills_count} skills\n"
             if missing_skills_count > 0:
                 msg += f"**Growth opportunities:** {missing_skills_count} additional skills suggested\n"
-            msg += f"\n💡 Use the memory editor below to review and customize your profile."
+            msg += f"\n💡 Click 'See Recommendations' to proceed - you'll be able to customize your profile there."
             
             # Show the 'See Recommendations' button after profile creation
             return outputs.set_multiple(
