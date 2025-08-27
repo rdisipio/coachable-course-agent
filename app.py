@@ -827,7 +827,18 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 # Save updated profile with company goal
                 with open(f"{MEMORY_DIR}/{uid}.json", "w") as f:
                     json.dump(data, f, indent=2)
-            msg = f"✅ Profile created successfully.\n\n**Summary:** {result_text}"
+            
+            # Create a clean, user-friendly success message
+            headline = data.get("headline", "N/A") if isinstance(data, dict) else "N/A"
+            skills_count = len(data.get("known_skills", [])) if isinstance(data, dict) else 0
+            missing_skills_count = len(data.get("missing_skills", [])) if isinstance(data, dict) else 0
+            
+            msg = f"✅ **Profile created successfully!**\n\n"
+            msg += f"**Headline:** {headline}\n"
+            msg += f"**Skills identified:** {skills_count} skills\n"
+            if missing_skills_count > 0:
+                msg += f"**Growth opportunities:** {missing_skills_count} additional skills suggested\n"
+            msg += f"\n💡 Use the memory editor below to review and customize your profile."
             
             # Show the 'See Recommendations' button after profile creation
             return outputs.set_multiple(
