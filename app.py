@@ -267,7 +267,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         profile_json = gr.JSON(visible=False)
         see_recommendations_btn = gr.Button("See Recommendations", visible=False)
 
-    with gr.Accordion("Instructions", open=False) as expectation_accordion:
+    gr.Markdown("💡 **New here?** Click below for a quick overview of how this agent works and what to expect.")
+    with gr.Accordion("📋 Instructions & What to Expect", open=False) as expectation_accordion:
         gr.Markdown("""
 ### 🤖 What this agent does
 - Analyzes your **background and goals** to identify your skills and learning gaps
@@ -450,7 +451,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory_editor = format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
@@ -506,7 +507,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
-                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
+                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
                 next_idx, feedback_log, chatbox, format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "", 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
@@ -518,7 +519,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 next_idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
@@ -532,7 +533,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_profile = load_user_profile(user_id_state) if user_id_state else {}
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
-                gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                gr.update(), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
@@ -569,7 +570,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
                 gr.update(value=next_card, visible=True),
-                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
+                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
                 next_idx, feedback_log, chatbox, format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "", 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
@@ -581,7 +582,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             return (
                 gr.update(value="All feedback collected. Thank you!", visible=True),
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
                 next_idx, feedback_log, chatbox, updated_memory, 
                 gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
                 gr.update(visible=False, interactive=False),  # disable send_btn
