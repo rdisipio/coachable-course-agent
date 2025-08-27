@@ -347,6 +347,13 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 📝 Create Your Profile")
         
+        # Display course catalog size
+        try:
+            course_count = courses_collection._collection.count()
+            gr.Markdown(f"📚 **Course Catalog:** {course_count:,} courses available across diverse domains including Computer Science & AI, Business & Management, Engineering, Sciences, Environmental Studies, Health & Social Sciences, Humanities & Arts, and Design & Architecture.")
+        except:
+            gr.Markdown("📚 **Course Catalog:** Comprehensive collection of courses across diverse academic and professional domains.")
+        
         gr.Markdown("💡 **New here?** Click below for a quick overview of how this agent works and what to expect.")
         with gr.Accordion("📋 Instructions & What to Expect", open=False) as expectation_accordion:
             gr.Markdown("""
