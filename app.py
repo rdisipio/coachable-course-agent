@@ -246,6 +246,10 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 - Your profile is saved **locally in this app**, not in a central database.
 - A Large Language Model (LLM) is called to generate explanations.
 - You can view, edit, or delete your profile and feedback anytime using the Memory Editor.
+
+### 💻 Best experience
+- **Desktop recommended** for detailed feedback and course research
+- **Mobile works great** for initial exploration of possibilities
         """)
 
     with gr.Accordion("Memory Editor", open=False, visible=False) as memory_editor_accordion:
@@ -295,10 +299,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         with gr.Column(scale=1):
             gr.Markdown("## 🎯 Course Recommendations")
             recommendations = gr.Markdown("(Recommendations will appear here)")
-            approve_btn = gr.Button("Approve", visible=False)
-            adjust_btn = gr.Button("Adjust", visible=False)
-            reject_btn = gr.Button("Reject", visible=False)
-            suggest_btn = gr.Button("Suggest", visible=False)
+            keep_btn = gr.Button("✅ Keep", visible=False)
+            adjust_btn = gr.Button("✏️ Adjust", visible=False)
+            reject_btn = gr.Button("🗙 Reject", visible=False)
             new_recs_btn = gr.Button("Get New Recommendations", visible=False)
         # Right: Chat
         with gr.Column(scale=1):
@@ -357,16 +360,16 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         # Start at the first course
         if not recommendations_list:
             cards_md = "No recommendations found."
-            approve_vis = adjust_vis = reject_vis = suggest_vis = False
+            approve_vis = adjust_vis = reject_vis = False
             chat_history = []
         else:
             course = recommendations_list[0]
             explanation = course.get("explanation", "")
             card = render_course_card(course, explanation)
             cards_md = card
-            approve_vis = adjust_vis = reject_vis = suggest_vis = True
+            approve_vis = adjust_vis = reject_vis = True
             # Compose agent's prompt for chat
-            chat_msg = f"Suggested: {course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (approve / adjust / reject / suggest)"
+            chat_msg = f"Suggested: {course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chat_history = [{"role": "assistant", "content": chat_msg}]
 
         return (
@@ -414,7 +417,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recs_state,           # store recommendations
             rec_index_state,      # store current index
             feedback_log_state,   # store feedback log
-            approve_btn, adjust_btn, reject_btn, suggest_btn,
+            keep_btn, adjust_btn, reject_btn,
             chatbox,              # update chatbox
             new_recs_btn,         # update new_recs_btn (pad for output count)
             expectation_accordion, # collapse the accordion
@@ -446,10 +449,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         title = course.get("title", "?")
         explanation = course.get("explanation", "")
         feedback_map = {
-            "approve": "great fit",
-            "adjust": "close, but not quite",
-            "reject": "nope",
-            "suggest": "you propose a better match"
+            "keep": "good fit",
+            "adjust": "close, needs refinement", 
+            "reject": "not suitable"
         }
         feedback_label = feedback_map.get(feedback_type, feedback_type)
         user_feedback_msg = f"Feedback: {feedback_type} ({feedback_label})"
@@ -457,11 +459,15 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             {"role": "user", "content": user_feedback_msg}
         ]
         # If feedback requires a reason, prompt for it
-        if feedback_type in ["adjust", "reject", "suggest"]:
-            chatbox = chatbox + [{"role": "assistant", "content": "Please provide a reason for your feedback."}]
+        if feedback_type in ["adjust", "reject"]:
+            if feedback_type == "adjust":
+                prompt = "Any specific adjustments needed? (optional)"
+            else:  # reject
+                prompt = "Why isn't this course a good fit? (optional)"
+            chatbox = chatbox + [{"role": "assistant", "content": prompt}]
             return (
                 gr.update(),  # recommendations (no change)
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), # keep/adjust/reject buttons
                 idx, feedback_log, chatbox, agent_memory, 
                 gr.update(interactive=True, placeholder="Please explain your feedback..."), # enable chat_input
                 gr.update(visible=True, interactive=True),  # enable send_btn
@@ -569,16 +575,15 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.update(visible=True), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
             )
 
-    for btn, ftype in zip([approve_btn, adjust_btn, reject_btn, suggest_btn], ["approve", "adjust", "reject", "suggest"]):
+    for btn, ftype in zip([keep_btn, adjust_btn, reject_btn], ["keep", "adjust", "reject"]):
         btn.click(
             feedback_action,
             inputs=[gr.State(ftype), recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
             outputs=[
                 recommendations,      # update recommendations
-                approve_btn,          # update approve_btn
+                keep_btn,             # update keep_btn
                 adjust_btn,           # update adjust_btn
                 reject_btn,           # update reject_btn
-                suggest_btn,          # update suggest_btn
                 rec_index_state,      # update rec_index_state
                 feedback_log_state,   # update feedback_log_state
                 chatbox,              # update chatbox
@@ -596,10 +601,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         inputs=[chat_input, recs_state, rec_index_state, feedback_log_state, user_id_state, agent_memory, chatbox],
         outputs=[
             recommendations,      # update recommendations
-            approve_btn,          # update approve_btn
+            keep_btn,             # update keep_btn
             adjust_btn,           # update adjust_btn
             reject_btn,           # update reject_btn
-            suggest_btn,          # update suggest_btn
             rec_index_state,      # update rec_index_state
             feedback_log_state,   # update feedback_log_state
             chatbox,              # update chatbox
@@ -633,7 +637,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             recs_state,           # store recommendations
             rec_index_state,      # store current index
             feedback_log_state,   # store feedback log
-            approve_btn, adjust_btn, reject_btn, suggest_btn,
+            keep_btn, adjust_btn, reject_btn,
             chatbox,
             new_recs_btn,
             expectation_accordion # keep accordion collapsed
