@@ -232,20 +232,29 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     with gr.Accordion("Instructions", open=True) as expectation_accordion:
         gr.Markdown("""
 ### 🤖 What this agent does
-- Matches your **skills and goals** to ESCO skills.
-- Retrieves and ranks relevant courses.
-- Explains *why* each course fits both you and your company's goals.
-- Lets you give feedback to improve suggestions.
-- Provides a **Memory Editor** so you can view and modify your profile data.
+- Analyzes your **background and goals** to identify your skills and learning gaps
+- Uses the **ESCO framework** (European skills taxonomy) to standardize skill matching
+- Finds courses that create **alignment** between your career aspirations and company objectives
+- Retrieves and ranks relevant courses **in batches** based on this dual alignment
+- Explains *why* each course serves both **your growth** and **company goals**
+- Lets you give feedback to improve suggestions for **future batches**
+- Provides a **Memory Editor** so you can view and modify your profile data
+
+### 🎯 About alignment & ESCO skills
+- **Goal alignment**: We match courses that advance your career while supporting company priorities
+- **ESCO**: European skills framework **curated by humans** (not algorithms) to standardize job skills
+- We translate your experience into these standardized categories for better course matching
+- Don't worry if skill names seem formal - the system handles this automatically
 
 ### 🚫 What this agent doesn't do
-- Guarantee prices, certification status, or course dates.
+- Guarantee prices, certification status, or course dates
 - Replace human career guidance. Never ever!
+- **Real-time updates**: Current recommendations won't change mid-batch
 
 ### 🔒 About your data
-- Your profile is saved **locally in this app**, not in a central database.
-- A Large Language Model (LLM) is called to generate explanations.
-- You can view, edit, or delete your profile and feedback anytime using the Memory Editor.
+- Your profile is saved **locally in this app**, not in a central database
+- A Large Language Model (LLM) is called to generate explanations
+- You can view, edit, or delete your profile and feedback anytime using the Memory Editor
 
 ### 💻 Best experience
 - **Desktop recommended** for detailed feedback and course research
