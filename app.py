@@ -261,6 +261,11 @@ def format_agent_memory_panel(mem):
             feedback_type = f.get('feedback_type', '?')
             reason = f.get('reason', '')
             
+            # If we only have a course_id (old format), try to make it more user-friendly
+            if course_title == f.get('course_id', '?') and len(course_title) > 20:
+                # This looks like a GUID, make it more readable
+                course_title = f"Course ({course_title[:8]}...)"
+            
             # Add classification emoji if available
             classification_emoji = ""
             if "classification" in f:
