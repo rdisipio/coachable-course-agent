@@ -451,13 +451,15 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             updated_memory = format_agent_memory_panel(updated_profile) if updated_profile else ""
             updated_memory_editor = format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."
             return (
-                gr.update(value="All feedback collected. Thank you!", visible=True),
-                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),
-                idx, feedback_log, chatbox, updated_memory, 
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
-                gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=True),  # Show new_recs_btn
-                updated_memory_editor  # update memory editor display
+                gr.update(value="All feedback collected. Thank you!", visible=True),  # recommendations
+                gr.update(visible=False), gr.update(visible=False), gr.update(visible=False),  # keep_btn, adjust_btn, reject_btn
+                idx, feedback_log,  # rec_index_state, feedback_log_state
+                chatbox,  # chatbox
+                updated_memory,  # agent_memory
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # chat_input
+                gr.update(visible=False, interactive=False),  # send_btn
+                gr.update(visible=True),  # new_recs_btn
+                updated_memory_editor  # memory_display
             )
         course = recs[idx]
         course_id = course.get("id", "?")
@@ -507,12 +509,15 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             chat_msg = f"Suggested: {next_course.get('title','?')}\nWhy:  \n{explanation}\nFeedback? (keep / adjust / reject)"
             chatbox = chatbox + [{"role": "assistant", "content": chat_msg}]
             return (
-                gr.update(value=next_card, visible=True),
-                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),
-                next_idx, feedback_log, chatbox, format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "", 
-                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # disable chat_input
-                gr.update(visible=False, interactive=False),  # disable send_btn
-                gr.update(visible=False), format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # update memory editor
+                gr.update(value=next_card, visible=True),  # recommendations
+                gr.update(visible=True), gr.update(visible=True), gr.update(visible=True),  # keep_btn, adjust_btn, reject_btn
+                next_idx, feedback_log,  # rec_index_state, feedback_log_state
+                chatbox,  # chatbox
+                format_agent_memory_panel(load_user_profile(user_id_state)) if user_id_state else "",  # agent_memory
+                gr.update(interactive=False, value="", placeholder="Chat will be enabled when feedback explanation is needed..."), # chat_input
+                gr.update(visible=False, interactive=False),  # send_btn
+                gr.update(visible=False),  # new_recs_btn
+                format_memory_editor_display(user_id_state) if user_id_state else "No profile loaded."  # memory_display
             )
         else:
             # Update agent memory after feedback loop is finished
