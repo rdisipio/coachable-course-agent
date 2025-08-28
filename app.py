@@ -203,7 +203,19 @@ def render_course_card(course, explanation=None):
     
     # Add teaches information after the explanation
     if skills_str:
-        card += f"\n\n**Teaches:** {skills_str}"
+        card += f"\n\n**Skills:** {skills_str}"
+    
+    # Add missing skills context if available
+    missing_skills = course.get('query_missing_skills', [])
+    if missing_skills and len(missing_skills) > 0:
+        # Convert list to string if needed
+        if isinstance(missing_skills, list):
+            missing_skills_str = ", ".join(str(skill) for skill in missing_skills[:3])
+        else:
+            missing_skills_str = str(missing_skills)
+        
+        if missing_skills_str:
+            card += f"\n\n**Addresses your gaps:** {missing_skills_str}"
     
     return card
 
