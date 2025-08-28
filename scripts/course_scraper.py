@@ -17,12 +17,14 @@ from typing import List, Dict
 
 from scrapers.coursera_scraper import CourseraScraper
 from scrapers.udemy_scraper import UdemyScraper
+from scrapers.coursesity_scraper import CoursesityScraper
 from llm_processor import LLMProcessor
 
 
 SCRAPER_MAP = {
     'coursera': CourseraScraper,
-    'udemy': UdemyScraper
+    'udemy': UdemyScraper,
+    'coursesity': CoursesityScraper
 }
 
 
@@ -30,8 +32,8 @@ def main():
     parser = argparse.ArgumentParser(description='Scrape courses from online platforms')
     parser.add_argument('--topic', required=True, help='Course topic to search for')
     parser.add_argument('--count', type=int, default=10, help='Number of courses to scrape')
-    parser.add_argument('--platform', required=True, choices=['coursera', 'udemy'],
-                       help='Platform to scrape from (coursera or udemy)')
+    parser.add_argument('--platform', required=True, choices=['coursera', 'udemy', 'coursesity'],
+                       help='Platform to scrape from (coursera, udemy, or coursesity)')
     parser.add_argument('--process-llm', action='store_true', 
                        help='Process scraped data with LLM for standardization')
     

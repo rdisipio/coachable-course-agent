@@ -8,16 +8,24 @@ topics:
     count: 15
   - name: udemy
     count: 10
+  - name: coursesity
+    count: 10
 - name: data science
   platforms:
   - name: coursera
     count: 12
   - name: udemy
     count: 8
+  - name: coursesity
+    count: 10
 - name: artificial intelligence
   platforms:
   - name: coursera
     count: 12
+  - name: udemy
+    count: 8
+  - name: coursesity
+    count: 10
   process_llm: true
 - name: python programming
   platforms:

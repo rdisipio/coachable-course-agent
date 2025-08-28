@@ -1,78 +1,164 @@
 """
-Udemy scraper implementation
+Udemy scraper implementation - Enhanced version based on Medium article techniques
 """
 
 import requests
 from bs4 import BeautifulSoup
 from typing import List, Dict
+import time
+import random
+from urllib.parse import quote_plus
 from .base_scraper import BaseScraper
 
 
 class UdemyScraper(BaseScraper):
-    """Scraper for Udemy courses"""
+    """Enhanced Udemy scraper with better anti-detection measures"""
     
     def __init__(self):
         super().__init__()
         self.base_url = "https://www.udemy.com"
         self.search_url = f"{self.base_url}/courses/search/"
+        
+        # Enhanced headers based on Medium article recommendations
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.8',
             'Accept-Encoding': 'gzip, deflate, br',
             'DNT': '1',
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1',
+            'Sec-Ch-Ua-Platform': '"macOS"',
             'Sec-Fetch-Dest': 'document',
             'Sec-Fetch-Mode': 'navigate',
-            'Sec-Fetch-Site': 'none',
-            'Cache-Control': 'max-age=0'
+            'Sec-Fetch-Site': 'same-origin',
+            'Cache-Control': 'max-age=0',
+            'Referer': 'https://www.udemy.com/'
         }
+        
+        # Initialize session for better cookie and state management
+        self.session = requests.Session()
+        self.session.headers.update(self.headers)
         self.delay_range = (3, 6)  # Longer delays for Udemy
     
     def search_courses(self, topic: str, count: int) -> List[Dict]:
-        """Search for courses on Udemy"""
+        """Enhanced search for courses on Udemy using alternative endpoints"""
         courses = []
         
         try:
-            params = {
-                'q': topic,
-                'sort': 'relevance',
-                'src': 'ukw'
-            }
+            # First visit the homepage to establish session (Medium article technique)
+            print(f"  Establishing session with Udemy...")
+            home_response = self.session.get(self.base_url, timeout=(5, 60))
+            home_response.raise_for_status()
             
-            print(f"  Searching Udemy for '{topic}'...")
-            response = requests.get(self.search_url, params=params, headers=self.headers)
-            response.raise_for_status()
+            # Add some random delay to avoid detection
+            time.sleep(random.uniform(*self.delay_range))
             
-            soup = BeautifulSoup(response.content, 'html.parser')
+            # Try different search approaches
+            search_approaches = [
+                # Approach 1: Standard search
+                {
+                    'url': f"{self.base_url}/courses/search/",
+                    'params': {'q': topic, 'sort': 'relevance', 'src': 'ukw'}
+                },
+                # Approach 2: Category browse (if search fails)
+                {
+                    'url': f"{self.base_url}/courses/development/",
+                    'params': {}
+                }
+            ]
             
-            # Find course cards (selector may need adjustment)
-            course_cards = soup.find_all('div', class_='course-card--container--1QM2W')[:count]
-            
-            for card in course_cards:
-                try:
-                    course_data = self.extract_course_data(card)
-                    if course_data:
-                        standardized = self.standardize_course_data(course_data)
-                        courses.append(standardized)
-                        
-                        if len(courses) >= count:
-                            break
-                            
-                except Exception as e:
-                    print(f"    Warning: Failed to extract course data: {e}")
-                    continue
+            for approach in search_approaches:
+                print(f"  Trying search approach: {approach['url']}")
                 
-                self.sleep_between_requests()
-            
-        except Exception as e:
+                response = self.session.get(
+                    approach['url'], 
+                    params=approach['params'],
+                    timeout=(5, 60),
+                    allow_redirects=True
+                )
+                
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.content, 'html.parser')
+                    
+                    # Try to find course links or data
+                    # Look for any links that contain '/course/'
+                    course_links = soup.find_all('a', href=lambda x: x and '/course/' in x)
+                    
+                    if course_links:
+                        print(f"    Found {len(course_links)} course links")
+                        
+                        # Extract course information from links
+                        for link in course_links[:count]:
+                            try:
+                                course_url = link.get('href')
+                                if not course_url.startswith('http'):
+                                    course_url = self.base_url + course_url
+                                
+                                # Get course title from link text or parent elements
+                                title = self._extract_title_from_link(link)
+                                
+                                if title and topic.lower() in title.lower():
+                                    course_data = {
+                                        'title': title,
+                                        'provider': 'Udemy',
+                                        'url': course_url,
+                                        'description': '',
+                                        'rating': None,
+                                        'instructor': '',
+                                        'level': 'unknown',
+                                        'duration': '',
+                                        'price': '',
+                                        'format': 'self-paced',
+                                        'language': 'en',
+                                        'certificate': True,
+                                    }
+                                    
+                                    standardized = self.standardize_course_data(course_data)
+                                    courses.append(standardized)
+                                    
+                                    if len(courses) >= count:
+                                        break
+                                        
+                            except Exception as e:
+                                print(f"    Error processing course link: {e}")
+                                continue
+                        
+                        if courses:
+                            break  # Found courses, no need to try other approaches
+                    
+                    else:
+                        print(f"    No course links found in this approach")
+                
+                else:
+                    print(f"    Approach failed with status: {response.status_code}")
+                    
+        except requests.exceptions.Timeout:
+            print("    Timeout occurred while searching Udemy")
+        except requests.exceptions.RequestException as e:
             print(f"    Error searching Udemy: {e}")
-        
-        if courses:
-            print(f"    Successfully scraped {len(courses)} real courses")
-        else:
-            print(f"    No courses found")
+        except Exception as e:
+            print(f"    Unexpected error: {e}")
+            
+        return courses
+    
+    def _extract_title_from_link(self, link) -> str:
+        """Extract course title from a course link element"""
+        # Try different methods to get the title
+        title = link.get_text(strip=True)
+        if title:
+            return title
+            
+        # Look in parent elements
+        parent = link.parent
+        while parent and not title:
+            title_elem = parent.find(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+            if title_elem:
+                title = title_elem.get_text(strip=True)
+                break
+            parent = parent.parent
+            
+        return title or "Unknown Course"
             
         return courses
     
