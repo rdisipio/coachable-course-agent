@@ -230,6 +230,76 @@ def remove_skill(user_id, skill_to_remove):
         return f"No skill found matching '{skill_to_remove}' in either known skills or learning goals", format_memory_editor_display(user_id), ""
 
 
+def remove_known_skill(user_id, skill_to_remove):
+    """Remove a skill specifically from known skills only"""
+    if not skill_to_remove or not skill_to_remove.strip():
+        return "Please enter a skill to remove", format_memory_editor_display(user_id), ""
+    
+    memory = load_user_profile(user_id)
+    
+    if not memory:
+        return "No profile found", format_memory_editor_display(user_id), ""
+    
+    skill_to_remove_lower = skill_to_remove.strip().lower()
+    
+    # Check known_skills only
+    known_skills = memory.get("known_skills", [])
+    original_known_count = len(known_skills)
+    updated_known = []
+    
+    for skill in known_skills:
+        if isinstance(skill, dict):
+            skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
+        else:
+            skill_name = str(skill)
+        
+        if skill_name.lower() != skill_to_remove_lower:
+            updated_known.append(skill)
+    
+    known_removed = original_known_count - len(updated_known)
+    if known_removed > 0:
+        memory["known_skills"] = updated_known
+        update_user_profile(user_id, memory)
+        return f"Removed '{skill_to_remove}' from known skills", format_memory_editor_display(user_id), ""
+    else:
+        return f"No skill found matching '{skill_to_remove}' in known skills", format_memory_editor_display(user_id), ""
+
+
+def remove_learning_goal(user_id, skill_to_remove):
+    """Remove a skill specifically from learning goals (missing skills) only"""
+    if not skill_to_remove or not skill_to_remove.strip():
+        return "Please enter a skill to remove", format_memory_editor_display(user_id), ""
+    
+    memory = load_user_profile(user_id)
+    
+    if not memory:
+        return "No profile found", format_memory_editor_display(user_id), ""
+    
+    skill_to_remove_lower = skill_to_remove.strip().lower()
+    
+    # Check missing_skills (learning goals) only
+    missing_skills = memory.get("missing_skills", [])
+    original_missing_count = len(missing_skills)
+    updated_missing = []
+    
+    for skill in missing_skills:
+        if isinstance(skill, dict):
+            skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
+        else:
+            skill_name = str(skill)
+        
+        if skill_name.lower() != skill_to_remove_lower:
+            updated_missing.append(skill)
+    
+    missing_removed = original_missing_count - len(updated_missing)
+    if missing_removed > 0:
+        memory["missing_skills"] = updated_missing
+        update_user_profile(user_id, memory)
+        return f"Removed '{skill_to_remove}' from learning goals", format_memory_editor_display(user_id), ""
+    else:
+        return f"No skill found matching '{skill_to_remove}' in learning goals", format_memory_editor_display(user_id), ""
+
+
 def clear_feedback_log(user_id):
     """Clear user's feedback log"""
     memory = load_user_profile(user_id)

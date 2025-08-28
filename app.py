@@ -344,6 +344,8 @@ from coachable_course_agent.memory_store import (
     update_goal_dialog,
     save_updated_goal,
     remove_skill,
+    remove_known_skill,
+    remove_learning_goal,
     add_skill,
     clear_feedback_log
 )
@@ -361,13 +363,15 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         with gr.Row():
             with gr.Column():
                 gr.Markdown("**Remove Skill:**")
-                skill_input = gr.Textbox(
+                remove_skill_input = gr.Textbox(
                     label="Skill to Remove", 
                     placeholder="Type skill name (partial match works)...",
                     lines=2
                 )
-                remove_skill_btn = gr.Button("Remove Skill")
-                skill_status = gr.Markdown()
+                with gr.Row():
+                    remove_known_btn = gr.Button("Remove from Known Skills")
+                    remove_learning_btn = gr.Button("Remove from Learning Goals")
+                remove_skill_status = gr.Markdown()
             
             with gr.Column():
                 gr.Markdown("**Add Skill:**")
@@ -971,17 +975,30 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         outputs=[goal_status, memory_display, agent_memory]
     )
     
-    def remove_skill_and_update_all(user_id, skill_to_remove):
-        """Remove skill and return updates for both memory displays"""
-        status, memory_editor_display, cleared_input = remove_skill(user_id, skill_to_remove)
+    def remove_known_skill_and_update_all(user_id, skill_to_remove):
+        """Remove skill from known skills and return updates for both memory displays"""
+        status, memory_editor_display, cleared_input = remove_known_skill(user_id, skill_to_remove)
         updated_profile = load_user_profile(user_id) if user_id else {}
         agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
         return status, memory_editor_display, cleared_input, agent_memory_display
 
-    remove_skill_btn.click(
-        remove_skill_and_update_all,
-        inputs=[user_id_state, skill_input],
-        outputs=[skill_status, memory_display, skill_input, agent_memory]
+    remove_known_btn.click(
+        remove_known_skill_and_update_all,
+        inputs=[user_id_state, remove_skill_input],
+        outputs=[remove_skill_status, memory_display, remove_skill_input, agent_memory]
+    )
+    
+    def remove_learning_goal_and_update_all(user_id, skill_to_remove):
+        """Remove skill from learning goals and return updates for both memory displays"""
+        status, memory_editor_display, cleared_input = remove_learning_goal(user_id, skill_to_remove)
+        updated_profile = load_user_profile(user_id) if user_id else {}
+        agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
+        return status, memory_editor_display, cleared_input, agent_memory_display
+
+    remove_learning_btn.click(
+        remove_learning_goal_and_update_all,
+        inputs=[user_id_state, remove_skill_input],
+        outputs=[remove_skill_status, memory_display, remove_skill_input, agent_memory]
     )
     
     def add_known_skill_and_update_all(user_id, skill_name):
