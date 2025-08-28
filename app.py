@@ -127,7 +127,8 @@ PROFILE_BUILD_OUTPUTS = [
     "profile_json",         # 6
     "footer_status",        # 7
     "app_mode",             # 8
-    "see_recommendations_btn" # 9
+    "see_recommendations_btn", # 9
+    "build_btn"             # 10
 ]
 
 # ---------- Helper Functions ----------
@@ -881,7 +882,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 profile_json=gr.update(value=data, visible=False),
                 footer_status="✌️ Profile created.",
                 app_mode="profile",
-                see_recommendations_btn=gr.update(visible=True)
+                see_recommendations_btn=gr.update(visible=True),
+                build_btn=gr.update(interactive=False, value="Profile Created ✓")
             ).get_tuple()
             
         except Exception as e:
@@ -895,7 +897,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 profile_json=gr.update(visible=False),
                 footer_status=f"❌ Error: {e}",
                 app_mode="profile",
-                see_recommendations_btn=gr.update(visible=False)
+                see_recommendations_btn=gr.update(visible=False),
+                build_btn=gr.update(interactive=True, value="Build Profile and Continue")
             ).get_tuple()
 
 
@@ -913,7 +916,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             profile_json,         # update profile json
             footer_status,        # update footer
             app_mode,             # update app mode
-            see_recommendations_btn # show/hide see recommendations button
+            see_recommendations_btn, # show/hide see recommendations button
+            build_btn             # disable after success
         ]
     )
 
