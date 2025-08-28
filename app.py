@@ -150,6 +150,10 @@ def load_courses():
 
 
 def render_course_card(course, explanation=None):
+    # Debug: Print course keys to see what's available
+    print(f"DEBUG render_course_card: Course keys: {list(course.keys())}")
+    print(f"DEBUG render_course_card: title='{course.get('title')}'")
+    
     # Handle skills as string or list
     skills = course.get("skills", "")
     if isinstance(skills, str):
@@ -215,9 +219,6 @@ def format_agent_memory_panel(mem):
     # Enhanced feedback display with classifications
     feedback_log = mem.get("feedback_log", [])
     if feedback_log:
-        print(f"DEBUG: Feedback log has {len(feedback_log)} entries")
-        for i, f in enumerate(feedback_log[-5:]):
-            print(f"DEBUG: Entry {i}: course_title='{f.get('course_title')}', course_id='{f.get('course_id')}'")
         feedback_lines = []
         for f in reversed(feedback_log[-5:]):  # Show last 5 entries, most recent first
             course_title = f.get('course_title', '')
@@ -225,16 +226,13 @@ def format_agent_memory_panel(mem):
             feedback_type = f.get('feedback_type', '?')
             reason = f.get('reason', '')
             
-            # Determine the best display name for the course
-            course_title = f.get('course_title', '')
-            course_id = f.get('course_id', '?')
-            
-            if course_title and course_title.strip() and course_title != '?':
+            # Handle old feedback entries where course_title might be None or missing
+            if course_title and course_title.strip() and course_title != '?' and str(course_title) != 'None':
                 # We have a real course title, use it
                 display_name = course_title.strip()
             else:
-                # Fallback - never show GUID, use generic name
-                display_name = "Unknown Course"
+                # For old entries with missing/bad titles, use a generic name
+                display_name = "Course (legacy entry)"
             
             # Add classification emoji if available
             classification_emoji = ""
@@ -594,9 +592,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         # Otherwise, process feedback and move to next course
         # Use the same title extraction logic as the course card
         actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
-        print(f"DEBUG: Course keys: {list(course.keys())}")
-        print(f"DEBUG: course.get('title'): '{course.get('title')}'")
-        print(f"DEBUG: actual_title: '{actual_title}'")
         feedback_entry = {
             "course_id": course_id,
             "course_title": actual_title,
@@ -687,9 +682,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         # Use the same title extraction logic as the course card
         actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
-        print(f"DEBUG reason_action: Course keys: {list(course.keys())}")
-        print(f"DEBUG reason_action: course.get('title'): '{course.get('title')}'")
-        print(f"DEBUG reason_action: actual_title: '{actual_title}'")
         feedback_entry = {
             "course_id": course_id,
             "course_title": actual_title,
