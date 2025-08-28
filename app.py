@@ -155,6 +155,18 @@ def load_courses():
         return json.load(f)
 
 
+def get_platform_display_name(source_platform):
+    """Get a user-friendly platform name"""
+    platform_names = {
+        'coursera': 'Coursera',
+        'edx': 'edX', 
+        'udemy': 'Udemy',
+        'udacity': 'Udacity',
+        'futurelearn': 'FutureLearn',
+        'khan': 'Khan Academy'
+    }
+    return platform_names.get(source_platform.lower(), source_platform.title())
+
 def render_course_card(course, explanation=None):
     # Handle skills as string or list
     skills = course.get("skills", "")
@@ -186,8 +198,26 @@ def render_course_card(course, explanation=None):
     
     # Build the card with proper order: Details → Confidence → Why (with explanation + teaches)
     title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
+    
+    # Get platform and provider info
+    source_platform = course.get('source_platform', '')
+    provider = course.get('provider', '')
+    
+    # Format platform (provider names are already cleaned during import)
+    platform_name = get_platform_display_name(source_platform) if source_platform else ''
+    
+    # Create provider/platform line
+    if platform_name and provider and provider != platform_name:
+        provider_line = f"**Platform**: {platform_name} | **Provider**: {provider}"
+    elif platform_name:
+        provider_line = f"**Platform**: {platform_name}"
+    elif provider:
+        provider_line = f"**Provider**: {provider}"
+    else:
+        provider_line = ""
+    
     card = f"""### [{title}]({course.get('url', '')})
-**Provider**: {course.get('provider', '')}  
+{provider_line}  
 **Duration**: {duration_text}  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
 
@@ -988,6 +1018,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         outputs=[feedback_status, memory_display, agent_memory]
     )
 
-demo.launch()
+if __name__ == "__main__":
+    demo.launch()
 
 

@@ -7,7 +7,13 @@ from typing import List, Dict
 import time
 import random
 import uuid
+import sys
+import os
 from datetime import datetime
+
+# Add parent directory to path to import utils
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from coachable_course_agent.utils import clean_provider_name
 
 
 class BaseScraper(ABC):
@@ -58,10 +64,13 @@ class BaseScraper(ABC):
         Returns:
             Standardized course dictionary
         """
+        # Clean provider name during standardization
+        provider = clean_provider_name(raw_data.get('provider', ''))
+        
         return {
             'id': str(uuid.uuid4()),  # Generate unique ID for each course
             'title': raw_data.get('title', ''),
-            'provider': raw_data.get('provider', ''),
+            'provider': provider,  # Use cleaned provider name
             'url': raw_data.get('url', ''),
             'description': raw_data.get('description', ''),
             'duration_hours': self._parse_duration(raw_data.get('duration', '')),

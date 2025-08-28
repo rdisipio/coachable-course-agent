@@ -26,6 +26,7 @@ from langchain.vectorstores import Chroma
 from langchain.embeddings import HuggingFaceEmbeddings
 
 from coachable_course_agent.esco_matcher import match_to_esco
+from coachable_course_agent.utils import clean_provider_name
 
 
 class CourseConsolidator:
@@ -206,11 +207,14 @@ class CourseConsolidator:
             # Match ESCO skills
             esco_skills = self.match_esco_skills(course)
             
+            # Clean provider name during consolidation
+            provider = clean_provider_name(course.get('provider', ''))
+            
             # Create consolidated course record
             consolidated_course = {
                 "id": course.get('id'),
                 "title": course.get('title'),
-                "provider": course.get('provider'),
+                "provider": provider,  # Use cleaned provider name
                 "url": course.get('url'),
                 "description": course.get('description'),
                 "duration_hours": course.get('duration_hours', 0),

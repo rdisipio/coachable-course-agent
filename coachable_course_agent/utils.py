@@ -12,6 +12,51 @@ def extract_json_block(text: str) -> dict:
             return json.loads(match.group(1))
         raise
 
+def clean_provider_name(provider):
+    """Clean provider name by removing duplicate letters and formatting properly"""
+    if not provider:
+        return ""
+    
+    # Fix the double letter issue (e.g., "D Duke University" → "Duke University")
+    # Pattern: single letter, space, then same letter followed by word
+    cleaned = re.sub(r'^([A-Z])\s+\1([A-Z][a-z])', r'\2', provider)
+    
+    # Additional cleanup patterns
+    cleaned = re.sub(r'^([A-Z])\s+([A-Z])', r'\2', cleaned)  # "D Duke" → "Duke"
+    
+    # Remove duplicate words (e.g., "Arizona State University Arizona State" → "Arizona State University")
+    words = cleaned.split()
+    if len(words) > 3:  # Only check for duplicates in longer names
+        # Check if the name is duplicated
+        mid = len(words) // 2
+        first_half = ' '.join(words[:mid])
+        second_half = ' '.join(words[mid:])
+        if first_half == second_half:
+            cleaned = first_half
+        else:
+            # Check for trailing duplicates (e.g., "University Name University Name")
+            # Look for repeating patterns at the end
+            for i in range(1, min(4, len(words))):  # Check up to 3-word repetitions
+                if len(words) >= i * 2:
+                    suffix = words[-i:]
+                    prefix = words[-(i*2):-i]
+                    if suffix == prefix:
+                        cleaned = ' '.join(words[:-i])
+                        break
+    
+    # Clean up specific patterns that often appear
+    # Remove course-specific suffixes that got mixed into provider names
+    course_suffixes = [
+        r'\s+(Introduction To|Skills|Fundamentals|Certificate|Course|Program).*$',
+        r'\s+(And|The|Of|For|In|With|To|From)$',  # Trailing prepositions
+        r'\s+[A-Z]$'  # Single trailing letters
+    ]
+    
+    for pattern in course_suffixes:
+        cleaned = re.sub(pattern, '', cleaned, flags=re.IGNORECASE)
+    
+    return cleaned.strip()
+
 def calculate_confidence_scores(scores):
     """
     Convert distance scores to normalized confidence scores (0-1 range).
