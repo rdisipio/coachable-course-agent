@@ -12,6 +12,21 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
 from coachable_course_agent.load_data import load_courses
 
+def clean_provider_name(provider):
+    """
+    Clean provider name by removing duplicate first letters.
+    If the first two letters are the same and both uppercase, drop the first one.
+    E.g., "IIllinois Tech" -> "Illinois Tech", "IIBM" -> "IBM"
+    """
+    if not provider or len(provider) < 2:
+        return provider
+    
+    # Check if first two letters are the same and both uppercase
+    if provider[0] == provider[1] and provider[0].isupper() and provider[1].isupper():
+        return provider[1:]  # Drop the first letter
+    
+    return provider
+
 # 1. Load course catalog (including ESCO-linked skills)
 course_data = load_courses("data/course_catalog_esco.json")
 
@@ -34,10 +49,14 @@ course_docs = []
 for course in tqdm(courses, desc="Processing courses"):
     skill_names = ", ".join([s["name"] for s in course.get("skills", [])])
     content = f"{course['title']}. Skills: {skill_names}"
+    
+    # Clean the provider name during loading
+    cleaned_provider = clean_provider_name(course["provider"])
+    
     metadata = {
         "id": course["id"],
         "title": course["title"],
-        "provider": course["provider"],
+        "provider": cleaned_provider,  # Use cleaned provider name
         "source_platform": course.get("source_platform", ""),
         "duration_hours": course.get("duration_hours", 0),
         "level": course.get("level", "Unknown"),
