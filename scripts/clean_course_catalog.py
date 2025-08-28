@@ -85,13 +85,32 @@ def clean_course_catalog(input_file, output_file):
     with open(input_file, 'r') as f:
         catalog = json.load(f)
     
-    total_courses = len(catalog['courses'])
+    total_courses_before = len(catalog['courses'])
     total_skills_before = 0
     total_skills_after = 0
     duplicates_removed = 0
     false_positives_removed = 0
+    mock_courses_removed = 0
     
-    print(f"📚 Processing {total_courses} courses...")
+    # First, remove mock courses (those with providers starting with "Trial U", "Preview U", "New U")
+    print(f"🎭 Removing mock courses...")
+    mock_prefixes = ["Trial U", "Preview U", "New U"]
+    real_courses = []
+    
+    for course in catalog['courses']:
+        provider = course.get('provider', '')
+        is_mock = any(provider.startswith(prefix) for prefix in mock_prefixes)
+        
+        if is_mock:
+            mock_courses_removed += 1
+            print(f"   Removing mock course: {course.get('title', 'Unknown')} ({provider})")
+        else:
+            real_courses.append(course)
+    
+    catalog['courses'] = real_courses
+    total_courses_after_mock_removal = len(catalog['courses'])
+    
+    print(f"📚 Processing {total_courses_after_mock_removal} real courses for skill cleanup...")
     
     for course in catalog['courses']:
         title = course.get('title', '')
@@ -125,13 +144,17 @@ def clean_course_catalog(input_file, output_file):
         total_skills_after += len(course['skills'])
     
     # Update metadata
-    catalog['metadata']['cleaned_at'] = "2025-08-27T17:45:00"
+    catalog['metadata']['total_courses'] = len(catalog['courses'])
+    catalog['metadata']['cleaned_at'] = "2025-08-28T00:00:00"
     catalog['metadata']['cleanup_stats'] = {
+        'total_courses_before': total_courses_before,
+        'total_courses_after': len(catalog['courses']),
+        'mock_courses_removed': mock_courses_removed,
         'total_skills_before': total_skills_before,
         'total_skills_after': total_skills_after,
         'duplicates_removed': duplicates_removed,
         'false_positives_removed': false_positives_removed,
-        'cleanup_rate': round((duplicates_removed + false_positives_removed) / total_skills_before * 100, 2)
+        'cleanup_rate': round((duplicates_removed + false_positives_removed) / total_skills_before * 100, 2) if total_skills_before > 0 else 0
     }
     
     # Save cleaned catalog
@@ -139,7 +162,10 @@ def clean_course_catalog(input_file, output_file):
         json.dump(catalog, f, indent=2)
     
     print(f"✅ Cleanup completed!")
-    print(f"   📊 Skills before: {total_skills_before}")
+    print(f"   � Courses before: {total_courses_before}")
+    print(f"   📚 Courses after: {len(catalog['courses'])}")
+    print(f"   🎭 Mock courses removed: {mock_courses_removed}")
+    print(f"   �📊 Skills before: {total_skills_before}")
     print(f"   📊 Skills after: {total_skills_after}")
     print(f"   🔄 Duplicates removed: {duplicates_removed}")
     print(f"   ❌ False positives removed: {false_positives_removed}")
@@ -148,11 +174,18 @@ def clean_course_catalog(input_file, output_file):
 
 def main():
     input_file = "data/course_catalog_esco.json"
-    output_file = "data/course_catalog_esco_cleaned.json"
+    output_file = "data/course_catalog_esco.json"  # Overwrite the original file
     
     if not Path(input_file).exists():
         print(f"❌ Input file not found: {input_file}")
         sys.exit(1)
+    
+    # Create backup before cleaning
+    backup_file = f"{input_file}.backup"
+    print(f"💾 Creating backup: {backup_file}")
+    
+    import shutil
+    shutil.copy2(input_file, backup_file)
     
     clean_course_catalog(input_file, output_file)
 
