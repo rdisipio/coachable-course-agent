@@ -215,6 +215,9 @@ def format_agent_memory_panel(mem):
     # Enhanced feedback display with classifications
     feedback_log = mem.get("feedback_log", [])
     if feedback_log:
+        print(f"DEBUG: Feedback log has {len(feedback_log)} entries")
+        for i, f in enumerate(feedback_log[-5:]):
+            print(f"DEBUG: Entry {i}: course_title='{f.get('course_title')}', course_id='{f.get('course_id')}'")
         feedback_lines = []
         for f in reversed(feedback_log[-5:]):  # Show last 5 entries, most recent first
             course_title = f.get('course_title', '')
@@ -591,6 +594,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         # Otherwise, process feedback and move to next course
         # Use the same title extraction logic as the course card
         actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
+        print(f"DEBUG: Course keys: {list(course.keys())}")
+        print(f"DEBUG: course.get('title'): '{course.get('title')}'")
+        print(f"DEBUG: actual_title: '{actual_title}'")
         feedback_entry = {
             "course_id": course_id,
             "course_title": actual_title,
@@ -681,6 +687,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         # Use the same title extraction logic as the course card
         actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
+        print(f"DEBUG reason_action: Course keys: {list(course.keys())}")
+        print(f"DEBUG reason_action: course.get('title'): '{course.get('title')}'")
+        print(f"DEBUG reason_action: actual_title: '{actual_title}'")
         feedback_entry = {
             "course_id": course_id,
             "course_title": actual_title,
