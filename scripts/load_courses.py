@@ -38,6 +38,7 @@ for course in tqdm(courses, desc="Processing courses"):
         "id": course["id"],
         "title": course["title"],
         "provider": course["provider"],
+        "source_platform": course.get("source_platform", ""),
         "duration_hours": course.get("duration_hours", 0),
         "level": course.get("level", "Unknown"),
         "format": course.get("format", "Unknown"),
