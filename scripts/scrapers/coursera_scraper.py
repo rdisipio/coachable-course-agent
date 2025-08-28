@@ -5,6 +5,8 @@ Coursera scraper implementation
 import requests
 from bs4 import BeautifulSoup
 from typing import List, Dict
+import re
+import time
 from .base_scraper import BaseScraper
 
 
@@ -50,7 +52,9 @@ class CourseraScraper(BaseScraper):
                 try:
                     course_data = self.extract_course_data(card)
                     if course_data:
-                        standardized = self.standardize_course_data(course_data)
+                        # Enhance with detailed information from course page
+                        enhanced_data = self.enhance_course_with_details(course_data)
+                        standardized = self.standardize_course_data(enhanced_data)
                         courses.append(standardized)
                         
                         if len(courses) >= count:
@@ -180,7 +184,86 @@ class CourseraScraper(BaseScraper):
                         provider = potential_provider.title()
                         break
             
-            print(f"      Extracted: '{title[:50]}...' from {provider}")
+            # Extract duration - look for time-related text
+            duration = ''
+            duration_patterns = [
+                r'(\d+)\s*weeks?',
+                r'(\d+)\s*months?',
+                r'(\d+)\s*hours?',
+                r'(\d+)\s*days?',
+                r'(\d+(?:\.\d+)?)\s*h(?:ours?)?',
+                r'approx\.?\s*(\d+)\s*hours?',
+                r'approximately\s*(\d+)\s*hours?'
+            ]
+            
+            import re
+            for pattern in duration_patterns:
+                match = re.search(pattern, all_text, re.IGNORECASE)
+                if match:
+                    duration = match.group(0)
+                    break
+            
+            # If no duration pattern found, look for specific text elements
+            if not duration:
+                duration_selectors = [
+                    '[data-track*="duration"]',
+                    '[class*="duration"]',
+                    '[class*="time"]',
+                    'span:contains("week")',
+                    'span:contains("hour")',
+                    'div:contains("Approx")'
+                ]
+                
+                for selector in duration_selectors:
+                    duration_elem = course_element.select_one(selector)
+                    if duration_elem:
+                        duration_text = duration_elem.get_text(strip=True)
+                        for pattern in duration_patterns:
+                            match = re.search(pattern, duration_text, re.IGNORECASE)
+                            if match:
+                                duration = match.group(0)
+                                break
+                        if duration:
+                            break
+            
+            # Extract level - look for difficulty indicators
+            level = 'unknown'
+            level_patterns = [
+                (r'\b(beginner|intro|introductory|basic|entry[- ]level)\b', 'beginner'),
+                (r'\b(intermediate|medium|moderate)\b', 'intermediate'),
+                (r'\b(advanced|expert|professional|specialization)\b', 'advanced'),
+                (r'\b(mixed levels?|all levels?)\b', 'mixed')
+            ]
+            
+            for pattern, level_name in level_patterns:
+                if re.search(pattern, all_text, re.IGNORECASE):
+                    level = level_name
+                    break
+            
+            # Look for level in specific elements
+            if level == 'unknown':
+                level_selectors = [
+                    '[data-track*="level"]',
+                    '[class*="level"]',
+                    '[class*="difficulty"]',
+                    'span:contains("Level")',
+                    'div:contains("Beginner")',
+                    'div:contains("Intermediate")',
+                    'div:contains("Advanced")'
+                ]
+                
+                for selector in level_selectors:
+                    level_elem = course_element.select_one(selector)
+                    if level_elem:
+                        level_text = level_elem.get_text(strip=True)
+                        for pattern, level_name in level_patterns:
+                            if re.search(pattern, level_text, re.IGNORECASE):
+                                level = level_name
+                                break
+                        if level != 'unknown':
+                            break
+            
+            print(f"      Extracted: '{title[:50]}...' from {provider} (Duration: {duration or 'N/A'}, Level: {level})")
             
             return {
                 'title': title,
@@ -189,8 +272,8 @@ class CourseraScraper(BaseScraper):
                 'description': description,  # Use the improved description
                 'rating': None,
                 'enrollment_count': None,
-                'level': 'unknown',
-                'duration': '',
+                'level': level,  # Now properly extracted
+                'duration': duration,  # Now properly extracted
                 'price': '',
                 'format': 'online',
                 'language': 'en',
@@ -201,3 +284,190 @@ class CourseraScraper(BaseScraper):
         except Exception as e:
             print(f"      Error extracting course data: {e}")
             return {}
+
+    def get_course_details(self, course_url: str) -> Dict:
+        """
+        Fetch detailed course information from individual course page
+        
+        Args:
+            course_url: URL of the course page
+            
+        Returns:
+            Dictionary with detailed course metadata
+        """
+        try:
+            print(f"    Fetching details from: {course_url}")
+            response = requests.get(course_url, headers=self.headers, timeout=10)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            # Extract duration from course page
+            duration = ''
+            duration_patterns = [
+                r'(\d+)\s*weeks?',
+                r'(\d+)\s*months?', 
+                r'(\d+)\s*hours?',
+                r'(\d+)\s*days?',
+                r'approx\.?\s*(\d+)\s*hours?',
+                r'approximately\s*(\d+)\s*hours?',
+                r'(\d+)\s*h(?:ours?)?'
+            ]
+            
+            # Look in specific elements that typically contain duration
+            duration_selectors = [
+                'div[data-track-component="duration"]',
+                '[class*="duration"]',
+                '[class*="time-commitment"]', 
+                '[class*="effort"]',
+                'span:contains("week")',
+                'span:contains("hour")',
+                'div:contains("Approx")',
+                'div:contains("Time to complete")',
+                '.cds-119 .cds-33',  # Common Coursera metadata classes
+                '[data-testid*="duration"]'
+            ]
+            
+            page_text = soup.get_text(separator=' ', strip=True)
+            
+            # First try pattern matching on full page text
+            for pattern in duration_patterns:
+                match = re.search(pattern, page_text, re.IGNORECASE)
+                if match:
+                    duration = match.group(0)
+                    break
+            
+            # If not found, try specific selectors
+            if not duration:
+                for selector in duration_selectors:
+                    elements = soup.select(selector)
+                    for elem in elements:
+                        elem_text = elem.get_text(strip=True)
+                        for pattern in duration_patterns:
+                            match = re.search(pattern, elem_text, re.IGNORECASE)
+                            if match:
+                                duration = match.group(0)
+                                break
+                        if duration:
+                            break
+                    if duration:
+                        break
+            
+            # Extract level from course page
+            level = 'unknown'
+            level_patterns = [
+                (r'\b(beginner|intro|introductory|basic|entry[- ]?level)\b', 'beginner'),
+                (r'\b(intermediate|medium|moderate)\b', 'intermediate'),
+                (r'\b(advanced|expert|professional)\b', 'advanced'),
+                (r'\b(mixed levels?|all levels?)\b', 'mixed')
+            ]
+            
+            # Look for level indicators
+            for pattern, level_name in level_patterns:
+                if re.search(pattern, page_text, re.IGNORECASE):
+                    level = level_name
+                    break
+            
+            # Look in specific level elements  
+            if level == 'unknown':
+                level_selectors = [
+                    '[data-track-component="level"]',
+                    '[class*="level"]',
+                    '[class*="difficulty"]',
+                    '[data-testid*="level"]',
+                    '.cds-119 .cds-33',  # Common metadata
+                ]
+                
+                for selector in level_selectors:
+                    elements = soup.select(selector)
+                    for elem in elements:
+                        elem_text = elem.get_text(strip=True)
+                        for pattern, level_name in level_patterns:
+                            if re.search(pattern, elem_text, re.IGNORECASE):
+                                level = level_name
+                                break
+                        if level != 'unknown':
+                            break
+                    if level != 'unknown':
+                        break
+            
+            # Extract provider/institution
+            provider = 'Coursera'
+            provider_selectors = [
+                '[data-track-component="partner_name"]',
+                '[class*="partner"]',
+                '[class*="institution"]',
+                '[class*="university"]',
+                '.cds-119 .cds-33'
+            ]
+            
+            for selector in provider_selectors:
+                elem = soup.select_one(selector)
+                if elem:
+                    provider_text = elem.get_text(strip=True)
+                    if provider_text and len(provider_text) < 100:
+                        provider = provider_text
+                        break
+            
+            # Extract rating
+            rating = None
+            rating_selectors = [
+                '[data-track-component="rating"]',
+                '[class*="rating"]',
+                '[class*="star"]'
+            ]
+            
+            for selector in rating_selectors:
+                elem = soup.select_one(selector)
+                if elem:
+                    rating_text = elem.get_text(strip=True)
+                    rating_match = re.search(r'(\d+\.?\d*)', rating_text)
+                    if rating_match:
+                        try:
+                            rating = float(rating_match.group(1))
+                            break
+                        except ValueError:
+                            continue
+            
+            print(f"      Details: Duration={duration or 'N/A'}, Level={level}, Provider={provider}")
+            
+            return {
+                'duration': duration,
+                'level': level,
+                'provider': provider,
+                'rating': rating
+            }
+            
+        except Exception as e:
+            print(f"      Error fetching course details: {e}")
+            return {}
+    
+    def enhance_course_with_details(self, course_data: Dict) -> Dict:
+        """
+        Enhance course data with details from individual course page
+        
+        Args:
+            course_data: Basic course data from search results
+            
+        Returns:
+            Enhanced course data with detailed metadata
+        """
+        if not course_data.get('url'):
+            return course_data
+        
+        # Add small delay to avoid rate limiting
+        time.sleep(1)
+        
+        details = self.get_course_details(course_data['url'])
+        
+        # Update course data with fetched details
+        if details.get('duration'):
+            course_data['duration'] = details['duration']
+        if details.get('level') and details['level'] != 'unknown':
+            course_data['level'] = details['level']
+        if details.get('provider') and details['provider'] != 'Coursera':
+            course_data['provider'] = details['provider']
+        if details.get('rating'):
+            course_data['rating'] = details['rating']
+        
+        return course_data
