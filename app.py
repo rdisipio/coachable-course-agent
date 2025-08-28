@@ -324,29 +324,13 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         with gr.Row():
             with gr.Column():
-                gr.Markdown("**Update Goal:**")
-                goal_input = gr.Textbox(
-                    label="Career Goal", 
-                    placeholder="Enter your new career goal...",
-                    lines=2
-                )
-                update_goal_btn = gr.Button("Update Goal", variant="primary")
-                goal_status = gr.Markdown()
-            
-            with gr.Column():
-                gr.Markdown("**Clear Data:**")
-                clear_feedback_btn = gr.Button("Clear Feedback Log", variant="stop")
-                feedback_status = gr.Markdown()
-        
-        with gr.Row():
-            with gr.Column():
                 gr.Markdown("**Remove Skill:**")
                 skill_input = gr.Textbox(
                     label="Skill to Remove", 
                     placeholder="Type skill name (partial match works)...",
                     lines=2
                 )
-                remove_skill_btn = gr.Button("Remove Skill", variant="secondary")
+                remove_skill_btn = gr.Button("Remove Skill")
                 skill_status = gr.Markdown()
             
             with gr.Column():
@@ -357,9 +341,25 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                     lines=2
                 )
                 with gr.Row():
-                    add_known_btn = gr.Button("Add as Known Skill", variant="primary")
-                    add_missing_btn = gr.Button("Add as Learning Goal", variant="secondary")
+                    add_known_btn = gr.Button("Add as Known Skill")
+                    add_missing_btn = gr.Button("Add as Learning Goal")
                 add_skill_status = gr.Markdown()
+        
+        with gr.Row():
+            with gr.Column():
+                gr.Markdown("**Update Goal:**")
+                goal_input = gr.Textbox(
+                    label="Career Goal", 
+                    placeholder="Enter your new career goal...",
+                    lines=2
+                )
+                update_goal_btn = gr.Button("Update Goal")
+                goal_status = gr.Markdown()
+            
+            with gr.Column():
+                gr.Markdown("**Clear Data:**")
+                clear_feedback_btn = gr.Button("Clear Feedback Log")
+                feedback_status = gr.Markdown()
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 📝 Create Your Profile")
