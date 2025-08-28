@@ -179,7 +179,8 @@ def render_course_card(course, explanation=None):
         duration_text = "Unknown"
     
     # Build the card with proper order: Details → Confidence → Why (with explanation + teaches)
-    card = f"""### [{course.get('title', '')}]({course.get('url', '')})
+    title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
+    card = f"""### [{title}]({course.get('url', '')})
 **Provider**: {course.get('provider', '')}  
 **Duration**: {duration_text}  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
@@ -222,7 +223,10 @@ def format_agent_memory_panel(mem):
             reason = f.get('reason', '')
             
             # Determine the best display name for the course
-            if course_title and course_title.strip():
+            course_title = f.get('course_title', '')
+            course_id = f.get('course_id', '?')
+            
+            if course_title and course_title.strip() and course_title != '?':
                 # We have a real course title, use it
                 display_name = course_title.strip()
             else:
@@ -548,9 +552,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         course = recs[idx]
         course_id = course.get("id", "?")
-        title = course.get("title", "?")
-        print(f"DEBUG: Course object keys: {list(course.keys())}")
-        print(f"DEBUG: Course title: '{title}'")
+        title = course.get("title") or course.get("course_title") or course.get("name") or "?"
         explanation = course.get("explanation", "")
         feedback_map = {
             "keep": "good fit",
@@ -587,9 +589,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             ).get_tuple()
         
         # Otherwise, process feedback and move to next course
+        # Use the same title extraction logic as the course card
+        actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
         feedback_entry = {
             "course_id": course_id,
-            "course_title": title,
+            "course_title": actual_title,
             "feedback_type": feedback_type,
             "reason": feedback_label
         }
@@ -666,8 +670,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         course = recs[idx]
         course_id = course.get("id", "?")
-        title = course.get("title", "?")
-        print(f"DEBUG reason_action: Course title: '{title}'")
+        title = course.get("title") or course.get("course_title") or course.get("name") or "?"
         
         # Find the last feedback entry for this course and update it with the reason and correct feedback_type
         if feedback_log and feedback_log[-1]["course_id"] == course_id and feedback_log[-1]["feedback_type"]:
@@ -676,9 +679,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
             # fallback: try to infer from previous state or default to 'adjust'
             feedback_type = "adjust"
         
+        # Use the same title extraction logic as the course card
+        actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
         feedback_entry = {
             "course_id": course_id,
-            "course_title": title,
+            "course_title": actual_title,
             "feedback_type": feedback_type,
             "reason": reason if reason else feedback_type
         }
