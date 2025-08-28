@@ -159,7 +159,6 @@ def get_platform_display_name(source_platform):
     """Get a user-friendly platform name"""
     platform_names = {
         'coursera': 'Coursera',
-        'edx': 'edX', 
         'udemy': 'Udemy',
         'udacity': 'Udacity',
         'futurelearn': 'FutureLearn',
