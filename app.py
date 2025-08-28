@@ -216,14 +216,21 @@ def format_agent_memory_panel(mem):
     if feedback_log:
         feedback_lines = []
         for f in feedback_log[-5:]:  # Show last 5 entries
-            course_title = f.get('course_title', f.get('course_id', '?'))  # Fallback to ID for old entries
+            course_title = f.get('course_title', '')
+            course_id = f.get('course_id', '?')
             feedback_type = f.get('feedback_type', '?')
             reason = f.get('reason', '')
             
-            # If we only have a course_id (old format), try to make it more user-friendly
-            if course_title == f.get('course_id', '?') and len(course_title) > 20:
+            # Determine the best display name for the course
+            if course_title and course_title.strip():
+                # We have a real course title, use it
+                display_name = course_title.strip()
+            elif course_id and len(course_id) > 20:
                 # This looks like a GUID, make it more readable
-                course_title = f"Course ({course_title[:8]}...)"
+                display_name = f"Course ({course_id[:8]}...)"
+            else:
+                # Fallback for any other case
+                display_name = course_id if course_id != '?' else "Unknown Course"
             
             # Add classification emoji if available
             classification_emoji = ""
@@ -239,9 +246,12 @@ def format_agent_memory_panel(mem):
                 }
                 classification_emoji = emoji_map.get(category, "")
             
-            # Truncate long course titles for better display
-            display_title = course_title[:40] + "..." if len(course_title) > 40 else course_title
-            feedback_lines.append(f"- {classification_emoji} {display_title}: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+            # Truncate long course titles for better display (increase limit slightly)
+            if len(display_name) > 45:
+                display_name = display_name[:42] + "..."
+            
+            # Format the feedback entry more clearly
+            feedback_lines.append(f"- {classification_emoji} **{display_name}**: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
         
         feedback = "\n".join(feedback_lines)
         if len(feedback_log) > 5:
