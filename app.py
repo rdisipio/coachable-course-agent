@@ -39,6 +39,11 @@ courses_collection = Chroma(
     embedding_function=embedding_model
 )
 
+esco_collection = Chroma(
+    persist_directory="data/esco_chroma",
+    embedding_function=embedding_model
+)
+
 # ---------- Output Management System ----------
 class GradioOutputManager:
     """Manages Gradio outputs by name instead of index to prevent order-related bugs."""
@@ -303,6 +308,7 @@ from coachable_course_agent.memory_store import (
     update_goal_dialog,
     save_updated_goal,
     remove_skill,
+    add_skill,
     clear_feedback_log
 )
 with gr.Blocks(title="Coachable Course Agent") as demo:
@@ -338,8 +344,22 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 skill_status = gr.Markdown()
         
         with gr.Row():
-            clear_feedback_btn = gr.Button("Clear Feedback Log", variant="stop")
-            feedback_status = gr.Markdown()
+            with gr.Column():
+                gr.Markdown("**Add Skill:**")
+                add_skill_input = gr.Textbox(
+                    label="Skill to Add", 
+                    placeholder="Enter a new skill you have...",
+                    lines=2
+                )
+                with gr.Row():
+                    add_known_btn = gr.Button("Add as Known Skill", variant="primary")
+                    add_missing_btn = gr.Button("Add as Learning Goal", variant="secondary")
+                add_skill_status = gr.Markdown()
+            
+            with gr.Column():
+                gr.Markdown("**Clear Data:**")
+                clear_feedback_btn = gr.Button("Clear Feedback Log", variant="stop")
+                feedback_status = gr.Markdown()
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 📝 Create Your Profile")
@@ -923,6 +943,32 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         remove_skill_and_update_all,
         inputs=[user_id_state, skill_input],
         outputs=[skill_status, memory_display, skill_input, agent_memory]
+    )
+    
+    def add_known_skill_and_update_all(user_id, skill_name):
+        """Add skill as known and return updates for both memory displays"""
+        status, memory_editor_display, cleared_input = add_skill(user_id, skill_name, "known", esco_collection)
+        updated_profile = load_user_profile(user_id) if user_id else {}
+        agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
+        return status, memory_editor_display, cleared_input, agent_memory_display
+
+    add_known_btn.click(
+        add_known_skill_and_update_all,
+        inputs=[user_id_state, add_skill_input],
+        outputs=[add_skill_status, memory_display, add_skill_input, agent_memory]
+    )
+    
+    def add_missing_skill_and_update_all(user_id, skill_name):
+        """Add skill as learning goal and return updates for both memory displays"""
+        status, memory_editor_display, cleared_input = add_skill(user_id, skill_name, "missing", esco_collection)
+        updated_profile = load_user_profile(user_id) if user_id else {}
+        agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""
+        return status, memory_editor_display, cleared_input, agent_memory_display
+
+    add_missing_btn.click(
+        add_missing_skill_and_update_all,
+        inputs=[user_id_state, add_skill_input],
+        outputs=[add_skill_status, memory_display, add_skill_input, agent_memory]
     )
     
     def clear_feedback_and_update_all(user_id):

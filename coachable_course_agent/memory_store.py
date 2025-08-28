@@ -199,3 +199,97 @@ def clear_feedback_log(user_id):
     update_user_profile(user_id, memory)
     
     return f"Cleared {feedback_count} feedback entries", format_memory_editor_display(user_id)
+
+def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
+    """Add a skill to user's profile using ESCO matching
+    
+    Args:
+        user_id: User identifier
+        skill_name: Name of the skill to add
+        skill_type: "known" for known_skills or "missing" for missing_skills
+        esco_vectorstore: ESCO Chroma collection for semantic matching
+    """
+    memory = load_user_profile(user_id)
+    
+    if not memory:
+        return "No user profile found", format_memory_editor_display(user_id), ""
+    
+    if not skill_name or not skill_name.strip():
+        return "Please enter a skill name", format_memory_editor_display(user_id), ""
+    
+    skill_name = skill_name.strip()
+    
+    # Find the most similar ESCO skill
+    if esco_vectorstore:
+        try:
+            results = esco_vectorstore.similarity_search(skill_name, k=1)
+            if results:
+                top_result = results[0]
+                skill_obj = {
+                    "preferredLabel": top_result.metadata.get("preferredLabel", skill_name),
+                    "conceptUri": top_result.metadata.get("conceptUri", f"custom:{skill_name.lower().replace(' ', '_')}"),
+                    "description": top_result.metadata.get("description", "ESCO-matched skill")
+                }
+                matched_label = skill_obj["preferredLabel"]
+            else:
+                # Fallback if no ESCO match found
+                skill_obj = {
+                    "preferredLabel": skill_name,
+                    "conceptUri": f"custom:{skill_name.lower().replace(' ', '_')}",
+                    "description": "User-added skill (no ESCO match)"
+                }
+                matched_label = skill_name
+        except Exception as e:
+            print(f"ESCO matching failed for '{skill_name}': {e}")
+            # Fallback if ESCO search fails
+            skill_obj = {
+                "preferredLabel": skill_name,
+                "conceptUri": f"custom:{skill_name.lower().replace(' ', '_')}",
+                "description": "User-added skill (ESCO search failed)"
+            }
+            matched_label = skill_name
+    else:
+        # Fallback if no ESCO vectorstore provided
+        skill_obj = {
+            "preferredLabel": skill_name,
+            "conceptUri": f"custom:{skill_name.lower().replace(' ', '_')}",
+            "description": "User-added skill"
+        }
+        matched_label = skill_name
+    
+    # Determine target list
+    target_list = "known_skills" if skill_type == "known" else "missing_skills"
+    skills_list = memory.get(target_list, [])
+    
+    # Check if skill already exists (by ESCO URI or label)
+    existing_skill = None
+    for skill in skills_list:
+        if (skill.get("conceptUri") == skill_obj["conceptUri"] or 
+            skill.get("preferredLabel", "").lower() == matched_label.lower()):
+            existing_skill = skill
+            break
+    
+    if existing_skill:
+        return f"Skill '{matched_label}' already exists in {target_list.replace('_', ' ')}", format_memory_editor_display(user_id), ""
+    
+    # Check if it exists in the other list
+    other_list = "missing_skills" if skill_type == "known" else "known_skills"
+    other_skills = memory.get(other_list, [])
+    
+    for skill in other_skills:
+        if (skill.get("conceptUri") == skill_obj["conceptUri"] or 
+            skill.get("preferredLabel", "").lower() == matched_label.lower()):
+            return f"Skill '{matched_label}' already exists in {other_list.replace('_', ' ')}. Remove it there first if you want to move it.", format_memory_editor_display(user_id), ""
+    
+    # Add the skill
+    skills_list.append(skill_obj)
+    memory[target_list] = skills_list
+    update_user_profile(user_id, memory)
+    
+    list_name = "known skills" if skill_type == "known" else "learning goals"
+    
+    # Show whether it was ESCO-matched or custom
+    if matched_label != skill_name:
+        return f"Added '{matched_label}' (ESCO match for '{skill_name}') to {list_name}", format_memory_editor_display(user_id), ""
+    else:
+        return f"Added '{matched_label}' to {list_name}", format_memory_editor_display(user_id), ""
