@@ -263,6 +263,7 @@ def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
     skill_name = skill_name.strip()
     
     # Find the most similar ESCO skill
+    esco_matched = False
     if esco_vectorstore:
         try:
             results = esco_vectorstore.similarity_search(skill_name, k=1)
@@ -274,6 +275,7 @@ def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
                     "description": top_result.metadata.get("description", "ESCO-matched skill")
                 }
                 matched_label = skill_obj["preferredLabel"]
+                esco_matched = True
             else:
                 # Fallback if no ESCO match found
                 skill_obj = {
@@ -282,6 +284,7 @@ def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
                     "description": "User-added skill (no ESCO match)"
                 }
                 matched_label = skill_name
+                esco_matched = False
         except Exception as e:
             print(f"ESCO matching failed for '{skill_name}': {e}")
             # Fallback if ESCO search fails
@@ -291,6 +294,7 @@ def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
                 "description": "User-added skill (ESCO search failed)"
             }
             matched_label = skill_name
+            esco_matched = False
     else:
         # Fallback if no ESCO vectorstore provided
         skill_obj = {
@@ -299,6 +303,7 @@ def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
             "description": "User-added skill"
         }
         matched_label = skill_name
+        esco_matched = False
     
     # Determine target list
     target_list = "known_skills" if skill_type == "known" else "missing_skills"
@@ -331,8 +336,11 @@ def add_skill(user_id, skill_name, skill_type="known", esco_vectorstore=None):
     
     list_name = "known skills" if skill_type == "known" else "learning goals"
     
-    # Show whether it was ESCO-matched or custom
-    if matched_label != skill_name:
-        return f"Added '{matched_label}' (ESCO match for '{skill_name}') to {list_name}", format_memory_editor_display(user_id), ""
+    # Provide clear feedback about ESCO matching
+    if esco_matched:
+        if matched_label != skill_name:
+            return f"Added '{matched_label}' (ESCO match for '{skill_name}') to {list_name}", format_memory_editor_display(user_id), ""
+        else:
+            return f"Added '{matched_label}' (ESCO match) to {list_name}", format_memory_editor_display(user_id), ""
     else:
-        return f"Added '{matched_label}' to {list_name}", format_memory_editor_display(user_id), ""
+        return f"Added '{matched_label}' (custom skill - no ESCO match found) to {list_name}", format_memory_editor_display(user_id), ""
