@@ -6,24 +6,18 @@ topics:
   platforms:
   - name: coursera
     count: 15
-  - name: udemy
-    count: 10
   - name: coursesity
     count: 10
 - name: data science
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
-    count: 8
   - name: coursesity
     count: 10
 - name: artificial intelligence
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
-    count: 8
   - name: coursesity
     count: 10
   process_llm: true
@@ -31,214 +25,244 @@ topics:
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 15
 - name: web development
   platforms:
   - name: coursera
     count: 8
-  - name: udemy
+  - name: coursesity
     count: 12
 - name: cloud computing
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: computer science
   platforms:
   - name: coursera
     count: 12
+  - name: coursesity
+    count: 10
 - name: software architecture
   platforms:
   - name: coursera
     count: 8
-  - name: udemy
+  - name: coursesity
     count: 6
 - name: game development
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 15
 - name: project management
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 10
 - name: product management
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: leadership
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 10
 - name: marketing
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 12
 - name: social media management
   platforms:
   - name: coursera
     count: 8
-  - name: udemy
+  - name: coursesity
     count: 10
 - name: finance
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: civil engineering
   platforms:
   - name: coursera
     count: 8
+  - name: coursesity
+    count: 6
 - name: electrical engineering
   platforms:
   - name: coursera
     count: 10
+  - name: coursesity
+    count: 8
 - name: physics
   platforms:
   - name: coursera
     count: 8
+  - name: coursesity
+    count: 6
 - name: chemistry
   platforms:
   - name: coursera
     count: 8
+  - name: coursesity
+    count: 6
 - name: mathematics
   platforms:
   - name: coursera
     count: 12
+  - name: coursesity
+    count: 10
 - name: biology
   platforms:
   - name: coursera
     count: 10
+  - name: coursesity
+    count: 8
 - name: geology
   platforms:
   - name: coursera
     count: 6
+  - name: coursesity
+    count: 5
 - name: paleontology
   platforms:
   - name: coursera
     count: 5
+  - name: coursesity
+    count: 3
 - name: medical studies
   platforms:
   - name: coursera
     count: 10
+  - name: coursesity
+    count: 8
 - name: psychology
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: environmental studies
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: conservation
   platforms:
   - name: coursera
     count: 10
+  - name: coursesity
+    count: 6
 - name: sustainability
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 10
 - name: climate change
   platforms:
   - name: coursera
     count: 10
+  - name: coursesity
+    count: 8
 - name: renewable energy
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: journalism
   platforms:
   - name: coursera
     count: 8
-  - name: udemy
+  - name: coursesity
     count: 6
 - name: law and regulations
   platforms:
   - name: coursera
     count: 10
+  - name: coursesity
+    count: 6
 - name: arts and crafts
   platforms:
   - name: coursera
     count: 8
-  - name: udemy
+  - name: coursesity
     count: 12
 - name: teaching
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: philosophy
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 6
 - name: ethics
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 6
 - name: media ethics
   platforms:
   - name: coursera
     count: 8
+  - name: coursesity
+    count: 5
 - name: political science
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: design
   platforms:
   - name: coursera
     count: 12
-  - name: udemy
+  - name: coursesity
     count: 15
 - name: ux principles
   platforms:
   - name: coursera
     count: 10
-  - name: udemy
+  - name: coursesity
     count: 12
 - name: architecture
   platforms:
   - name: coursera
     count: 8
+  - name: coursesity
+    count: 6
 - name: landscape design
   platforms:
   - name: coursera
     count: 6
-  - name: udemy
+  - name: coursesity
     count: 8
 - name: interior design
   platforms:
   - name: coursera
     count: 8
-  - name: udemy
+  - name: coursesity
     count: 12
 platform_settings:
   coursera:
     delay_between_requests: 2
-  udemy:
-    delay_between_requests: 3
+  coursesity:
+    delay_between_requests: 2
