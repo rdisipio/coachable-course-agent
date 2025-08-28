@@ -549,6 +549,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         course = recs[idx]
         course_id = course.get("id", "?")
         title = course.get("title", "?")
+        print(f"DEBUG: Course object keys: {list(course.keys())}")
+        print(f"DEBUG: Course title: '{title}'")
         explanation = course.get("explanation", "")
         feedback_map = {
             "keep": "good fit",
@@ -665,6 +667,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         course = recs[idx]
         course_id = course.get("id", "?")
         title = course.get("title", "?")
+        print(f"DEBUG reason_action: Course title: '{title}'")
         
         # Find the last feedback entry for this course and update it with the reason and correct feedback_type
         if feedback_log and feedback_log[-1]["course_id"] == course_id and feedback_log[-1]["feedback_type"]:
