@@ -203,12 +203,18 @@ def render_course_card(course, explanation=None):
     source_platform = course.get('source_platform', '')
     provider = course.get('provider', '')
     
-    # Format platform (provider names are already cleaned during import)
+    # Format platform name
     platform_name = get_platform_display_name(source_platform) if source_platform else ''
     
-    # Create provider/platform line
-    if platform_name and provider and provider != platform_name:
-        provider_line = f"**Platform**: {platform_name} | **Provider**: {provider}"
+    # Always show both platform and provider if available
+    if platform_name and provider:
+        # Show both platform and provider
+        if provider.lower() == platform_name.lower():
+            # If provider is same as platform, just show platform
+            provider_line = f"**Platform**: {platform_name}"
+        else:
+            # Show both platform and provider
+            provider_line = f"**Platform**: {platform_name} | **Provider**: {provider}"
     elif platform_name:
         provider_line = f"**Platform**: {platform_name}"
     elif provider:
