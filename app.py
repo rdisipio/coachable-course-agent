@@ -229,7 +229,7 @@ def render_course_card(course, explanation=None):
 
 {confidence_text} {confidence_bar}"""
     
-    # Add Why section with explanation followed by teaches
+    # Add Why section with explanation followed by skills
     if explanation and explanation.strip():
         why_explanation = explanation
     else:
