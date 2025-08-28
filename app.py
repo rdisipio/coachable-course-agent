@@ -150,10 +150,6 @@ def load_courses():
 
 
 def render_course_card(course, explanation=None):
-    # Debug: Print course keys to see what's available
-    print(f"DEBUG render_course_card: Course keys: {list(course.keys())}")
-    print(f"DEBUG render_course_card: title='{course.get('title')}'")
-    
     # Handle skills as string or list
     skills = course.get("skills", "")
     if isinstance(skills, str):
@@ -601,7 +597,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         feedback_log = feedback_log + [feedback_entry]
         # Persist feedback to disk
         if user_id_state:
-            process_feedback(user_id_state, course_id, feedback_type, feedback_label)
+            process_feedback(user_id_state, course_id, feedback_type, feedback_label, actual_title)
         next_idx = idx + 1
         chatbox = chatbox + [{"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}]
         if next_idx < len(recs):
@@ -692,7 +688,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         # Persist feedback to disk
         if user_id_state:
-            process_feedback(user_id_state, course_id, feedback_type, reason if reason else feedback_type)
+            process_feedback(user_id_state, course_id, feedback_type, reason if reason else feedback_type, actual_title)
         
         chatbox = chatbox + [
             {"role": "user", "content": reason},

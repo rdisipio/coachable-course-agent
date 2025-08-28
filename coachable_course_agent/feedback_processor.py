@@ -2,7 +2,7 @@ from .memory_store import load_user_profile, update_user_profile
 from .feedback_classifier import classify_feedback
 from datetime import datetime, timezone
 
-def process_feedback(user_id, course_id, feedback_type, reason):
+def process_feedback(user_id, course_id, feedback_type, reason, course_title=None):
     profile = load_user_profile(user_id)
     
     # Classify the feedback
@@ -10,6 +10,7 @@ def process_feedback(user_id, course_id, feedback_type, reason):
     
     entry = {
         "course_id": course_id,
+        "course_title": course_title or "Unknown Course",
         "feedback_type": feedback_type,
         "reason": reason,
         "timestamp": datetime.now(timezone.utc).isoformat(),
