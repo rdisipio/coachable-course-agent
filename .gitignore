@@ -11,6 +11,7 @@ data/scraped_courses/raw_data/*.json
 
 # Large data files
 data/courses_chroma.tar.gz
+data/courses_chroma_with_platform.tar.gz
 data/esco_chroma.tar.gz
 
 # Memory files (user-specific data)
