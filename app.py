@@ -215,7 +215,7 @@ def format_agent_memory_panel(mem):
     feedback_log = mem.get("feedback_log", [])
     if feedback_log:
         feedback_lines = []
-        for f in feedback_log[-5:]:  # Show last 5 entries
+        for f in reversed(feedback_log[-5:]):  # Show last 5 entries, most recent first
             course_title = f.get('course_title', '')
             course_id = f.get('course_id', '?')
             feedback_type = f.get('feedback_type', '?')
@@ -225,12 +225,9 @@ def format_agent_memory_panel(mem):
             if course_title and course_title.strip():
                 # We have a real course title, use it
                 display_name = course_title.strip()
-            elif course_id and len(course_id) > 20:
-                # This looks like a GUID, make it more readable
-                display_name = f"Course ({course_id[:8]}...)"
             else:
-                # Fallback for any other case
-                display_name = course_id if course_id != '?' else "Unknown Course"
+                # Fallback - never show GUID, use generic name
+                display_name = "Unknown Course"
             
             # Add classification emoji if available
             classification_emoji = ""
@@ -246,9 +243,9 @@ def format_agent_memory_panel(mem):
                 }
                 classification_emoji = emoji_map.get(category, "")
             
-            # Truncate long course titles for better display (increase limit slightly)
-            if len(display_name) > 45:
-                display_name = display_name[:42] + "..."
+            # Truncate course titles after 20 characters
+            if len(display_name) > 20:
+                display_name = display_name[:20] + "..."
             
             # Format the feedback entry more clearly
             feedback_lines.append(f"- {classification_emoji} **{display_name}**: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
