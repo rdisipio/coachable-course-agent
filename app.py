@@ -365,7 +365,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 gr.Markdown("**Remove Skill:**")
                 remove_skill_input = gr.Textbox(
                     label="Skill to Remove", 
-                    placeholder="Type skill name (partial match works)...",
+                    placeholder="Exact match only (for now)...",
                     lines=2
                 )
                 with gr.Row():
