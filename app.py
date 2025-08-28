@@ -162,10 +162,6 @@ def render_course_card(course, explanation=None):
     else:
         skills_str = ""
     
-    # Generate "because" chips
-    because_chips = generate_because_chips(course)
-    because_text = " • ".join(because_chips)
-    
     # Get confidence score and format it
     confidence = course.get('confidence_score', 0)
     confidence_text = f"**Confidence:** {confidence:.2f}"
@@ -182,70 +178,33 @@ def render_course_card(course, explanation=None):
     except (ValueError, TypeError):
         duration_text = "Unknown"
     
-    # Build the card with proper order: Details → Confidence → Why → Because
+    # Build the card with proper order: Details → Confidence → Why (with explanation + teaches)
     card = f"""### [{course.get('title', '')}]({course.get('url', '')})
 **Provider**: {course.get('provider', '')}  
 **Duration**: {duration_text}  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
-**Skills**: {skills_str}
 
 {confidence_text} {confidence_bar}"""
     
-    # Add Why section if explanation is provided
+    # Add Why section with explanation followed by teaches
     if explanation and explanation.strip():
-        card += f"\n\n**Why:**\n> {explanation}"
+        why_explanation = explanation
     else:
         # Provide a basic explanation based on confidence
         if confidence > 0.7:
-            fallback = "This course aligns well with your goals and skill gaps."
+            why_explanation = "This course aligns well with your goals and skill gaps."
         elif confidence > 0.4:
-            fallback = "This course partially matches your profile and learning objectives."
+            why_explanation = "This course partially matches your profile and learning objectives."
         else:
-            fallback = "This course may help fill some of your identified skill gaps."
-        card += f"\n\n**Why:**\n> {fallback}"
+            why_explanation = "This course may help fill some of your identified skill gaps."
     
-    # Add Because section
-    card += f"\n\n**Because:** {because_text}"
+    card += f"\n\n**Why:**\n> {why_explanation}"
+    
+    # Add teaches information after the explanation
+    if skills_str:
+        card += f"\n\n**Teaches:** {skills_str}"
     
     return card
-
-def generate_because_chips(course):
-    """Generate at least 2 'because' chips showing why this course was recommended."""
-    chips = []
-    
-    # 1. Goal-based chip (first priority)
-    if course.get('query_goal'):
-        goal_words = course.get('query_goal', '').split()[:3]  # First 3 words of goal
-        if goal_words:
-            chips.append(f"goal: {' '.join(goal_words)}")
-    
-    # 2. Course-specific skills chips (teaches - second priority)
-    course_skills = course.get('skills', '')
-    if isinstance(course_skills, str):
-        skill_list = [s.strip() for s in course_skills.split(',')][:2]
-        for skill in skill_list:
-            if skill:
-                chips.append(f"teaches: {skill}")
-    
-    # 3. Missing skills chips (third priority)
-    missing_skills = course.get('query_missing_skills', [])
-    for skill in missing_skills[:2]:
-        if skill:
-            chips.append(f"missing: {skill}")
-    
-    # 4. Preferences chip (fallback)
-    preferences = course.get('query_preferences', '')
-    if preferences:
-        pref_words = preferences.split()[:2]  # First 2 preference words
-        if pref_words:
-            chips.append(f"style: {' '.join(pref_words)}")
-    
-    # Ensure we have at least 2 chips
-    if len(chips) < 2:
-        chips.append(f"level: {course.get('level', 'suitable')}")
-        chips.append(f"format: {course.get('format', 'available')}")
-    
-    return chips[:4]  # Max 4 chips to avoid clutter
 
 def format_agent_memory_panel(mem):
     """Format user memory for display in the left agent memory panel"""
