@@ -334,6 +334,12 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 goal_status = gr.Markdown()
             
             with gr.Column():
+                gr.Markdown("**Clear Data:**")
+                clear_feedback_btn = gr.Button("Clear Feedback Log", variant="stop")
+                feedback_status = gr.Markdown()
+        
+        with gr.Row():
+            with gr.Column():
                 gr.Markdown("**Remove Skill:**")
                 skill_input = gr.Textbox(
                     label="Skill to Remove", 
@@ -342,8 +348,7 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                 )
                 remove_skill_btn = gr.Button("Remove Skill", variant="secondary")
                 skill_status = gr.Markdown()
-        
-        with gr.Row():
+            
             with gr.Column():
                 gr.Markdown("**Add Skill:**")
                 add_skill_input = gr.Textbox(
@@ -355,11 +360,6 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
                     add_known_btn = gr.Button("Add as Known Skill", variant="primary")
                     add_missing_btn = gr.Button("Add as Learning Goal", variant="secondary")
                 add_skill_status = gr.Markdown()
-            
-            with gr.Column():
-                gr.Markdown("**Clear Data:**")
-                clear_feedback_btn = gr.Button("Clear Feedback Log", variant="stop")
-                feedback_status = gr.Markdown()
 
     with gr.Column(visible=True) as profile_section:
         gr.Markdown("## 📝 Create Your Profile")
