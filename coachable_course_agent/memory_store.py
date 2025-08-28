@@ -71,22 +71,36 @@ def format_memory_editor_display(user_id):
     profile = load_user_profile(user_id)
     
     goal = profile.get("goal", "No goal set")
-    skills = profile.get("known_skills", [])
+    known_skills = profile.get("known_skills", [])
+    missing_skills = profile.get("missing_skills", [])
     feedback_log = profile.get("feedback_log", [])
     feedback_count = len(feedback_log)
     
-    # Format skills list
-    if skills:
-        formatted_skills = []
-        for skill in skills:
+    # Format known skills list
+    if known_skills:
+        formatted_known = []
+        for skill in known_skills:
             if isinstance(skill, dict):
                 skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
             else:
                 skill_name = str(skill)
-            formatted_skills.append(f"• {skill_name}")
-        skills_text = "\n".join(formatted_skills)
+            formatted_known.append(f"• {skill_name}")
+        known_skills_text = "\n".join(formatted_known)
     else:
-        skills_text = "No skills recorded"
+        known_skills_text = "No known skills recorded"
+    
+    # Format missing skills list
+    if missing_skills:
+        formatted_missing = []
+        for skill in missing_skills:
+            if isinstance(skill, dict):
+                skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
+            else:
+                skill_name = str(skill)
+            formatted_missing.append(f"• {skill_name}")
+        missing_skills_text = "\n".join(formatted_missing)
+    else:
+        missing_skills_text = "No learning goals set"
     
     # Analyze feedback classifications if available
     feedback_insights = ""
@@ -119,8 +133,11 @@ def format_memory_editor_display(user_id):
 **🎯 Goal:**
 {goal}
 
-**🔧 Known Skills ({len(skills)}):**
-{skills_text}
+**🔧 Known Skills ({len(known_skills)}):**
+{known_skills_text}
+
+**🚧 Learning Goals ({len(missing_skills)}):**
+{missing_skills_text}
 
 **📝 Feedback Log:**
 {feedback_count} feedback entries recorded{feedback_insights}
@@ -151,40 +168,66 @@ def save_updated_goal(user_id, new_goal):
 
 
 def remove_skill(user_id, skill_to_remove):
-    """Remove a skill from user's memory"""
+    """Remove a skill from user's memory (searches both known skills and learning goals)"""
     if not skill_to_remove or not skill_to_remove.strip():
         return "Please enter a skill to remove", format_memory_editor_display(user_id), ""
     
     memory = load_user_profile(user_id)
     
-    if not memory or "known_skills" not in memory:
-        return "No skills found to remove", format_memory_editor_display(user_id), ""
+    if not memory:
+        return "No profile found", format_memory_editor_display(user_id), ""
     
-    skills = memory["known_skills"]
-    original_count = len(skills)
-    
-    # Remove skills that match (case-insensitive)
     skill_to_remove_lower = skill_to_remove.strip().lower()
-    updated_skills = []
+    total_removed = 0
+    removed_from = []
     
-    for skill in skills:
+    # Check known_skills
+    known_skills = memory.get("known_skills", [])
+    original_known_count = len(known_skills)
+    updated_known = []
+    
+    for skill in known_skills:
         if isinstance(skill, dict):
-            # Check preferredLabel for match
             skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
         else:
             skill_name = str(skill)
         
         if skill_name.lower() != skill_to_remove_lower:
-            updated_skills.append(skill)
+            updated_known.append(skill)
     
-    removed_count = original_count - len(updated_skills)
+    known_removed = original_known_count - len(updated_known)
+    if known_removed > 0:
+        memory["known_skills"] = updated_known
+        total_removed += known_removed
+        removed_from.append("known skills")
     
-    if removed_count > 0:
-        memory["known_skills"] = updated_skills
+    # Check missing_skills (learning goals)
+    missing_skills = memory.get("missing_skills", [])
+    original_missing_count = len(missing_skills)
+    updated_missing = []
+    
+    for skill in missing_skills:
+        if isinstance(skill, dict):
+            skill_name = skill.get('preferredLabel', skill.get('name', str(skill)))
+        else:
+            skill_name = str(skill)
+        
+        if skill_name.lower() != skill_to_remove_lower:
+            updated_missing.append(skill)
+    
+    missing_removed = original_missing_count - len(updated_missing)
+    if missing_removed > 0:
+        memory["missing_skills"] = updated_missing
+        total_removed += missing_removed
+        removed_from.append("learning goals")
+    
+    # Save changes and provide feedback
+    if total_removed > 0:
         update_user_profile(user_id, memory)
-        return f"Removed {removed_count} skill(s) matching '{skill_to_remove}'", format_memory_editor_display(user_id), ""
+        location_text = " and ".join(removed_from)
+        return f"Removed '{skill_to_remove}' from {location_text}", format_memory_editor_display(user_id), ""
     else:
-        return f"No skill found matching '{skill_to_remove}'", format_memory_editor_display(user_id), ""
+        return f"No skill found matching '{skill_to_remove}' in either known skills or learning goals", format_memory_editor_display(user_id), ""
 
 
 def clear_feedback_log(user_id):
