@@ -304,15 +304,23 @@ def format_agent_memory_panel(mem):
             if len(display_name) > 20:
                 display_name = display_name[:20] + "..."
             
-            # Format the feedback entry more clearly - show both feedback type and classification
-            feedback_type_display = feedback_type.upper()  # Make feedback type prominent
+            # Format the feedback entry with icons instead of text
+            feedback_type_icons = {
+                "keep": "✅",      # green tick mark for accept
+                "approve": "✅",   # green tick mark for approve (legacy)
+                "accept": "✅",    # green tick mark for accept
+                "adjust": "🔄",    # two swirling arrows for adjust  
+                "reject": "🛑"     # stop sign for reject
+            }
+            feedback_icon = feedback_type_icons.get(feedback_type.lower().strip(), feedback_type.upper() if feedback_type.strip() else "❓")
+            
             classification_note = ""
             if "classification" in f:
                 category = f["classification"].get("category", "")
                 if category and category != feedback_type:
                     classification_note = f" ({category})"
             
-            feedback_lines.append(f"- {classification_emoji} **{display_name}**: **{feedback_type_display}**{classification_note} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+            feedback_lines.append(f"- {classification_emoji} **{display_name}**: {feedback_icon}{classification_note} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
         
         feedback = "\n".join(feedback_lines)
         if len(feedback_log) > 5:
