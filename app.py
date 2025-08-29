@@ -752,8 +752,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         if feedback_log and feedback_log[-1]["course_id"] == course_id and feedback_log[-1]["feedback_type"]:
             feedback_type = feedback_log[-1]["feedback_type"]
         else:
-            # fallback: try to infer from previous state or default to 'adjust'
-            feedback_type = "adjust"
+            # fallback: this shouldn't happen, but default to reject for safety
+            feedback_type = "reject"
+            print(f"Warning: Could not determine feedback type for course {course_id}, defaulting to 'reject'")
         
         # Use the same title extraction logic as the course card
         actual_title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
