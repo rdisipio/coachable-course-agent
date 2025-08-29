@@ -972,8 +972,8 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
 
     # Memory Editor Event Handlers
     def update_goal_and_update_all(user_id, new_goal):
-        """Update goal and return updates for both memory displays"""
-        status = save_updated_goal(user_id, new_goal)
+        """Update goal, recompute missing skills, and return updates for both memory displays"""
+        status = save_updated_goal(user_id, new_goal, esco_collection)
         memory_editor_display = format_memory_editor_display(user_id) if user_id else "No profile loaded."
         updated_profile = load_user_profile(user_id) if user_id else {}
         agent_memory_display = format_agent_memory_panel(updated_profile) if updated_profile else ""

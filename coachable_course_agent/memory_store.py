@@ -155,16 +155,44 @@ def update_goal_dialog(user_id):
     return profile.get("goal", "")
 
 
-def save_updated_goal(user_id, new_goal):
-    """Save the updated goal to user's memory"""
+def save_updated_goal(user_id, new_goal, esco_vectorstore=None):
+    """Save the updated goal to user's memory and recompute missing skills"""
     if not new_goal or not new_goal.strip():
         return "Please enter a goal before saving"
     
     memory = load_user_profile(user_id)
     memory["goal"] = new_goal.strip()
+    
+    # Recompute missing skills based on the new goal
+    if esco_vectorstore:
+        from coachable_course_agent.linkedin_tools import infer_missing_skills
+        try:
+            # Create a profile dict for inference
+            profile_for_inference = {
+                "headline": memory.get("headline", ""),
+                "skills": memory.get("known_skills", []),
+                "goal": memory["goal"]
+            }
+            
+            # Infer new missing skills based on updated goal
+            new_missing_skills = infer_missing_skills(profile_for_inference, esco_vectorstore, top_k=5)
+            
+            # Filter out skills that are already in known_skills
+            known_skill_labels = {skill.get("preferredLabel", "").lower() for skill in memory.get("known_skills", [])}
+            filtered_missing_skills = [
+                skill for skill in new_missing_skills 
+                if skill.get("preferredLabel", "").lower() not in known_skill_labels
+                and skill.get("preferredLabel") != "N/A"
+            ]
+            
+            memory["missing_skills"] = filtered_missing_skills
+            
+        except Exception as e:
+            print(f"Warning: Could not recompute missing skills: {e}")
+    
     update_user_profile(user_id, memory)
     
-    return f"Goal updated successfully!"
+    return f"Goal updated successfully! Missing skills have been recomputed based on your new goal."
 
 
 def remove_skill(user_id, skill_to_remove):
