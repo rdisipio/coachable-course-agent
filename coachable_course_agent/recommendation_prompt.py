@@ -18,6 +18,16 @@ Learning preferences:
 Recent feedback history (structured data):
 {feedback_log}
 
+IMPORTANT: When analyzing feedback history, interpret it correctly:
+- "reject" feedback means the user DOES NOT want courses with those characteristics
+- "adjust" feedback suggests modifications to avoid similar issues
+- "approve" feedback indicates preferences to follow
+
+For example:
+- If user rejected a course saying "no beginner courses", avoid recommending beginner-level courses
+- If user rejected saying "too theoretical", focus on practical/hands-on courses
+- If user approved saying "good pace", prioritize similar pacing
+
 Available courses:
 {course_block}
 
@@ -32,7 +42,7 @@ Once you have the course list, pick the 3 best options based on their goal, pref
   ...
 ]
 
-For each recommendation, the field called 'justification' briefly explains *why* it fits—especially considering past feedback.
+For each recommendation, the field called 'justification' briefly explains *why* it fits—especially considering past feedback patterns (what to avoid from rejections, what to emulate from approvals).
 
 "Reply with *only* a valid JSON array and no additional explanation."
 """
