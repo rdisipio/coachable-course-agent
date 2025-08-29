@@ -304,8 +304,15 @@ def format_agent_memory_panel(mem):
             if len(display_name) > 20:
                 display_name = display_name[:20] + "..."
             
-            # Format the feedback entry more clearly
-            feedback_lines.append(f"- {classification_emoji} **{display_name}**: {feedback_type} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+            # Format the feedback entry more clearly - show both feedback type and classification
+            feedback_type_display = feedback_type.upper()  # Make feedback type prominent
+            classification_note = ""
+            if "classification" in f:
+                category = f["classification"].get("category", "")
+                if category and category != feedback_type:
+                    classification_note = f" ({category})"
+            
+            feedback_lines.append(f"- {classification_emoji} **{display_name}**: **{feedback_type_display}**{classification_note} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
         
         feedback = "\n".join(feedback_lines)
         if len(feedback_log) > 5:
@@ -326,6 +333,7 @@ def format_agent_memory_panel(mem):
 {missing}
 
 ### 💬 Feedback Log
+*REJECT courses won't appear again*  
 {feedback}
 """
 
