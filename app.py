@@ -310,7 +310,7 @@ def format_agent_memory_panel(mem):
                 "approve": "✅",   # green tick mark for approve (legacy)
                 "accept": "✅",    # green tick mark for accept
                 "adjust": "🔄",    # two swirling arrows for adjust  
-                "reject": "🛑"     # stop sign for reject
+                "reject": "🚫"     # prohibited sign for reject
             }
             feedback_icon = feedback_type_icons.get(feedback_type.lower().strip(), feedback_type.upper() if feedback_type.strip() else "❓")
             
