@@ -353,6 +353,10 @@ from coachable_course_agent.memory_store import (
     clear_feedback_log
 )
 with gr.Blocks(title="Coachable Course Agent") as demo:
+    # Generate session-based user ID that persists during the session
+    session_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    session_user_id = f"user_{session_timestamp}"
+    
     user_id_state = gr.State()
     app_mode = gr.State(value="profile")  # 'profile' or 'recommend'
     recs_state = gr.State(value=[])  # List of recommendations with explanations
@@ -457,6 +461,33 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     
     def on_see_recommendations_click(uid):
         outputs = GradioOutputManager(SEE_RECOMMENDATIONS_OUTPUTS)
+        
+        # Check if user profile exists, if not, redirect to profile creation
+        if not uid or not user_profile_exists(uid):
+            return outputs.set_multiple(
+                profile_section=gr.update(visible=True),
+                recommend_section=gr.update(visible=False),
+                recommendations="",
+                agent_memory="",
+                profile_status="❌ **Profile not found.** Please create a new profile below.",
+                user_id_state=None,
+                profile_json=gr.update(visible=False),
+                footer_status="❌ Profile not found. Please create a new profile.",
+                app_mode="profile",
+                see_recommendations_btn=gr.update(visible=False),
+                recs_state=[],
+                rec_index_state=0,
+                feedback_log_state=[],
+                keep_btn=gr.update(visible=False),
+                adjust_btn=gr.update(visible=False),
+                reject_btn=gr.update(visible=False),
+                chatbox=[],
+                new_recs_btn=gr.update(visible=False),
+                expectation_accordion=gr.update(open=False),
+                memory_editor_accordion=gr.update(visible=False),
+                memory_display="No profile loaded.",
+                goal_input=""
+            ).get_tuple()
         
         # Load user profile and compute recommendations
         user_profile = load_user_profile(uid)
@@ -858,9 +889,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     def on_profile_submit(blurb):
         outputs = GradioOutputManager(PROFILE_BUILD_OUTPUTS)
         
-        # Generate unique user ID with timestamp for each session
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        uid = f"user_{timestamp}"
+        # Use the session-based user ID
+        uid = session_user_id
+        
+        # Add a note about session-based profiles
+        print(f"Creating profile with ID: {uid}")
         
         # Show immediate processing feedback
         processing_msg = "🔄 **Processing your profile...** This may take a few seconds while we analyze your background and match skills."
