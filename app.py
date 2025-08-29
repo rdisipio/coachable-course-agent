@@ -13,6 +13,7 @@ import json
 import subprocess
 import tarfile
 import gradio as gr
+from datetime import datetime
 from huggingface_hub import hf_hub_download
 
 MEMORY_DIR = "data/memory"
@@ -179,10 +180,11 @@ def render_course_card(course, explanation=None):
     else:
         skills_str = ""
     
-    # Get confidence score and format it
+    # Get fit score and format it
     confidence = course.get('confidence_score', 0)
-    confidence_text = f"**Confidence:** {confidence:.2f}"
+    fit_score_text = f"**Fit Score:** {confidence:.2f}"
     confidence_bar = "🟩" * int(confidence * 10) + "⬜" * (10 - int(confidence * 10))
+    fit_tooltip = "Score reflects how closely the course matches your skills/goals profile. Feedback shapes the next batch, not the current one."
     
     # Format duration with better fallback
     duration_hours = course.get('duration_hours', 0)
@@ -195,7 +197,7 @@ def render_course_card(course, explanation=None):
     except (ValueError, TypeError):
         duration_text = "Unknown"
     
-    # Build the card with proper order: Details → Confidence → Why (with explanation + teaches)
+    # Build the card with proper order: Details → Fit Score → Why (with explanation + teaches)
     title = course.get('title') or course.get('course_title') or course.get('name') or 'Untitled Course'
     
     # Get platform and provider info
@@ -226,13 +228,14 @@ def render_course_card(course, explanation=None):
 **Duration**: {duration_text}  
 **Level**: {course.get('level', '')} | **Format**: {course.get('format', '')}  
 
-{confidence_text} {confidence_bar}"""
+{fit_score_text} {confidence_bar}  
+*{fit_tooltip}*"""
     
     # Add Why section with explanation followed by skills
     if explanation and explanation.strip():
         why_explanation = explanation
     else:
-        # Provide a basic explanation based on confidence
+        # Provide a basic explanation based on fit score
         if confidence > 0.7:
             why_explanation = "This course aligns well with your goals and skill gaps."
         elif confidence > 0.4:
@@ -855,8 +858,9 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
     def on_profile_submit(blurb):
         outputs = GradioOutputManager(PROFILE_BUILD_OUTPUTS)
         
-        # Use a default user ID since sessions are isolated in HF Spaces
-        uid = "default_user"
+        # Generate unique user ID with timestamp for each session
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        uid = f"user_{timestamp}"
         
         # Show immediate processing feedback
         processing_msg = "🔄 **Processing your profile...** This may take a few seconds while we analyze your background and match skills."
