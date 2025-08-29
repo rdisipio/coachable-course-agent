@@ -321,7 +321,7 @@ def format_agent_memory_panel(mem):
 {missing}
 
 ### 💬 Feedback Log
-*Rejected courses won't appear again*  
+*Rejected (🚫) courses won't appear again.*  
 {feedback}
 """
 
