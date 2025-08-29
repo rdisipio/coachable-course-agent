@@ -167,15 +167,19 @@ def save_updated_goal(user_id, new_goal, esco_vectorstore=None):
     if esco_vectorstore:
         from coachable_course_agent.linkedin_tools import infer_missing_skills
         try:
-            # Create a profile dict for inference
+            print(f"Recomputing missing skills for goal: {memory['goal']}")
+            # Create a profile dict for inference - use 'skills' key as expected by infer_missing_skills
             profile_for_inference = {
                 "headline": memory.get("headline", ""),
-                "skills": memory.get("known_skills", []),
+                "skills": memory.get("known_skills", []),  # Note: infer_missing_skills expects 'skills' key
                 "goal": memory["goal"]
             }
             
+            print(f"Profile for inference: {len(profile_for_inference['skills'])} known skills")
+            
             # Infer new missing skills based on updated goal
             new_missing_skills = infer_missing_skills(profile_for_inference, esco_vectorstore, top_k=5)
+            print(f"Inferred {len(new_missing_skills)} new missing skills")
             
             # Filter out skills that are already in known_skills
             known_skill_labels = {skill.get("preferredLabel", "").lower() for skill in memory.get("known_skills", [])}
@@ -186,9 +190,13 @@ def save_updated_goal(user_id, new_goal, esco_vectorstore=None):
             ]
             
             memory["missing_skills"] = filtered_missing_skills
+            print(f"Final missing skills after filtering: {len(filtered_missing_skills)} skills")
             
         except Exception as e:
             print(f"Warning: Could not recompute missing skills: {e}")
+            # Don't clear existing missing skills if recomputation fails
+    else:
+        print("Warning: ESCO vectorstore not provided, missing skills not recomputed")
     
     update_user_profile(user_id, memory)
     

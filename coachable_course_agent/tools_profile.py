@@ -62,8 +62,9 @@ profile_extract_tool = Tool.from_function(
     description=(
         "Given a free-form LinkedIn profile text, extract a short career headline, "
         "a list of up to 10 professional skills, and an inferred learning or career goal and a blurb (max 100 words). "
-        "Input should be raw profile text."
-        "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile."
+        "Input should be raw profile text. "
+        "After extracting skills, always match them to ESCO concepts and save only the matched preferredLabel and conceptUri into the user profile. "
+        "IMPORTANT: After extraction, you MUST also infer missing skills using the InferMissingSkillsFromProfile tool and include them when saving the profile."
         )
     )
 

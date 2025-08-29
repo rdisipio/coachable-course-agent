@@ -109,14 +109,14 @@ def save_profile_from_str(json_str: str, user_id: str ):
         data = json.loads(json_str)
         user_profile = load_user_profile(user_id)
 
-        # Add or update missing_skills
-        if "missing_skills" in data:
-            user_profile["missing_skills"] = data["missing_skills"]
+        # Preserve existing missing_skills if not provided in the new data
+        existing_missing_skills = user_profile.get("missing_skills", []) if user_profile else []
+        new_missing_skills = data.get("missing_skills", existing_missing_skills)
         
         update_user_profile(user_id, {
             "goal": data.get("goal", ""),
             "known_skills": data.get("skills", []),
-            "missing_skills": data.get("missing_skills", []),
+            "missing_skills": new_missing_skills,
             "preferences": {
                 "format": [],
                 "style": [],
@@ -135,7 +135,7 @@ def get_save_profile_tool(user_id):
     return Tool.from_function(
         name="SaveUserProfile",
         func=partial(save_profile_from_str, user_id=user_id),
-        description="Saves the extracted user profile. Input must be a JSON string with 'headline', 'goal', and 'skills' and 'blurb'."
+        description="Saves the extracted user profile. Input must be a JSON string with 'headline', 'goal', 'skills', 'blurb', and optionally 'missing_skills'. If missing_skills are not provided, existing ones will be preserved."
     )
 
 
