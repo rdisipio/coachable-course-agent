@@ -672,7 +672,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         feedback_log = feedback_log + [feedback_entry]
         # Persist feedback to disk
         if user_id_state:
+            print(f"🔍 DEBUG: Saving feedback for user_id={user_id_state}, course_id={course_id}, type={feedback_type}, reason={feedback_label}")
             process_feedback(user_id_state, course_id, feedback_type, feedback_label, actual_title)
+            print(f"✅ DEBUG: Feedback saved successfully")
+        else:
+            print(f"⚠️ DEBUG: No user_id_state, feedback not saved. user_id_state={user_id_state}")
         next_idx = idx + 1
         chatbox = chatbox + [{"role": "assistant", "content": f"Thanks for your feedback on '{title}' ({feedback_label})."}]
         if next_idx < len(recs):
@@ -764,7 +768,11 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         # Persist feedback to disk
         if user_id_state:
+            print(f"🔍 DEBUG: Saving reason feedback for user_id={user_id_state}, course_id={course_id}, type={feedback_type}, reason={reason}")
             process_feedback(user_id_state, course_id, feedback_type, reason if reason else feedback_type, actual_title)
+            print(f"✅ DEBUG: Reason feedback saved successfully")
+        else:
+            print(f"⚠️ DEBUG: No user_id_state in reason_action, feedback not saved. user_id_state={user_id_state}")
         
         chatbox = chatbox + [
             {"role": "user", "content": reason},
