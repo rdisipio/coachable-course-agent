@@ -268,7 +268,7 @@ def format_agent_memory_panel(mem):
     known = "\n".join(f"- {s['preferredLabel']}" for s in mem["known_skills"])
     missing = "\n".join(f"- {s['preferredLabel']}" for s in mem["missing_skills"])
     
-    # Enhanced feedback display with classifications
+    # Simplified feedback display - just response icons and feedback text
     feedback_log = mem.get("feedback_log", [])
     if feedback_log:
         feedback_lines = []
@@ -286,20 +286,6 @@ def format_agent_memory_panel(mem):
                 # For old entries with missing/bad titles, use a generic name
                 display_name = "Course (legacy entry)"
             
-            # Add classification emoji if available
-            classification_emoji = ""
-            if "classification" in f:
-                category = f["classification"].get("category", "")
-                emoji_map = {
-                    "friction": "🚫",
-                    "credibility": "🔍", 
-                    "better_way": "🔄",
-                    "negative_impact": "❌",
-                    "positive": "✅",
-                    "other": "❓"
-                }
-                classification_emoji = emoji_map.get(category, "")
-            
             # Truncate course titles after 20 characters
             if len(display_name) > 20:
                 display_name = display_name[:20] + "..."
@@ -314,13 +300,7 @@ def format_agent_memory_panel(mem):
             }
             feedback_icon = feedback_type_icons.get(feedback_type.lower().strip(), feedback_type.upper() if feedback_type.strip() else "❓")
             
-            classification_note = ""
-            if "classification" in f:
-                category = f["classification"].get("category", "")
-                if category and category != feedback_type:
-                    classification_note = f" ({category})"
-            
-            feedback_lines.append(f"- {classification_emoji} **{display_name}**: {feedback_icon}{classification_note} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
+            feedback_lines.append(f"- **{display_name}**: {feedback_icon} — {reason[:50]}{'...' if len(reason) > 50 else ''}")
         
         feedback = "\n".join(feedback_lines)
         if len(feedback_log) > 5:
@@ -341,7 +321,7 @@ def format_agent_memory_panel(mem):
 {missing}
 
 ### 💬 Feedback Log
-*REJECT courses won't appear again*  
+*Rejected courses won't appear again*  
 {feedback}
 """
 
