@@ -413,40 +413,13 @@ with gr.Blocks(title="Coachable Course Agent") as demo:
         
         gr.Markdown("💡 **New here?** Click below for a quick overview of how this agent works and what to expect.")
         with gr.Accordion("📋 Instructions & What to Expect", open=False) as expectation_accordion:
-            gr.Markdown("""
-### 🤖 What this agent does
-- Analyzes your **background and goals** to identify your skills and learning gaps
-- Uses the **ESCO framework** (European skills taxonomy) to standardize skill matching
-- Finds courses that benefit both your career growth and company objectives
-- Retrieves and ranks relevant courses **in batches** based on your profile
-- Explains *why* each course serves both **your growth** and **company goals**
-- Lets you give feedback to improve suggestions for **future batches**
-- Provides **My skills & goals** editor so you can view and modify your profile data
-
-### 🎯 About ESCO skills
-- **ESCO**: European skills framework **curated by humans** (not algorithms) to standardize job skills
-- We translate your experience into these standardized categories for better course matching
-
-### 🔄 How recommendations work
-- **Batch system**: Recommendations are generated as a set, then you review each one
-- **Dual-purpose filtering**: Each course is evaluated for both personal and organizational value
-- **Feedback application**: Your feedback improves the **next batch** of recommendations
-- **Memory edits**: Profile changes take effect when you request **new recommendations**
-
-### 🚫 What this agent doesn't do
-- Guarantee prices, certification status, or course dates
-- Replace human career guidance. Never ever!
-- **Real-time updates**: Current recommendations won't change mid-batch
-
-### 🔒 About your data
-- Your profile is saved **locally in this app**, not in a central database
-- A Large Language Model (LLM) is called to generate explanations
-- You can view, edit, or delete your profile and feedback anytime using My skills & goals
-
-### 💻 Best experience
-- **Desktop recommended** for detailed feedback and course research
-- **Mobile works great** for initial exploration of possibilities
-            """)
+            # Load instructions from separate file
+            try:
+                with open("instructions.md", "r") as f:
+                    instructions_content = f.read()
+                gr.Markdown(instructions_content)
+            except FileNotFoundError:
+                gr.Markdown("Instructions file not found.")
         
         blurb_input = gr.Textbox(lines=5, label="LinkedIn-style Blurb", placeholder="Tell us about your background, current role, and career goals...")
         gr.Markdown("💡 *Processing typically takes 2-3 seconds while we analyze your profile and match ESCO skills.*")
