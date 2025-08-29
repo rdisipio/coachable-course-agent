@@ -8,7 +8,7 @@
 
 ### 🚫 What this agent doesn't do
 - Guarantee prices, certification status, or course dates
-- Replace human career guidance. Never ever!
+- Replace human career guidance. **Never ever**!
 
 ### 🔒 About your data
 - Your profile is saved **locally in this app**, not in a central database
