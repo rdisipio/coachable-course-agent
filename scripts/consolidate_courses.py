@@ -73,33 +73,40 @@ class CourseConsolidator:
         return all_courses
         
     def deduplicate_courses(self, courses: List[Dict]) -> List[Dict]:
-        """Remove duplicate courses based on title and provider similarity"""
-        print("🔍 Deduplicating courses...")
+        """Remove only exact duplicate courses (same title, provider, and URL)"""
+        print("🔍 Minimal deduplication (exact duplicates only)...")
         
-        # Group by title (case-insensitive, normalized)
-        title_groups = defaultdict(list)
+        # Group by (title, provider, url) for exact duplicate detection
+        exact_duplicates = defaultdict(list)
         for course in courses:
-            # Normalize title for comparison
-            title = course.get('title', '').lower().strip()
-            # Remove common course markers
-            title = title.replace('course', '').replace('certification', '').replace('program', '')
-            title = ' '.join(title.split())  # Normalize whitespace
-            title_groups[title].append(course)
+            # Create exact match key
+            title = course.get('title', '').strip()
+            provider = clean_provider_name(course.get('provider', '')).strip()
+            url = course.get('url', '').strip()
+            
+            # Only remove if all three match exactly
+            exact_key = f"{title}|||{provider}|||{url}"
+            exact_duplicates[exact_key].append(course)
             
         deduplicated = []
         duplicates_removed = 0
         
-        for title, course_group in title_groups.items():
+        for exact_key, course_group in exact_duplicates.items():
             if len(course_group) == 1:
                 deduplicated.append(course_group[0])
             else:
-                # Multiple courses with similar titles - pick the best one
+                # Multiple identical courses - keep the best one
                 best_course = self.select_best_course(course_group)
                 deduplicated.append(best_course)
                 duplicates_removed += len(course_group) - 1
                 
-        print(f"   Removed {duplicates_removed} duplicates")
-        print(f"✅ {len(deduplicated)} unique courses remain")
+                # Log exact duplicates being removed
+                if len(course_group) > 2:
+                    title, provider, url = exact_key.split('|||')
+                    print(f"   � Merged {len(course_group)} exact duplicates: '{title}' from {provider}")
+                
+        print(f"   Removed {duplicates_removed} exact duplicates")
+        print(f"✅ {len(deduplicated)} unique courses remain (minimal deduplication)")
         return deduplicated
         
     def select_best_course(self, course_group: List[Dict]) -> Dict:

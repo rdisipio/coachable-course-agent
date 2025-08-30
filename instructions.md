@@ -2,7 +2,7 @@
 - Analyzes your **background and goals** to identify your skills and learning gaps
 - Uses the **ESCO framework** (European skills taxonomy **curated by humans**, not algorithms) to standardize skill matching
 - Finds and ranks relevant courses **in batches** that ensure **alignment** between your career growth and company objectives
-- Explains *why* each recommended course fits your profile and goals
+- **Explains** *why* each recommended course fits your profile and goals
 - **Batch system**: Recommendations are generated as a set, you review each one, and your feedback improves the **next batch**
 - **Profile editing**: Use **My skills & goals** editor to view and modify your profile data. Changes take effect when you request **new recommendations**
 
