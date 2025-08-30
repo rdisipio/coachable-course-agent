@@ -8,7 +8,7 @@ This directory contains the orchestrated course scraping system that can collect
 - **Python 3.11+**: Required for the project environment
 - **Dev Dependencies**: Scraping tools require development dependencies
 
-Install Pipenv if you haven't already:
+Install Pipenv if you haven't already: 
 ```bash
 pip install pipenv
 ```
