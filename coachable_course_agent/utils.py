@@ -17,9 +17,13 @@ def clean_provider_name(provider):
     if not provider:
         return ""
     
+    # Fix the double letter issue at the beginning: if first two letters are same uppercase, remove first
+    # e.g., "UUniversity" → "University", "IIBM" → "IBM", "OO.P." → "O.P."
+    cleaned = re.sub(r'^([A-Z])\1', r'\1', provider)
+    
     # Fix the double letter issue (e.g., "D Duke University" → "Duke University")
     # Pattern: single letter, space, then same letter followed by word
-    cleaned = re.sub(r'^([A-Z])\s+\1([A-Z][a-z])', r'\2', provider)
+    cleaned = re.sub(r'^([A-Z])\s+\1([A-Z][a-z])', r'\2', cleaned)
     
     # Additional cleanup patterns
     cleaned = re.sub(r'^([A-Z])\s+([A-Z])', r'\2', cleaned)  # "D Duke" → "Duke"
