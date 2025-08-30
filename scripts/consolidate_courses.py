@@ -4,7 +4,7 @@ Course Consolidation and ESCO Skills Matching
 
 This script:
 1. Loads all raw scraped course data
-2. Deduplicates across platforms 
+2. Deduplicates across platforms (exact + semantic duplicates)
 3. Matches course descriptions to ESCO skills
 4. Generates a consolidated course catalog with ESCO-linked skills
 5. Optionally processes with LLM for enhanced descriptions
@@ -16,6 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import json
 import glob
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Any
@@ -48,23 +49,44 @@ class CourseConsolidator:
             print("✅ Loaded ESCO skills vectorstore")
         except Exception as e:
             print(f"❌ Failed to load ESCO vectorstore: {e}")
-            print("   Make sure you've run: pipenv run python scripts/load_esco.py")
             
-    def load_all_raw_courses(self) -> List[Dict]:
-        """Load all courses from raw JSON files"""
+    def load_all_courses(self) -> List[Dict]:
+        """Load courses from all JSON files in data directory"""
         all_courses = []
         
-        json_files = list(self.raw_data_dir.glob("*.json"))
-        print(f"📂 Found {len(json_files)} raw data files")
+        # Get all JSON files from various sources
+        json_patterns = [
+            "data/*.json",
+            "data/scraped_courses/*.json", 
+            "data/coursesity_*.json",
+            "data/mit_*.json",
+            "data/harvard_*.json"
+        ]
+        
+        json_files = []
+        for pattern in json_patterns:
+            json_files.extend(glob.glob(pattern))
+        
+        print(f"📁 Found {len(json_files)} JSON files to process")
         
         for json_file in json_files:
             try:
-                with open(json_file, 'r') as f:
+                with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     
-                courses = data.get('courses', [])
-                print(f"   {json_file.name}: {len(courses)} courses")
-                all_courses.extend(courses)
+                # Handle different JSON structures
+                if isinstance(data, list):
+                    all_courses.extend(data)
+                elif isinstance(data, dict):
+                    if 'courses' in data:
+                        all_courses.extend(data['courses'])
+                    elif 'items' in data:
+                        all_courses.extend(data['items'])
+                    else:
+                        # Assume the dict itself is a course
+                        all_courses.append(data)
+                        
+                print(f"📚 Loaded {len(data.get('courses', data) if isinstance(data, dict) else data)} courses from {json_file}")
                 
             except Exception as e:
                 print(f"❌ Error loading {json_file}: {e}")
@@ -72,56 +94,122 @@ class CourseConsolidator:
         print(f"📚 Total raw courses loaded: {len(all_courses)}")
         return all_courses
         
-    def deduplicate_courses(self, courses: List[Dict]) -> List[Dict]:
-        """Remove only exact duplicate courses (same title, provider, and URL)"""
-        print("🔍 Minimal deduplication (exact duplicates only)...")
+    def normalize_title(self, title: str) -> str:
+        """Normalize title for semantic duplicate detection"""
+        if not title:
+            return ""
+            
+        # Convert to lowercase
+        normalized = title.lower().strip()
         
-        # Group by (title, provider, url) for exact duplicate detection
+        # Remove common course prefixes/suffixes
+        patterns_to_remove = [
+            r'\b(introduction to|intro to|basics of|fundamentals of|getting started with)\b',
+            r'\b(course|tutorial|training|class|lesson)\b',
+            r'\b(complete|comprehensive|full|total)\b',
+            r'\b(beginner|intermediate|advanced|basic)\b',
+            r'\b(guide|handbook|masterclass)\b',
+            r'\b(2024|2023|2022|2021|2020)\b',  # Remove years
+            r'\s*[-–—]\s*.*$',  # Remove everything after dash
+            r'\s*\([^)]*\)\s*',  # Remove content in parentheses
+            r'\s*\[[^\]]*\]\s*',  # Remove content in brackets
+        ]
+        
+        for pattern in patterns_to_remove:
+            normalized = re.sub(pattern, ' ', normalized, flags=re.IGNORECASE)
+        
+        # Normalize whitespace and punctuation
+        normalized = re.sub(r'[^\w\s]', ' ', normalized)  # Remove punctuation
+        normalized = re.sub(r'\s+', ' ', normalized)  # Normalize whitespace
+        normalized = normalized.strip()
+        
+        return normalized
+        
+    def deduplicate_courses(self, courses: List[Dict]) -> List[Dict]:
+        """Remove exact duplicates and semantic duplicates (same/similar titles)"""
+        print("🔍 Advanced deduplication (exact + semantic duplicates)...")
+        
+        # Step 1: Remove exact duplicates (same title, provider, url)
         exact_duplicates = defaultdict(list)
         for course in courses:
-            # Create exact match key
             title = course.get('title', '').strip()
             provider = clean_provider_name(course.get('provider', '')).strip()
             url = course.get('url', '').strip()
-            
-            # Only remove if all three match exactly
             exact_key = f"{title}|||{provider}|||{url}"
             exact_duplicates[exact_key].append(course)
             
-        deduplicated = []
-        duplicates_removed = 0
+        after_exact = []
+        exact_removed = 0
         
         for exact_key, course_group in exact_duplicates.items():
             if len(course_group) == 1:
+                after_exact.append(course_group[0])
+            else:
+                best_course = self.select_best_course(course_group)
+                after_exact.append(best_course)
+                exact_removed += len(course_group) - 1
+                
+        print(f"   Removed {exact_removed} exact duplicates")
+        
+        # Step 2: Group by normalized title for semantic duplicate detection
+        title_groups = defaultdict(list)
+        for course in after_exact:
+            normalized_title = self.normalize_title(course.get('title', ''))
+            title_groups[normalized_title].append(course)
+            
+        deduplicated = []
+        semantic_removed = 0
+        
+        for normalized_title, course_group in title_groups.items():
+            if len(course_group) == 1:
                 deduplicated.append(course_group[0])
             else:
-                # Multiple identical courses - keep the best one
+                # Multiple courses with same normalized title - keep the best one
                 best_course = self.select_best_course(course_group)
                 deduplicated.append(best_course)
-                duplicates_removed += len(course_group) - 1
+                semantic_removed += len(course_group) - 1
                 
-                # Log exact duplicates being removed
-                if len(course_group) > 2:
-                    title, provider, url = exact_key.split('|||')
-                    print(f"   � Merged {len(course_group)} exact duplicates: '{title}' from {provider}")
+                # Log semantic duplicates being removed
+                providers = [clean_provider_name(c.get('provider', '')) for c in course_group]
+                print(f"   🎯 Merged {len(course_group)} semantic duplicates: '{course_group[0].get('title', '')}' from {', '.join(providers[:3])}")
                 
-        print(f"   Removed {duplicates_removed} exact duplicates")
-        print(f"✅ {len(deduplicated)} unique courses remain (minimal deduplication)")
+        print(f"   Removed {semantic_removed} semantic duplicates")
+        print(f"✅ {len(deduplicated)} unique courses remain (advanced deduplication)")
         return deduplicated
         
     def select_best_course(self, course_group: List[Dict]) -> Dict:
         """Select the best course from a group of similar courses"""
-        # Prefer courses with more complete information
+        # Provider reputation scores (higher is better)
+        provider_scores = {
+            'stanford': 100, 'mit': 100, 'harvard': 100, 'berkeley': 95, 'princeton': 95,
+            'yale': 95, 'cambridge': 95, 'oxford': 95, 'caltech': 95, 'cmu': 90,
+            'coursera': 85, 'edx': 85, 'udacity': 80, 'khan academy': 75, 'youtube': 60,
+            'udemy': 70, 'pluralsight': 75, 'linkedin learning': 70, 'alison': 50,
+            'futurelearn': 70, 'skillshare': 65
+        }
+        
         def course_score(course):
             score = 0
+            
+            # Provider reputation (most important for duplicates)
+            provider = clean_provider_name(course.get('provider', '')).lower()
+            for key, value in provider_scores.items():
+                if key in provider:
+                    score += value * 10  # Multiply by 10 to make this the dominant factor
+                    break
+            else:
+                score += 40  # Default score for unknown providers
+            
+            # Content quality indicators
             if course.get('description'):
-                score += len(course['description'])
+                score += min(len(course['description']) / 10, 50)  # Up to 50 points for description length
             if course.get('rating'):
-                score += course['rating'] * 100
+                score += course['rating'] * 20  # Up to 100 points for rating
             if course.get('enrollment_count'):
-                score += min(course['enrollment_count'] / 1000, 100)
+                score += min(course['enrollment_count'] / 1000, 30)  # Up to 30 points for popularity
             if course.get('duration_hours'):
-                score += 10
+                score += 10  # 10 points for having duration info
+                
             return score
             
         return max(course_group, key=course_score)
@@ -138,186 +226,137 @@ class CourseConsolidator:
             "you will learn:",
             "learn:",
             "technologies:",
-            "tools:"
+            "tools:",
+            "frameworks:",
+            "programming languages:",
+            "topics covered:",
+            "includes:",
+            "covers:"
         ]
         
         description_lower = description.lower()
+        skills = []
         
-        # Look for skills sections
+        # Look for skill sections
         for indicator in skill_indicators:
             if indicator in description_lower:
-                # Extract text after the indicator
-                parts = description_lower.split(indicator)
-                if len(parts) > 1:
-                    skills_text = parts[1].split('.')[0]  # Until next sentence
-                    # Split by common delimiters
-                    skills = [s.strip() for s in skills_text.replace(',', '|').replace(';', '|').split('|')]
-                    return [s for s in skills if s and len(s) > 2]
-                    
-        # Fallback: extract common technology terms
-        tech_terms = []
-        common_techs = ['python', 'javascript', 'java', 'sql', 'html', 'css', 'react', 'node.js', 'aws', 'docker', 'kubernetes']
-        for tech in common_techs:
-            if tech in description_lower:
-                tech_terms.append(tech)
+                start_idx = description_lower.find(indicator)
+                # Get text after the indicator (next 200 chars)
+                skill_text = description[start_idx + len(indicator):start_idx + len(indicator) + 200]
                 
-        return tech_terms
+                # Split by common delimiters
+                for delimiter in [',', ';', '•', '\n', '|']:
+                    if delimiter in skill_text:
+                        skills.extend([s.strip() for s in skill_text.split(delimiter) if s.strip()])
+                        break
         
-    def match_esco_skills(self, course: Dict) -> List[Dict]:
-        """Match course skills to ESCO taxonomy"""
-        if not self.esco_vectorstore:
-            return []
-            
-        # Extract potential skills from various fields
-        skill_candidates = []
+        # Clean and filter skills
+        cleaned_skills = []
+        for skill in skills:
+            skill = skill.strip().rstrip('.,;')
+            if len(skill) > 2 and len(skill) < 50:  # Reasonable skill name length
+                cleaned_skills.append(skill)
         
-        # From explicit skills field
-        if course.get('skills'):
-            skill_candidates.extend(course['skills'])
-            
-        # From description
-        description = course.get('description', '')
-        extracted_skills = self.extract_skills_from_description(description)
-        skill_candidates.extend(extracted_skills)
+        return cleaned_skills[:10]  # Limit to 10 skills max
         
-        # From title (sometimes contains technologies)
-        title = course.get('title', '')
-        for tech in ['Python', 'JavaScript', 'Java', 'SQL', 'AWS', 'Docker']:
-            if tech.lower() in title.lower():
-                skill_candidates.append(tech)
-                
-        if not skill_candidates:
-            return []
-            
-        # Match to ESCO
-        try:
-            esco_matches = match_to_esco(skill_candidates, self.esco_vectorstore)
-            # Convert to our format
-            matched_skills = []
-            for match in esco_matches:
-                matched_skills.append({
-                    "name": match.get("preferredLabel", ""),
-                    "esco_uri": match.get("conceptUri", ""),
-                    "description": match.get("description", "")
-                })
-            return matched_skills
-        except Exception as e:
-            print(f"   Warning: ESCO matching failed for course {course.get('title', 'Unknown')}: {e}")
-            return []
-            
-    def consolidate_courses(self, courses: List[Dict]) -> List[Dict]:
-        """Process courses and add ESCO skills"""
+    def match_esco_skills(self, courses: List[Dict]) -> List[Dict]:
+        """Match courses to ESCO skills using vectorstore similarity"""
         print("🎯 Matching courses to ESCO skills...")
         
-        consolidated = []
-        for course in tqdm(courses, desc="Processing courses"):
-            # Match ESCO skills
-            esco_skills = self.match_esco_skills(course)
+        if not self.esco_vectorstore:
+            print("❌ ESCO vectorstore not available, skipping skill matching")
+            return courses
             
-            # Clean provider name during consolidation
-            provider = clean_provider_name(course.get('provider', ''))
-            
-            # Create consolidated course record
-            consolidated_course = {
-                "id": course.get('id'),
-                "title": course.get('title'),
-                "provider": provider,  # Use cleaned provider name
-                "url": course.get('url'),
-                "description": course.get('description'),
-                "duration_hours": course.get('duration_hours', 0),
-                "level": course.get('level', 'unknown'),
-                "format": course.get('format', 'online'),
-                "price": course.get('price', 0.0),
-                "rating": course.get('rating'),
-                "enrollment_count": course.get('enrollment_count'),
-                "language": course.get('language', 'en'),
-                "certificate": course.get('certificate', False),
-                "instructor": course.get('instructor', ''),
-                "skills": esco_skills,  # ESCO-matched skills
-                "source_platform": course.get('source_platform'),
-                "consolidated_at": datetime.now().isoformat()
-            }
-            
-            consolidated.append(consolidated_course)
-            
-        return consolidated
+        enhanced_courses = []
+        
+        for course in tqdm(courses, desc="Matching ESCO skills"):
+            try:
+                # Prepare text for matching
+                title = course.get('title', '')
+                description = course.get('description', '')
+                match_text = f"{title} {description}"
+                
+                # Extract skills from description
+                extracted_skills = self.extract_skills_from_description(description)
+                
+                # Match to ESCO using the vectorstore
+                esco_skills = match_to_esco([match_text], self.esco_vectorstore, top_k=5)
+                
+                # Combine extracted and ESCO skills
+                all_skills = list(set(extracted_skills + esco_skills))
+                
+                # Add ESCO skills to course
+                course['esco_skills'] = all_skills[:8]  # Limit to 8 skills total
+                enhanced_courses.append(course)
+                
+            except Exception as e:
+                print(f"❌ Error matching skills for '{course.get('title', '')}': {e}")
+                course['esco_skills'] = []
+                enhanced_courses.append(course)
+                
+        print(f"✅ Matched ESCO skills for {len(enhanced_courses)} courses")
+        return enhanced_courses
         
     def save_consolidated_catalog(self, courses: List[Dict], output_file="data/course_catalog_esco.json"):
-        """Save consolidated course catalog"""
-        catalog = {
+        """Save the consolidated course catalog"""
+        
+        # Prepare metadata
+        catalog_data = {
             "metadata": {
+                "created_at": datetime.now().isoformat(),
                 "total_courses": len(courses),
-                "consolidated_at": datetime.now().isoformat(),
-                "esco_matched": True,
-                "sources": list(set([c.get('source_platform') for c in courses if c.get('source_platform')]))
+                "data_sources": ["coursesity", "mit", "harvard", "youtube", "khan_academy", "others"],
+                "deduplication": "advanced (exact + semantic)",
+                "skills_matching": "ESCO vectorstore",
+                "version": "1.1.0"
             },
             "courses": courses
         }
         
+        # Save to file
         os.makedirs(os.path.dirname(output_file), exist_ok=True)
-        with open(output_file, 'w') as f:
-            json.dump(catalog, f, indent=2)
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(catalog_data, f, indent=2, ensure_ascii=False)
             
-        print(f"✅ Saved consolidated catalog to {output_file}")
-        print(f"   📊 {len(courses)} courses with ESCO skills")
+        print(f"💾 Saved consolidated catalog with {len(courses)} courses to {output_file}")
         
-    def run_consolidation(self, auto_cleanup=True):
+        # Print summary statistics
+        providers = defaultdict(int)
+        skill_counts = []
+        
+        for course in courses:
+            provider = clean_provider_name(course.get('provider', 'Unknown'))
+            providers[provider] += 1
+            skill_counts.append(len(course.get('esco_skills', [])))
+            
+        print("\n📊 Catalog Statistics:")
+        print(f"   Total courses: {len(courses)}")
+        print(f"   Unique providers: {len(providers)}")
+        print(f"   Average skills per course: {sum(skill_counts)/len(skill_counts):.1f}")
+        
+        print("\n🏢 Top providers:")
+        for provider, count in sorted(providers.items(), key=lambda x: x[1], reverse=True)[:10]:
+            print(f"   {provider}: {count} courses")
+            
+    def run_consolidation(self):
         """Run the full consolidation pipeline"""
-        print("🚀 Starting course consolidation pipeline...\n")
+        print("🚀 Starting course consolidation pipeline...")
         
-        # Step 1: Load all raw courses
-        raw_courses = self.load_all_raw_courses()
-        if not raw_courses:
-            print("❌ No courses found to consolidate")
-            return
-            
-        # Step 2: Deduplicate
-        unique_courses = self.deduplicate_courses(raw_courses)
+        # Load all courses
+        raw_courses = self.load_all_courses()
         
-        # Step 3: Match ESCO skills
-        consolidated_courses = self.consolidate_courses(unique_courses)
+        # Deduplicate
+        deduplicated_courses = self.deduplicate_courses(raw_courses)
         
-        # Step 4: Save catalog
-        self.save_consolidated_catalog(consolidated_courses)
+        # Match ESCO skills
+        enhanced_courses = self.match_esco_skills(deduplicated_courses)
         
-        # Step 5: Auto-cleanup (if enabled)
-        if auto_cleanup:
-            print("\n🧹 Running automatic cleanup...")
-            try:
-                from scripts.clean_course_catalog import clean_course_catalog
-                input_file = "data/course_catalog_esco.json"
-                temp_file = "data/course_catalog_esco_temp.json"
-                
-                clean_course_catalog(input_file, temp_file)
-                
-                # Replace original with cleaned version
-                import os
-                os.rename(temp_file, input_file)
-                print("✅ Automatic cleanup completed")
-                
-            except Exception as e:
-                print(f"⚠️  Cleanup failed (continuing anyway): {e}")
+        # Save final catalog
+        self.save_consolidated_catalog(enhanced_courses)
         
-        print("\n🎉 Course consolidation completed!")
-        
-
-def main():
-    """Main entry point"""
-    import argparse
-    
-    parser = argparse.ArgumentParser(description="Consolidate scraped courses and match ESCO skills")
-    parser.add_argument("--raw-data-dir", default="data/scraped_courses/raw_data",
-                       help="Directory containing raw scraped course JSON files")
-    parser.add_argument("--output", default="data/course_catalog_esco.json",
-                       help="Output file for consolidated catalog")
-    parser.add_argument("--no-cleanup", action="store_true",
-                       help="Skip automatic cleanup step")
-    
-    args = parser.parse_args()
-    
-    consolidator = CourseConsolidator(args.raw_data_dir)
-    consolidator.run_consolidation(auto_cleanup=not args.no_cleanup)
+        print("✅ Course consolidation completed successfully!")
 
 
 if __name__ == "__main__":
-    main()
+    consolidator = CourseConsolidator()
+    consolidator.run_consolidation()
