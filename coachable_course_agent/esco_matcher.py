@@ -48,9 +48,32 @@ def match_to_esco(skills: list[str], vectorstore, top_k=10):
 
         import random
         if results:
-            # Randomly select one of the top-3 results (if available)
+            # Get top 3 results (if available)
             top_results = results[:3] if len(results) >= 3 else results
-            chosen = random.choice(top_results)
+            # Try to get scores if available
+            scores = []
+            for r in top_results:
+                score = None
+                if hasattr(r, 'score'):
+                    score = r.score
+                elif isinstance(r, tuple) and len(r) == 2:
+                    score = r[1]
+                    r = r[0]
+                scores.append(score)
+            # If scores are available and valid, use threshold logic
+            threshold = 0.15
+            if scores and scores[0] is not None and scores[1] is not None:
+                # Scores are usually distance, so lower is better
+                diff = scores[1] - scores[0]
+                if diff > threshold:
+                    chosen = top_results[0]
+                else:
+                    chosen = random.choice(top_results)
+            else:
+                chosen = random.choice(top_results)
+            # If tuple, get doc
+            if isinstance(chosen, tuple):
+                chosen = chosen[0]
             matches.append({
                 "raw_skill": skill,
                 "preferredLabel": chosen.metadata.get("preferredLabel", "N/A"),
@@ -58,7 +81,6 @@ def match_to_esco(skills: list[str], vectorstore, top_k=10):
                 "description": chosen.metadata.get('page_content', "N/A")
             })
         # If no matches found, skip
-        # (no poor matches)
 
     return [m for m in matches if m["preferredLabel"] != "N/A"]
 
