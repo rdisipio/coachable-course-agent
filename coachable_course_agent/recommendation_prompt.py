@@ -15,23 +15,15 @@ Learning preferences:
 - Style: {style}
 - Avoid styles: {avoid_styles}
 
-Recent feedback history (structured data):
+Recent feedback history:
 {feedback_log}
-
-IMPORTANT: When analyzing feedback history, interpret it correctly:
-- "reject" feedback means the user DOES NOT want courses with those characteristics
-- "adjust" feedback suggests modifications to avoid similar issues
-- "approve" feedback indicates preferences to follow
-
-For example:
-- If user rejected a course saying "no beginner courses", avoid recommending beginner-level courses
-- If user rejected saying "too theoretical", focus on practical/hands-on courses
-- If user approved saying "good pace", prioritize similar pacing
 
 Available courses:
 {course_block}
 
-Once you have the course list, pick the 3 best options based on their goal, preferences, and feedback. Respond in this JSON format:
+Pick the 3 best courses based on the user's goal and stated preferences. Focus on matching the missing skills they need to develop.
+
+Respond in this JSON format:
 
 [
   {{
@@ -42,7 +34,8 @@ Once you have the course list, pick the 3 best options based on their goal, pref
   ...
 ]
 
-For each recommendation, the field called 'justification' briefly explains *why* it fits—especially considering past feedback patterns (what to avoid from rejections, what to emulate from approvals).
+For the justification field, explain why the course matches their stated goal and learning preferences. 
+Base your reasoning only on the explicit course details and the user's clearly stated preferences, not on inferred patterns.
 
-"Reply with *only* a valid JSON array and no additional explanation."
+Reply with *only* a valid JSON array and no additional explanation.
 """
