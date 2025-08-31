@@ -15,7 +15,7 @@ load_dotenv()
 
 # Initialize LLM
 llm = ChatGroq(
-    model="llama3-70b-8192", 
+    model="llama-3.3-70b-versatile", 
     temperature=0.7, 
     api_key=os.getenv("GROQ_API_KEY")
 )
@@ -53,7 +53,7 @@ def create_course_agent():
 
 def create_profile_building_agent(vectorstore, user_id):
     llm = ChatGroq(
-        model="llama3-70b-8192", 
+    model="llama-3.3-70b-versatile", 
         temperature=0.7, 
         api_key=os.getenv("GROQ_API_KEY")
     )

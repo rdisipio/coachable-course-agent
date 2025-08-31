@@ -12,7 +12,7 @@ from coachable_course_agent.recommendation_prompt import base_prompt
 load_dotenv()
 
 def create_justifier_chain():
-    llm = ChatGroq(model="llama3-70b-8192", temperature=0.3, api_key=os.getenv("GROQ_API_KEY"))
+    llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.3, api_key=os.getenv("GROQ_API_KEY"))
     prompt = PromptTemplate.from_template(base_prompt)
     return LLMChain(prompt=prompt, llm=llm)
 

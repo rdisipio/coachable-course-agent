@@ -9,7 +9,7 @@ from langchain.chains import LLMChain
 
 from coachable_course_agent.linkedin_tools import get_infer_skills_tool, get_skill_tool, get_save_profile_tool
 
-llm = ChatGroq(model="llama3-70b-8192", temperature=0.3, api_key=os.getenv("GROQ_API_KEY"))
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.3, api_key=os.getenv("GROQ_API_KEY"))
 
 
 linkedin_prompt = PromptTemplate.from_template("""

@@ -154,7 +154,7 @@ def _llm_classify_feedback(feedback_text: str, feedback_type: str) -> Dict[str, 
     """Use LLM to classify feedback with better context understanding"""
     
     # Initialize LLM
-    llm = ChatGroq(model="llama3-70b-8192", temperature=0.1, api_key=os.getenv("GROQ_API_KEY"))
+    llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.1, api_key=os.getenv("GROQ_API_KEY"))
     
     # Create classification prompt
     prompt_template = """
