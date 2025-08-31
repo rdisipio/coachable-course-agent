@@ -27,6 +27,34 @@ def justify_recommendations(user_profile, courses):
     user_missing_skills = user_profile.get("missing_skills", []) # list of ESCO skills such as {"preferredLabel": "Data Analysis", "conceptUri": "http://example.com/skill/data-analysis"}
     user_preferences = user_profile.get("preferences", {})
     
+    # Format feedback log in a clearer way for the LLM
+    def format_feedback_for_llm(feedback_entries):
+        if not feedback_entries:
+            return "No previous feedback."
+        
+        formatted_entries = []
+        for entry in feedback_entries[-3:]:  # Last 3 entries
+            course_title = entry.get("course_title", "Unknown Course")
+            feedback_type = entry.get("feedback_type", "unknown")
+            reason = entry.get("reason", "")
+            
+            if feedback_type == "reject":
+                if reason:
+                    formatted_entries.append(f"✗ REJECTED '{course_title}' because: {reason}")
+                else:
+                    formatted_entries.append(f"✗ REJECTED '{course_title}'")
+            elif feedback_type == "adjust":
+                if reason:
+                    formatted_entries.append(f"~ NEEDS ADJUSTMENT for '{course_title}' because: {reason}")
+                else:
+                    formatted_entries.append(f"~ NEEDS ADJUSTMENT for '{course_title}'")
+            elif feedback_type in ["approve", "keep"]:
+                if reason:
+                    formatted_entries.append(f"✓ APPROVED '{course_title}' because: {reason}")
+                else:
+                    formatted_entries.append(f"✓ APPROVED '{course_title}'")
+        
+        return "\n".join(formatted_entries)
     
     chain = create_justifier_chain()
     response = chain.run({
@@ -36,7 +64,7 @@ def justify_recommendations(user_profile, courses):
         "format": ", ".join(user_preferences["format"]),
         "style": ", ".join(user_preferences["style"]),
         "avoid_styles": ", ".join(user_preferences.get("avoid_styles", [])),
-        "feedback_log": json.dumps(user_profile.get("feedback_log", [])[-3:], indent=2),
+        "feedback_log": format_feedback_for_llm(user_profile.get("feedback_log", [])),
         "course_block": course_block,
     })
     
