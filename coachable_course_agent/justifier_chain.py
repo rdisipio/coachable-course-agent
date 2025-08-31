@@ -40,19 +40,19 @@ def justify_recommendations(user_profile, courses):
             
             if feedback_type == "reject":
                 if reason:
-                    formatted_entries.append(f"✗ REJECTED '{course_title}' because: {reason}")
+                    formatted_entries.append(f"REJECTED '{course_title}' because: {reason}")
                 else:
-                    formatted_entries.append(f"✗ REJECTED '{course_title}'")
+                    formatted_entries.append(f"REJECTED '{course_title}'")
             elif feedback_type == "adjust":
                 if reason:
-                    formatted_entries.append(f"~ NEEDS ADJUSTMENT for '{course_title}' because: {reason}")
+                    formatted_entries.append(f"NEEDS ADJUSTMENT for '{course_title}' because: {reason}")
                 else:
-                    formatted_entries.append(f"~ NEEDS ADJUSTMENT for '{course_title}'")
+                    formatted_entries.append(f"NEEDS ADJUSTMENT for '{course_title}'")
             elif feedback_type in ["approve", "keep"]:
                 if reason:
-                    formatted_entries.append(f"✓ APPROVED '{course_title}' because: {reason}")
+                    formatted_entries.append(f"APPROVED '{course_title}' because: {reason}")
                 else:
-                    formatted_entries.append(f"✓ APPROVED '{course_title}'")
+                    formatted_entries.append(f"APPROVED '{course_title}'")
         
         return "\n".join(formatted_entries)
     
